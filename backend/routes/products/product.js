@@ -286,8 +286,8 @@ router.get('/products-list-with-children', function(req, res, next){
 		products.map((product, index)=>{
 			var newProduct = {}
 
-			newProduct.serial_number = product[ 'serial_number' ]
-			newProduct.image_thumbnail = base64_encode( product[ 'image_thumbnail' ] )
+			// newProduct.serial_number = product[ 'serial_number' ]
+			newProduct.image_thumbnail_filepath = base64_encode( product[ 'image_thumbnail_filepath' ] )
 			newProduct.title = product[ 'title' ]
 
 			newProducts_list.push({...newProduct})

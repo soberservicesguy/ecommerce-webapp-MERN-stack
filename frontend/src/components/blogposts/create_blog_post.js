@@ -70,7 +70,7 @@ class CreateBlogPost extends Component {
 		this.state = {
 			expanded:false,
 			redirectToRoute: false,
-			endpoint: '',
+
 			image_thumbnail_filepath: '',
 			title: '',
 			first_para: '',
@@ -79,7 +79,7 @@ class CreateBlogPost extends Component {
 			third_para: '',
 			fourth_para: '',
 			all_tags: '',
-			timestamp_of_uploading: '',		}
+		}
 
 	}
 
@@ -108,32 +108,24 @@ class CreateBlogPost extends Component {
 			// e.g a social post, textinput which lets user to enter text, takes persons id as assigned object
 				<div style={styles.outerContainer}>
 
-
-				  	<div style={styles.textinputContainer}>
+					<div style={styles.textinputContainer}>
+						<p style={styles.headingOverInput}>
+							Blogpost image
+						</p>
 						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your endpoint" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, endpoint: event.target.value})) }
+							<input
+								name="blogpost_image_main" // name of input field or fieldName simply
+								enctype="multipart/form-data"
+								type="file"
+								onChange={(event) => {
+									// console logging selected file from menu
+									console.log( event.target.files[0] ) // gives first file
+									// setState method with event.target.files[0] as argument
+									this.setState(prev => ({...prev, image_thumbnail_filepath: event.target.files[0]}))
+								}}
 							/>
 						</form>
-				  	</div>
-
-
-				  	<div style={styles.textinputContainer}>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your image_thumbnail_filepath" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, image_thumbnail_filepath: event.target.value})) }
-							/>
-						</form>
-				  	</div>
-
+					</div>
 
 				  	<div style={styles.textinputContainer}>
 						<form className={styles.root} noValidate autoComplete="off">
@@ -225,60 +217,28 @@ class CreateBlogPost extends Component {
 						</form>
 				  	</div>
 
-
-				  	<div style={styles.textinputContainer}>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your timestamp_of_uploading" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, timestamp_of_uploading: event.target.value})) }
-							/>
-						</form>
-				  	</div>
-
 					<button style={styles.buttonWithoutBG}
 						onClick={ () => {
 
 							let setResponseInCurrentBlogPost = (arg) => this.props.set_current_blogpost(arg)
 							let redirectToNewBlogPost = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
 
-							// first create parent object
-							let blogpost_object = {
-								endpoint: this.state.endpoint,
-								image_thumbnail_filepath: this.state.image_thumbnail_filepath,
-								title: this.state.title,
-								first_para: this.state.first_para,
-								initial_tags: this.state.initial_tags,
-								second_para: this.state.second_para,
-								third_para: this.state.third_para,
-								fourth_para: this.state.fourth_para,
-								all_tags: this.state.all_tags,
-								timestamp_of_uploading: this.state.timestamp_of_uploading,
-							}
+							const formData = new FormData()
+							formData.append('title', this.state.title)
+							formData.append('first_para', this.state.first_para)
+							formData.append('initial_tags', this.state.initial_tags)
+							formData.append('second_para', this.state.second_para)
+							formData.append('third_para', this.state.third_para)
+							formData.append('fourth_para', this.state.fourth_para)
+							formData.append('all_tags', this.state.all_tags)
+							formData.append('blogpost_image_main', this.state.image_thumbnail_filepath, this.state.image_thumbnail_filepath.name)
 
-							// 2nd create child object from redux (linked_object_and_live_object_in_redux in schema)
-							let user_object = {
-
-								user_name: this.props.user_name,
-								phone_number: this.props.phone_number,
-								hash: this.props.hash,
-								salt: this.props.salt,
-								isLoggedIn: this.props.isLoggedIn,
-							}
-
-							// 3rd send post request
-							axios.post(utils.baseUrl + '/blogposts/create-blogpost-with-user', 
-								{
-									blogpost_object: blogpost_object,
-									user_object: user_object,
-								})
+							axios.post(utils.baseUrl + '/blogpostings/create-blogpost-with-user', formData)
 							.then(function (response) {
 								console.log(response.data) // current blogpost screen data
 								
 								// set to current parent object
-								setResponseInCurrentBlogPost(response.data)
+								setResponseInCurrentBlogPost(response.data.new_blogpost)
 
 								// change route to current_blogpost
 								redirectToNewBlogPost()

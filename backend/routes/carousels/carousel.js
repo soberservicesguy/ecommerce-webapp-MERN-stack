@@ -54,7 +54,7 @@ const upload_carousel_image = multer({
 	fileFilter: function(req, file, cb){
 		checkFileTypeForCarouselImage(file, cb);
 	}
-}).single('carousel_image_main'); // this is the field that will be dealt
+}).single('carousel_image'); // this is the field that will be dealt
 // .array('blogpost_image_main', 12)
 
 
@@ -115,7 +115,7 @@ router.post('/create-carousel-with-user', passport.authenticate('jwt', { session
 								image_filepath: base64_encoded_image,
 							}
 
-							res.status(200).json({ success: true, msg: 'new user saved', new_carousel_slide: new_carousel_slide});	
+							res.status(200).json({ success: true, msg: 'new user saved', new_carousel: new_carousel_slide});	
 
 						} else {
 
@@ -155,7 +155,7 @@ router.get('/carousels-list-with-children', function(req, res, next){
 			newCarousel.image_filepath = base64_encode( carousel[ 'image_filepath' ] )
 			newCarousel.title = carousel[ 'title' ]
 
-			newCarousel.push({...newCarousel})
+			newCarousels_list.push({...newCarousel})
 			newCarousel = {}
 		});
 

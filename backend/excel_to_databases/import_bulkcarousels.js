@@ -1,5 +1,8 @@
 require('./db_settings')
 
+var arguments_supplied = process.argv.slice(2);
+var excel_file = arguments_supplied[0]
+
 const readXlsxFile = require('read-excel-file/node');
 var base64_encode = require('../lib/image_to_base64');
 const {resolve} = require('path')
@@ -8,7 +11,8 @@ const mongoose = require('mongoose');
 require('../models/carousel');
 
 const Carousel = mongoose.model('Carousel');
-const file_name = 'all_carousels.xlsx';
+const file_name = excel_file || '/home/arsalan/Work_stuff/Full_stack_apps/REACT_APPS/Final_portfolio/ecommerce_app/backend/excel_to_databases/all_carousels.xlsx'
+// const file_name = 'all_carousels.xlsx';
 
 const sheet_to_class_mapper = (sheet_name, db_object) => {
 	if (sheet_name === 'all_carousels'){
@@ -436,4 +440,13 @@ const sheet_to_class = (file_name) => {
 
 
 
-sheet_to_class(file_name)
+// sheet_to_class(file_name)
+
+if (excel_file){
+	null
+} else {
+	// console.log('attempted to import blogposts')
+	// sheet_to_class(file_name)
+}
+
+module.exports = sheet_to_class

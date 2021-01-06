@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
@@ -32,6 +31,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 
 // IMPORT CONNECTED CONTAINERS
 import {
+	ConnectedSignUpContainer,
 	ConnectedLoginContainer,
 	ConnectedCarouselContainer,
 	ConnectedIndividualCarousel,
@@ -275,6 +275,14 @@ class RootRouterContainer extends Component {
 
 
 {/* ------------ MENU OPTIONS STARTS HERE ------------ */}						
+								<Link to="/signup">
+									<IconButton aria-label="show 4 new mails" color="inherit">
+										<p>
+											SIGNUP
+										</p>
+
+									</IconButton>
+								</Link>
 
 								<Link to="/login">
 									<IconButton aria-label="show 4 new mails" color="inherit">
@@ -285,10 +293,10 @@ class RootRouterContainer extends Component {
 									</IconButton>
 								</Link>
 
-								<Link to="/carousels">
+								<Link to="/blogposts">
 									<IconButton aria-label="show 4 new mails" color="inherit">
 										<p>
-											Carousel
+											BlogPost
 										</p>
 
 									</IconButton>
@@ -303,7 +311,16 @@ class RootRouterContainer extends Component {
 									</IconButton>
 								</Link>
 
-								<Link to="/carts">
+								<Link to="/carousels">
+									<IconButton aria-label="show 4 new mails" color="inherit">
+										<p>
+											Carousel
+										</p>
+
+									</IconButton>
+								</Link>
+
+								<Link to="/cart">
 									<IconButton aria-label="show 4 new mails" color="inherit">
 										<p>
 											Cart
@@ -316,15 +333,6 @@ class RootRouterContainer extends Component {
 									<IconButton aria-label="show 4 new mails" color="inherit">
 										<p>
 											Order
-										</p>
-
-									</IconButton>
-								</Link>
-
-								<Link to="/blogposts">
-									<IconButton aria-label="show 4 new mails" color="inherit">
-										<p>
-											BlogPost
 										</p>
 
 									</IconButton>
@@ -381,6 +389,10 @@ class RootRouterContainer extends Component {
 
 					<Switch>
 
+						<Route exact path="/signup">
+							<ConnectedSignUpContainer/>
+						</Route>
+
 						<Route exact path="/login">
 							<ConnectedLoginContainer/>
 						</Route>
@@ -391,9 +403,7 @@ class RootRouterContainer extends Component {
 							<ConnectedCarouselContainer/>
 						</Route>
 
-
-
-						<Route path="/carousels/:endpoint-param">
+						<Route path="/Individual-Carousel">
 							<ConnectedIndividualCarousel/>
 						</Route>
 
@@ -403,10 +413,18 @@ class RootRouterContainer extends Component {
 							<ConnectedProductContainer/>
 						</Route>
 
-
-
-						<Route path="/products/:endpoint-param">
+						<Route path="/Individual-Product">
 							<ConnectedIndividualProduct/>
+						</Route>
+
+
+
+						<Route exact path="/blogposts">
+							<ConnectedBlogPostContainer/>
+						</Route>
+
+						<Route path="/Individual-BlogPost">
+							<ConnectedIndividualBlogPost/>
 						</Route>
 
 
@@ -417,16 +435,10 @@ class RootRouterContainer extends Component {
 
 
 
-						<Route path="/cart/:cart-param">
-							<ConnectedIndividualCartItem/>
-						</Route>
-
 
 						<Route exact path="/orders">
 							<ConnectedOrderContainer/>
 						</Route>
-
-
 
 						<Route path="/orders/:endpoint-param">
 							<ConnectedIndividualOrder/>
@@ -434,15 +446,6 @@ class RootRouterContainer extends Component {
 
 
 
-						<Route exact path="/blogposts">
-							<ConnectedBlogPostContainer/>
-						</Route>
-
-
-
-						<Route path="/blogposts/:serial_number-param">
-							<ConnectedIndividualBlogPost/>
-						</Route>
 
 
 						{/*<Route path="/home">

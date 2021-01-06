@@ -9,4 +9,9 @@ const Product = mongoose.model('Product');
 const {resolve} = require('path')
 require('dotenv').config({path: resolve(__dirname,"../.env")})
 
-Product.deleteMany({}, ()=>null)
+
+function bulk_delete_all_products(){
+	Product.deleteMany({}, ()=>null)
+}
+
+module.exports = bulk_delete_all_products

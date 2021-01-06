@@ -49,7 +49,7 @@ function checkFileTypeForBlogpostImage(file, cb){
 // Init Upload
 const upload_main_image_by_user_of_blog = multer({
 	storage: image_storage,
-	limits:{fileSize: 20000000}, // 1 mb
+	limits:{fileSize: 200000000}, // 1 mb
 	fileFilter: function(req, file, cb){
 		checkFileTypeForBlogpostImage(file, cb);
 	}
@@ -90,7 +90,6 @@ router.post('/create-blogpost-with-user', passport.authenticate('jwt', { session
 					first_para: req.body.first_para,
 					initial_tags: req.body.initial_tags,
 					second_para: req.body.second_para,
-					qouted_para: req.body.qouted_para,
 					third_para: req.body.third_para,
 					fourth_para: req.body.fourth_para,
 					all_tags: req.body.all_tags,
@@ -123,7 +122,6 @@ router.post('/create-blogpost-with-user', passport.authenticate('jwt', { session
 								initial_tags: newBlogPost.initial_tags,
 								first_para: newBlogPost.first_para,
 								second_para: newBlogPost.second_para,
-								qouted_para: newBlogPost.qouted_para,
 								third_para: newBlogPost.third_para,
 								fourth_para: newBlogPost.fourth_para,
 								all_tags: newBlogPost.all_tags,

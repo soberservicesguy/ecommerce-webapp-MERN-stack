@@ -40,7 +40,7 @@ app.use(express.urlencoded({extended: true}));
 // setting up cors
 app.use(
   cors({
-    origin: "http://localhost:3001", // restrict calls to those this address
+    origin: "http://localhost:3000", // restrict calls to those this address
     methods: ['GET', 'POST'] // only allow GET, POST requests
   })
 );

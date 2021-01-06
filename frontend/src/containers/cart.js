@@ -160,7 +160,7 @@ class CartContainer extends Component {
 
 					<Grid container direction="row" spacing={4} style={{backgroundColor: '#eee'}}>
 
-						{ cart.map((item, index) => (
+						{ ( cart || [] ).map((item, index) => (
 
 						<Provider value={{
 							getCompleteObjectAndSwitchToItsContainer: () => this.getCompleteObjectAndSwitchToItsContainer(),

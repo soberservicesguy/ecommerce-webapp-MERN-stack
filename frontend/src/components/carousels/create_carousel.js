@@ -70,9 +70,10 @@ class CreateCarousel extends Component {
 		this.state = {
 			expanded:false,
 			redirectToRoute: false,
+
 			image_filepath: '',
 			title: '',
-			endpoint: '',		}
+		}
 
 	}
 
@@ -101,18 +102,24 @@ class CreateCarousel extends Component {
 			// e.g a social post, textinput which lets user to enter text, takes persons id as assigned object
 				<div style={styles.outerContainer}>
 
-
-				  	<div style={styles.textinputContainer}>
+					<div style={styles.textinputContainer}>
+						<p style={styles.headingOverInput}>
+							Carousel image
+						</p>
 						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your image_filepath" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, image_filepath: event.target.value})) }
+							<input
+								name="carousel_image" // name of input field or fieldName simply
+								enctype="multipart/form-data"
+								type="file"
+								onChange={(event) => {
+									// console logging selected file from menu
+									console.log( event.target.files[0] ) // gives first file
+									// setState method with event.target.files[0] as argument
+									this.setState(prev => ({...prev, image_filepath: event.target.files[0]}))
+								}}
 							/>
 						</form>
-				  	</div>
+					</div>
 
 
 				  	<div style={styles.textinputContainer}>
@@ -128,52 +135,22 @@ class CreateCarousel extends Component {
 				  	</div>
 
 
-				  	<div style={styles.textinputContainer}>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your endpoint" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, endpoint: event.target.value})) }
-							/>
-						</form>
-				  	</div>
-
 					<button style={styles.buttonWithoutBG}
 						onClick={ () => {
 
 							let setResponseInCurrentCarousel = (arg) => this.props.set_current_carousel(arg)
 							let redirectToNewCarousel = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
 
-							// first create parent object
-							let carousel_object = {
-								image_filepath: this.state.image_filepath,
-								title: this.state.title,
-								endpoint: this.state.endpoint,
-							}
-
-							// 2nd create child object from redux (linked_object_and_live_object_in_redux in schema)
-							let user_object = {
-
-								user_name: this.props.user_name,
-								phone_number: this.props.phone_number,
-								hash: this.props.hash,
-								salt: this.props.salt,
-								isLoggedIn: this.props.isLoggedIn,
-							}
-
-							// 3rd send post request
-							axios.post(utils.baseUrl + '/carousels/create-carousel-with-user', 
-								{
-									carousel_object: carousel_object,
-									user_object: user_object,
-								})
+							const formData = new FormData()
+							formData.append('title', this.state.title)
+							formData.append('carousel_image', this.state.image_filepath, this.state.image_filepath.name)
+						
+							axios.post(utils.baseUrl + '/carousels/create-carousel-with-user', formData)
 							.then(function (response) {
 								console.log(response.data) // current carousel screen data
 								
 								// set to current parent object
-								setResponseInCurrentCarousel(response.data)
+								setResponseInCurrentCarousel(response.data.new_carousel)
 
 								// change route to current_carousel
 								redirectToNewCarousel()

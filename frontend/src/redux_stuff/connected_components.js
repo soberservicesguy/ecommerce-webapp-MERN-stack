@@ -5,7 +5,7 @@ import {mapStateToProps, mapDispatchToProps} from "./store_configuration";
 import {
 
 	RootRouterContainer,
-
+	SignUpContainer,
 	CarouselContainer,
 	IndividualCarousel,
 	ProductContainer,
@@ -183,3 +183,7 @@ export const ConnectedIndividualCartItem = connect(
 	mapDispatchToProps
 )(IndividualCartItem);
 
+export const ConnectedSignUpContainer = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(SignUpContainer);

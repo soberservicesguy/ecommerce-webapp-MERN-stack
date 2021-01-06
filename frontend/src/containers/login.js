@@ -17,6 +17,8 @@ import {
 	// Button 
 } from "@material-ui/core";
 
+import { verify_privilege } from "../handy_functions/"
+
 const styles = theme => ({
 	iconStyle:{
 		alignSelf:'center',
@@ -121,11 +123,8 @@ class LoginContainer extends Component {
 		super(props);
 		this.state = {
 
-			user_name: '',
 			phone_number: '',
-			hash: '',
-			salt: '',
-			isloggedin: '',
+			password:'',
 
 		}
 	}
@@ -134,110 +133,90 @@ class LoginContainer extends Component {
 
 	}
 
+	make_request_to_protected_route(){
 
-	storeDataAtBackend(){
-		axios.post(utils.baseUrl + '/carousels/create-user', 
-			{
-				user_name: this.state.user_name,
-				phone_number: this.state.phone_number,
-				hash: this.state.hash,
-				salt: this.state.salt,
-				isloggedin: this.state.isloggedin,
-			}
-		)
+		axios.get(utils.baseUrl + '/users/protected')
 		.then(function (response) {
-			console.log(`POST rest call response is${JSON.stringify(response.data, null, 1)}`);
 			if (response.data.success === true){
-				// console.log('yes')
+
+				console.log(response.data)
+
+			} else {
+				console.log(response.data)
+				console.log('not authorized')
 			}
 
-			return response
-		})
-		.then((response) => {
-			if (response.data.success === true){
-				this.props.set_is_signed_in( true )
-				// this.props.set_user_token( response.data.userToken )
-
-				this.props.set_user_name( this.state.user_name )
-				this.props.set_phone_number( this.state.phone_number )
-				this.props.set_hash( this.state.hash )
-				this.props.set_salt( this.state.salt )
-				this.props.set_isloggedin( this.state.isloggedin )
-			}
 		})
 		.catch(function (error) {
 			// console.log(error);
-		});
+		});	
+	}
 
+	login_and_get_jwt_token_and_privileges(){
 
-		axios.post(utils.baseUrl + '/orders/create-user', 
+		axios.post(utils.baseUrl + '/users/login', 
 			{
-				user_name: this.state.user_name,
-				phone_number: this.state.phone_number,
-				hash: this.state.hash,
-				salt: this.state.salt,
-				isloggedin: this.state.isloggedin,
+				phone_number:this.state.phone_number, 
+				password:this.state.password
 			}
 		)
 		.then(function (response) {
-			console.log(`POST rest call response is${JSON.stringify(response.data, null, 1)}`);
 			if (response.data.success === true){
-				// console.log('yes')
-			}
 
-			return response
-		})
-		.then((response) => {
-			if (response.data.success === true){
+				// console.log(response.data)
+				axios.defaults.headers.common['Authorization'] = response.data.token				
 				this.props.set_is_signed_in( true )
-				// this.props.set_user_token( response.data.userToken )
-
-				this.props.set_user_name( this.state.user_name )
 				this.props.set_phone_number( this.state.phone_number )
-				this.props.set_hash( this.state.hash )
-				this.props.set_salt( this.state.salt )
-				this.props.set_isloggedin( this.state.isloggedin )
+
+				verify_privilege(this, response.data.privileges)
+			// not needed anymore, made it DRY using above function
+				// // response.data.privileges.map((privilege_name) => {
+
+				// // 	if ( privilege_name === 'Basic' ){
+
+				// // 		this.props.allow_basic_privilege()
+
+				// // 	} else if ( privilege_name === 'Images control' ){
+
+				// // 		this.props.allow_images_privilege()
+
+				// // 	} else if ( privilege_name === 'Videos control' ){
+
+				// // 		this.props.allow_videos_privilege()
+
+				// // 	} else if ( privilege_name === 'Blogposts control' ){
+
+				// // 		this.props.allow_blogpost_privilege()
+
+				// // 	} else  if ( privilege_name === 'Revoke Basic' ){
+
+				// // 		this.props.revoke_basic_privilege()
+
+				// // 	} else if  ( privilege_name === 'Revoke Images control' ){
+
+				// // 		this.props.revoke_images_privilege()
+
+				// // 	} else if  ( privilege_name === 'Revoke Videos control' ){
+
+				// // 		this.props.revoke_videos_privilege()
+
+				// // 	} else if  ( privilege_name === 'Revoke Blogposts control' ){
+
+				// // 		this.props.revoke_blogpost_privilege()
+
+				// // 	} else {
+				// // 	}
+
+				// })
+
+			} else {
+				console.log('couldnt login')
 			}
+
 		})
 		.catch(function (error) {
 			// console.log(error);
-		});
-
-
-		axios.post(utils.baseUrl + '/blogposts/create-user', 
-			{
-				user_name: this.state.user_name,
-				phone_number: this.state.phone_number,
-				hash: this.state.hash,
-				salt: this.state.salt,
-				isloggedin: this.state.isloggedin,
-			}
-		)
-		.then(function (response) {
-			console.log(`POST rest call response is${JSON.stringify(response.data, null, 1)}`);
-			if (response.data.success === true){
-				// console.log('yes')
-			}
-
-			return response
-		})
-		.then((response) => {
-			if (response.data.success === true){
-				this.props.set_is_signed_in( true )
-				// this.props.set_user_token( response.data.userToken )
-
-				this.props.set_user_name( this.state.user_name )
-				this.props.set_phone_number( this.state.phone_number )
-				this.props.set_hash( this.state.hash )
-				this.props.set_salt( this.state.salt )
-				this.props.set_isloggedin( this.state.isloggedin )
-			}
-		})
-		.catch(function (error) {
-			// console.log(error);
-		});
-
-	
+		});	
 	}
 
 	render() {
@@ -247,7 +226,7 @@ class LoginContainer extends Component {
 				<div style={styles.buttonContainer}>
 					<button style={styles.roundButton} onClick={() => null} activeOpacity={0.2}>
 						<p style={styles.text}>
-							SIGN UP WITH FACEBOOK
+							LOGIN WITH FACEBOOK
 						</p>
 					</button>
 				</div>
@@ -269,21 +248,6 @@ class LoginContainer extends Component {
 
 				<div style={styles.textinputContainer}>
 					<p style={styles.headingOverInput}>
-						USER_NAME
-					</p>
-					<form className={styles.root} noValidate autoComplete="off">
-						<TextField 
-							label="Type your user name" // placeholder 
-							id="standard-basic" // "filled-basic" / "outlined-basic"
-							variant="outlined" // "filled"
-							classes={styles.textinput}
-							onChange={ (event) =>  this.setState(prev => ({...prev, user_name: event.target.value})) }
-						/>
-					</form>
-				</div>
-
-				<div style={styles.textinputContainer}>
-					<p style={styles.headingOverInput}>
 						PHONE_NUMBER
 					</p>
 					<form className={styles.root} noValidate autoComplete="off">
@@ -299,62 +263,38 @@ class LoginContainer extends Component {
 
 				<div style={styles.textinputContainer}>
 					<p style={styles.headingOverInput}>
-						HASH
+						PASSWORD
 					</p>
 					<form className={styles.root} noValidate autoComplete="off">
 						<TextField 
-							label="Type your hash" // placeholder 
+							label="Type your password" // placeholder 
 							id="standard-basic" // "filled-basic" / "outlined-basic"
 							variant="outlined" // "filled"
 							classes={styles.textinput}
-							onChange={ (event) =>  this.setState(prev => ({...prev, hash: event.target.value})) }
+							onChange={ (event) =>  this.setState(prev => ({...prev, password: event.target.value})) }
 						/>
 					</form>
 				</div>
-
-				<div style={styles.textinputContainer}>
-					<p style={styles.headingOverInput}>
-						SALT
-					</p>
-					<form className={styles.root} noValidate autoComplete="off">
-						<TextField 
-							label="Type your salt" // placeholder 
-							id="standard-basic" // "filled-basic" / "outlined-basic"
-							variant="outlined" // "filled"
-							classes={styles.textinput}
-							onChange={ (event) =>  this.setState(prev => ({...prev, salt: event.target.value})) }
-						/>
-					</form>
-				</div>
-
-				<div style={styles.textinputContainer}>
-					<p style={styles.headingOverInput}>
-						ISLOGGEDIN
-					</p>
-					<form className={styles.root} noValidate autoComplete="off">
-						<TextField 
-							label="Type your isloggedin" // placeholder 
-							id="standard-basic" // "filled-basic" / "outlined-basic"
-							variant="outlined" // "filled"
-							classes={styles.textinput}
-							onChange={ (event) =>  this.setState(prev => ({...prev, isLoggedIn: event.target.value})) }
-						/>
-					</form>
-				</div>
-						
-				<button  onClick={() => {}} style={styles.buttonWithoutBG}>
-					<p style={styles.lowerText}>
-						Already have an account ?
-					</p>
-				</button>
-			
-		
+					
 				<button style={styles.lowerButton} activeOpacity={0.2}
-					onClick={ () => this.storeDataAtBackend() }
+					onClick={ () => this.login_and_get_jwt_token_and_privileges() }
 				>
-					Create Account
+					Sign In
 				</button>
 								
+
+				<button style={styles.lowerButton} activeOpacity={0.2}
+					onClick={ () => this.make_request_to_protected_route() }
+				>
+					MAKE REQUEST AT PROTECTED ROUTE
+				</button>
+
+				<button style={styles.lowerButton} activeOpacity={0.2}
+					onClick={ () => this.logout_and_remove_jwt_token() }
+				>
+					LOGOUT
+				</button>
+
 			</div>
 		);
 	}

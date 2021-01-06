@@ -70,14 +70,14 @@ class CreateProduct extends Component {
 		this.state = {
 			expanded:false,
 			redirectToRoute: false,
-			endpoint: '',
+
+			category:'',
 			image_thumbnail_filepath: '',
 			title: '',
 			price: '',
-			initial_quantity: '',
 			product_size: '',
 			product_color: '',
-			timestamp_of_uploading: '',		}
+		}
 
 	}
 
@@ -106,31 +106,24 @@ class CreateProduct extends Component {
 			// e.g a social post, textinput which lets user to enter text, takes persons id as assigned object
 				<div style={styles.outerContainer}>
 
-
-				  	<div style={styles.textinputContainer}>
+					<div style={styles.textinputContainer}>
+						<p style={styles.headingOverInput}>
+							Product image
+						</p>
 						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your endpoint" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, endpoint: event.target.value})) }
+							<input
+								name="product_image" // name of input field or fieldName simply
+								enctype="multipart/form-data"
+								type="file"
+								onChange={(event) => {
+									// console logging selected file from menu
+									console.log( event.target.files[0] ) // gives first file
+									// setState method with event.target.files[0] as argument
+									this.setState(prev => ({...prev, image_thumbnail_filepath: event.target.files[0]}))
+								}}
 							/>
 						</form>
-				  	</div>
-
-
-				  	<div style={styles.textinputContainer}>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your image_thumbnail_filepath" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, image_thumbnail_filepath: event.target.value})) }
-							/>
-						</form>
-				  	</div>
+					</div>
 
 
 				  	<div style={styles.textinputContainer}>
@@ -145,6 +138,18 @@ class CreateProduct extends Component {
 						</form>
 				  	</div>
 
+				  	<div style={styles.textinputContainer}>
+						<form className={styles.root} noValidate autoComplete="off">
+							<TextField 
+								label="Type your category" // placeholder 
+								id="standard-basic" // "filled-basic" / "outlined-basic"
+								variant="outlined" // "filled"
+								classes={styles.textinput}
+								onChange={ (event) => this.setState( prev => ({...prev, category: event.target.value})) }
+							/>
+						</form>
+				  	</div>
+
 
 				  	<div style={styles.textinputContainer}>
 						<form className={styles.root} noValidate autoComplete="off">
@@ -154,19 +159,6 @@ class CreateProduct extends Component {
 								variant="outlined" // "filled"
 								classes={styles.textinput}
 								onChange={ (event) => this.setState( prev => ({...prev, price: event.target.value})) }
-							/>
-						</form>
-				  	</div>
-
-
-				  	<div style={styles.textinputContainer}>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your initial_quantity" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, initial_quantity: event.target.value})) }
 							/>
 						</form>
 				  	</div>
@@ -198,52 +190,26 @@ class CreateProduct extends Component {
 				  	</div>
 
 
-				  	<div style={styles.textinputContainer}>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your timestamp_of_uploading" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, timestamp_of_uploading: event.target.value})) }
-							/>
-						</form>
-				  	</div>
-
 					<button style={styles.buttonWithoutBG}
 						onClick={ () => {
 
 							let setResponseInCurrentProduct = (arg) => this.props.set_current_product(arg)
 							let redirectToNewProduct = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
 
-							// first create parent object
-							let product_object = {
-								endpoint: this.state.endpoint,
-								image_thumbnail_filepath: this.state.image_thumbnail_filepath,
-								title: this.state.title,
-								price: this.state.price,
-								initial_quantity: this.state.initial_quantity,
-								product_size: this.state.product_size,
-								product_color: this.state.product_color,
-								timestamp_of_uploading: this.state.timestamp_of_uploading,
-							}
+							const formData = new FormData()
+							formData.append('title', this.state.title)
+							formData.append('category', this.state.category)
+							formData.append('price', this.state.price)
+							formData.append('product_size', this.state.product_size)
+							formData.append('product_color', this.state.product_color)
+							formData.append('product_image', this.state.image_thumbnail_filepath, this.state.image_thumbnail_filepath.name)
 
-							// 2nd create child object from redux (linked_object_and_live_object_in_redux in schema)
-							let _object = {
-
-							}
-
-							// 3rd send post request
-							axios.post(utils.baseUrl + '/products/create-product-with-', 
-								{
-									product_object: product_object,
-									_object: _object,
-								})
+							axios.post(utils.baseUrl + '/products/create-product-with-user', formData)
 							.then(function (response) {
 								console.log(response.data) // current product screen data
 								
 								// set to current parent object
-								setResponseInCurrentProduct(response.data)
+								setResponseInCurrentProduct(response.data.new_product)
 
 								// change route to current_product
 								redirectToNewProduct()

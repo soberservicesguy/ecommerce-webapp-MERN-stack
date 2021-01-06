@@ -44,48 +44,6 @@ router.post('/login', function(req, res, next){
 
         if (isValid) {
 
-        // not needed here, this is done in passport middleware
-        //  let privileges_list = []
-        //  user.privileges.map((privilege_object) => {
-
-        //      if ( privilege_object.privilege_name === 'allow_surfing' ){
-            
-        //          privileges_list.push( 'Basic' )
-
-        //      } else if ( privilege_object.privilege_name === 'is_allowed_image_upload' ){
-
-        //          privileges_list.push( 'Images control' )
-
-        //      } else if ( privilege_object.privilege_name === 'is_allowed_video_upload' ){
-
-        //          privileges_list.push( 'Videos control' )
-
-        //      } else if ( privilege_object.privilege_name === 'is_allowed_writing_blopost' ){
-
-        //          privileges_list.push( 'Blogposts control' )
-
-        //      } else {
-        //      }
-
-        //  })
-
-        // // add revoked or privileges that are not given
-        //  if ( !privileges_list.includes('Basic') ){
-        //      privileges_list.push('Revoke Basic')
-        //  } 
-
-        //  if ( !privileges_list.includes('Images control') ){
-        //      privileges_list.push('Revoke Images control')
-        //  } 
-
-        //  if ( !privileges_list.includes('Videos control') ){
-        //      privileges_list.push('Revoke Videos control')
-        //  } 
-
-        //  if ( !privileges_list.includes('Blogposts control') ){
-        //      privileges_list.push('Revoke Blogposts control')
-        //  } 
-
             const tokenObject = utils.issueJWT(user);
 
             let privileges_list = get_allowed_privileges_list(user)

@@ -1,6 +1,7 @@
 function get_allowed_privileges_list(user_object){
 
 	let privileges_list = [] 
+	
 	user_object.privileges.map((privilege_object) => {
 
 		if ( privilege_object.privilege_name === 'allow_surfing' ){

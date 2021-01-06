@@ -10,3 +10,5 @@ export {default as LoginContainer } from "./login.js";
 export {default as OrderContainer } from "./order.js";
 export {default as ProductContainer } from "./product.js";
 export {default as RootRouterContainer } from "./root_router.js";
+
+export {default as SignUpContainer} from "./sign_up"

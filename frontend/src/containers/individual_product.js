@@ -44,44 +44,45 @@ class IndividualIndividualProduct extends Component {
 		const { classes } = this.props;
 	  	const {_xs, _sm, _md, _lg, _xl} = this.props
 
+  		var base64Image = "data:image/jpeg;base64," + this.props.current_product.image_thumbnail_filepath
+
 	  	return (
-	  		<Grid container direction="row" spacing={4} style={{backgroundColor: '#eee'}} >
+  			<div style={styles.imageContainer}>
+  				<img src={base64Image} alt="" 
+  					style={{
+  						width:200, 
+  						height:400, 
+  						resizeMode: "contain"
+  					}}
+  				/>
 
-	  			<Grid item container direction="column" xs={12} sm={12} md={2} lg={3}>
-	  				<Grid item>
-	  				</Grid>
-
-	  				<Grid item>
-	  				</Grid>
-
-	  				<Grid item>
-	  				</Grid>
-	  			</Grid>
-
-	  			<Grid item container direction="column" xs={12} sm={12} md={8} lg={6}>
-	  				<Grid item>
-	  				</Grid>
-
-	  				<Grid item>
-	  				</Grid>
-
-	  				<Grid item>
-	  				</Grid>
-	  			</Grid>
-
-	  			<Grid item container direction="column" xs={12} sm={12} md={2} lg={3}>
-	  				<Grid item>
-	  				</Grid>
-
-	  				<Grid item>
-	  				</Grid>
-
-	  				<Grid item>
-	  				</Grid>
-	  			</Grid>
-
-	  		</Grid>
+  				<p>
+  					{this.props.current_product.category}
+  				</p>
+  				
+  				<p>
+  					{this.props.current_product.title}
+  				</p>
+  				
+  				<p>
+  					{this.props.current_product.initial_quantity}
+  				</p>
+  				
+  				<p>
+  					{this.props.current_product.product_size}
+  				</p>
+  				
+  				<p>
+  					{this.props.current_product.product_color}
+  				</p>
+  				
+  				<p>
+  					{this.props.current_product.price}
+  				</p>
+  				
+  			</div>
 		);
+
 	}
 }
 	

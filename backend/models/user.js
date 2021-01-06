@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema({
 
 // other model links
 	orders:[{ type: Schema.Types.ObjectId, ref: 'Order'  }],
+	privileges: [{ type: Schema.Types.ObjectId, ref: 'Privilege'  }],
 	total_orders:0,
 
 })
