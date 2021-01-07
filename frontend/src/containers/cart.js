@@ -139,7 +139,7 @@ class CartContainer extends Component {
 // RENDER METHOD
 	render() {
 			
-		const cart = this.props.cart
+		const cart = this.props.complete_cart
 
 		// parameters being passed from previous route
 		const endpoint_params_passed = this.props.match.params
@@ -157,23 +157,29 @@ class CartContainer extends Component {
 
 			return (
 				<div>
-
 					<Grid container direction="row" spacing={4} style={{backgroundColor: '#eee'}}>
 
-						{ ( cart || [] ).map((item, index) => (
-
-						<Provider value={{
-							getCompleteObjectAndSwitchToItsContainer: () => this.getCompleteObjectAndSwitchToItsContainer(),
-							set_current_cart_item: () => this.props.set_current_item_in_Cart( item )
-						}}>
-
-							<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-								<ConnectedComponentForShowingCart
-									dataPayloadFromParent = { item }
+						{ cart.map((item, index) => (
+							<Provider value={{
+								getCompleteObjectAndSwitchToItsContainer: () => this.getCompleteObjectAndSwitchToItsContainer(),
+								set_current_cart_item: () => this.props.set_current_item_in_Cart( item )
+							}}>
+								<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+									<ConnectedComponentForShowingCart
+										dataPayloadFromParent = { item }
 										product_sizeModifyCallback = { (product_size) => this.props.modify_product_size_of_some_item_in_cart(item.id, product_size) }
 										initial_quantityModifyCallback = { (initial_quantity) => this.props.modify_initial_quantity_of_some_item_in_cart(item.id, initial_quantity) }
 										product_colorModifyCallback = { (product_color) => this.props.modify_product_color_of_some_item_in_cart(item.id, product_color) }						
 									/>
+									<button
+										onClick = {(data) => {
+											// console.log('ID')
+											// console.log(data.id)
+											this.props.remove_product_from_cart(item.id)
+										}}
+									>
+										Remove from cart
+									</button>
 								</Grid>
 							</Provider>
 						))}

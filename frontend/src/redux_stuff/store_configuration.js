@@ -55,8 +55,9 @@ export const mapStateToProps = state => {
 	total_blogposts: state.blogposts.totalBlogPost,
 	current_blogpost: state.blogposts.currentBlogPost,
 
-	complete_cart: state.cart_content.complete_cart,
-	current_cart_item: state.cart_content.current_cart_item,
+
+	complete_cart: state.cart_content.entireCart,
+	current_cart_item: state.cart_content.currentCartItem,
 
 	// cart: state.products.cart,
 

@@ -33,15 +33,24 @@ class ComponentForShowingCarousel extends Component {
 	render() {
 
 		const data = this.props.dataPayloadFromParent // data being plugged from parent flatlist
+		var base64Image = "data:image/jpeg;base64," + data.image_filepath
 
 		return (
 			<div style={styles.outerContainer}>
-				<p>
-					{ data.image_filepath }
-				</p>
+				<div style={styles.imageContainer}>
+					<img src={base64Image} alt="" 
+						style={{
+							width:200, 
+							height:400, 
+							resizeMode: "contain"
+						}}
+					/>
+				</div>
+
 				<p>
 					{ data.title }
 				</p>
+
 				<p>
 					{ data.endpoint }
 				</p>

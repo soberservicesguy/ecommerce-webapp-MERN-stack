@@ -21,7 +21,16 @@ const reducerForCart = (state = initialState, action) => {
 			if ( currentEntireCart.length > 0 ){
 
 				let last_id = currentEntireCart[ currentEntireCart.length-1 ].id
-				new_product = {id: last_id + 1, ...action.product_object}
+
+				if (last_id === null){
+
+					new_product = {id: 0, ...action.product_object}
+
+				} else {
+
+					new_product = {id: last_id + 1, ...action.product_object}
+
+				}
 
 			} else {
 
@@ -30,21 +39,27 @@ const reducerForCart = (state = initialState, action) => {
 			}
 
 			currentEntireCart.push(new_product)
+			// console.log('CART AFTER ADDITION')
+			// console.log(currentEntireCart)
 
 			return {...state, entireCart: [...currentEntireCart]}
 			break;
 
 
 		case "REMOVE_PRODUCT_FROM_CART":
+			// console.log('CALLED')
 			var currentEntireCart = state.entireCart
 
-			let product_to_remove = currentEntireCart.filter(
+			var filtered_products = currentEntireCart.filter(
 				function(item){
 					return item.id === action.product_id
 				}
 			)
 
-			currentEntireCart.remove( product_to_remove )
+			var product_index = currentEntireCart.indexOf(filtered_products[0])
+			if (product_index !== -1){
+				currentEntireCart.splice(product_index, 1)
+			}
 
 			return {...state, entireCart: [...currentEntireCart]}
 			break;
@@ -52,13 +67,18 @@ const reducerForCart = (state = initialState, action) => {
 
 		case "EDIT_PRODUCT_COLOR":
 			var currentEntireCart = state.entireCart
-			var product_to_edit = currentEntireCart.filter(
+			var filtered_products = currentEntireCart.filter(
 				function(item){
 					return item.id === action.product_id
 				}
 			)
 
-			currentEntireCart.remove( product_to_edit )
+			var product_to_edit = filtered_products[0]
+
+			var product_index = currentEntireCart.indexOf(product_to_edit)
+			if (product_index > -1){
+				currentEntireCart.splice(product_index, 1)
+			}
 
 			product_to_edit = {...product_to_edit, product_color: action.color}
 			
@@ -68,13 +88,18 @@ const reducerForCart = (state = initialState, action) => {
 		case "EDIT_PRODUCT_QUANTITY":
 			var currentEntireCart = state.entireCart
 
-			var product_to_edit = currentEntireCart.filter(
+			var filtered_products = currentEntireCart.filter(
 				function(item){
 					return item.id === action.product_id
 				}
 			)
 
-			currentEntireCart.remove( product_to_edit )
+			var product_to_edit = filtered_products[0]
+
+			var product_index = currentEntireCart.indexOf(product_to_edit)
+			if (product_index > -1){
+				currentEntireCart.splice(product_index, 1)
+			}
 
 			product_to_edit = {...product_to_edit, initial_quantity: action.quantity}
 			
@@ -84,13 +109,18 @@ const reducerForCart = (state = initialState, action) => {
 
 		case "EDIT_PRODUCT_SIZE":
 			var currentEntireCart = state.entireCart
-			var product_to_edit = currentEntireCart.filter(
+			var filtered_products = currentEntireCart.filter(
 				function(item){
 					return item.id === action.product_id
 				}
 			)
 
-			currentEntireCart.remove( product_to_edit )
+			var product_to_edit = filtered_products[0]
+
+			var product_index = currentEntireCart.indexOf(product_to_edit)
+			if (product_index > -1){
+				currentEntireCart.splice(product_index, 1)
+			}
 
 			product_to_edit = {...product_to_edit, product_size: action.size}
 			

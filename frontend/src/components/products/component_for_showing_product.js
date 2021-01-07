@@ -33,15 +33,24 @@ class ComponentForShowingProduct extends Component {
 	render() {
 
 		const data = this.props.dataPayloadFromParent // data being plugged from parent flatlist
+		var base64Image = "data:image/jpeg;base64," + data.image_thumbnail_filepath
 
 		return (
 			<div style={styles.outerContainer}>
+				<div style={styles.imageContainer}>
+					<img src={base64Image} alt="" 
+						style={{
+							width:200, 
+							height:400, 
+							resizeMode: "contain"
+						}}
+					/>
+				</div>
+
 				<p>
 					{ data.endpoint }
 				</p>
-				<p>
-					{ data.image_thumbnail_filepath }
-				</p>
+
 				<p>
 					{ data.title }
 				</p>

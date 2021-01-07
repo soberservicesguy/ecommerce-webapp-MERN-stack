@@ -69,6 +69,13 @@ class ProductCard extends Component {
 			  		/>
 		  		</div>
 
+		  		<button
+		  			onClick = {() => {
+		  				this.props.add_product_to_cart(this.props.dataPayloadFromParent)
+		  			}}
+		  		>
+		  			add to cart
+		  		</button>
 				<div>
 					{/* 2nd show individual summary of childs */}
 				</div>
