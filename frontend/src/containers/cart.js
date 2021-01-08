@@ -12,9 +12,9 @@ import {
 } from '../redux_stuff/connected_components';
 
 import {
-	TextField,
-	Modal, 
 	Grid, 
+	// TextField,
+	// Modal, 
 	// Button 
 } from "@material-ui/core";
 
@@ -85,40 +85,6 @@ class CartContainer extends Component {
 // FETCHING DATA FOR COMPONENT
 	}
 
-	toggle_product_size_modal(){
-		this.setState(
-			prev => (
-				{
-					...prev,
-					show_product_size_modal: (prev.show_product_size_modal === false) ? true : false 
-				}
-			)
-		)
-	}
-
-
-	toggle_initial_quantity_modal(){
-		this.setState(
-			prev => (
-				{
-					...prev,
-					show_initial_quantity_modal: (prev.show_initial_quantity_modal === false) ? true : false 
-				}
-			)
-		)
-	}
-
-
-	toggle_product_color_modal(){
-		this.setState(
-			prev => (
-				{
-					...prev,
-					show_product_color_modal: (prev.show_product_color_modal === false) ? true : false 
-				}
-			)
-		)
-	}
 
 	getCompleteObjectAndSwitchToItsContainer(endpoint) {
 		axios.get(utils.baseUrl + '/products/find-product',
@@ -167,150 +133,20 @@ class CartContainer extends Component {
 								<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
 									<ConnectedComponentForShowingCart
 										dataPayloadFromParent = { item }
-										product_sizeModifyCallback = { (product_size) => this.props.modify_product_size_of_some_item_in_cart(item.id, product_size) }
-										initial_quantityModifyCallback = { (initial_quantity) => this.props.modify_initial_quantity_of_some_item_in_cart(item.id, initial_quantity) }
-										product_colorModifyCallback = { (product_color) => this.props.modify_product_color_of_some_item_in_cart(item.id, product_color) }						
+									// not needed, since its redux
+										product_size_modify_callback = { (product_size) => this.props.modify_product_size_of_some_item_in_cart(item.id, product_size) }
+										initial_quantity_modify_callback = { (initial_quantity) => this.props.modify_initial_quantity_of_some_item_in_cart(item.id, initial_quantity) }
+										product_color_modify_callback = { (product_color) => this.props.modify_product_color_of_some_item_in_cart(item.id, product_color) }						
+										remove_from_cart_callback = { () => this.props.remove_product_from_cart(item.id) }
+										
+										toggle_size_modal_callback = { () => this.toggle_product_size_modal() }
+										toggle_quantity_modal_callback = { () => this.toggle_initial_quantity_modal() }
+										toggle_color_modal_callback = { () => this.toggle_product_color_modal() }
 									/>
-									<button
-										onClick = {(data) => {
-											// console.log('ID')
-											// console.log(data.id)
-											this.props.remove_product_from_cart(item.id)
-										}}
-									>
-										Remove from cart
-									</button>
 								</Grid>
 							</Provider>
 						))}
 					</Grid>
-
-
-					<Modal				  	
-						open={this.state.show_product_size_modal} // link some variable to it so that it could be turned off
-						aria-labelledby="server-modal-title"
-						aria-describedby="server-modal-description"
-						className={styles.modal}
-						// onClose={() => {Alert.alert("Modal has been closed.");}}
-					>
-						<div style={{
-							// height:windowHeight, 
-						}}>
-
-							<button onClick={() => this.toggle_product_size_modal()} 
-								style={{
-									// height:windowHeight * 0.4
-								}}>
-							</button>
-							
-							<div style={{backgroundColor: 'blue'}}>
-								<div style={styles.textinputContainer}>
-									<p style={styles.modalText}>
-										Set Quantity Here
-									</p>
-									<form className={styles.root} noValidate autoComplete="off">
-										<TextField 
-											label="Standard" // placeholder 
-											id="standard-basic" // "filled-basic" / "outlined-basic"
-											variant="outlined" // "filled"
-											classes={styles.textinput}
-											onChange={ (product_size) => this.props.product_sizeChangeCallback(product_size) }
-										/>
-									</form>
-								</div>
-							</div>
-
-							<button onClick={() => this.toggle_product_size_modal()} 
-								style={{
-									// height:windowHeight * 0.4
-								}}>
-							</button>
-						</div>
-					</Modal>
-
-					<Modal				  	
-						open={this.state.show_initial_quantity_modal} // link some variable to it so that it could be turned off
-						aria-labelledby="server-modal-title"
-						aria-describedby="server-modal-description"
-						className={styles.modal}
-						// onClose={() => {Alert.alert("Modal has been closed.");}}
-					>
-						<div style={{
-							// height:windowHeight, 
-						}}>
-
-							<button onClick={() => this.toggle_initial_quantity_modal()} 
-								style={{
-									// height:windowHeight * 0.4
-								}}>
-							</button>
-							
-							<div style={{backgroundColor: 'blue'}}>
-								<div style={styles.textinputContainer}>
-									<p style={styles.modalText}>
-										Set Quantity Here
-									</p>
-									<form className={styles.root} noValidate autoComplete="off">
-										<TextField 
-											label="Standard" // placeholder 
-											id="standard-basic" // "filled-basic" / "outlined-basic"
-											variant="outlined" // "filled"
-											classes={styles.textinput}
-											onChange={ (initial_quantity) => this.props.initial_quantityChangeCallback(initial_quantity) }
-										/>
-									</form>
-								</div>
-							</div>
-
-							<button onClick={() => this.toggle_initial_quantity_modal()} 
-								style={{
-									// height:windowHeight * 0.4
-								}}>
-							</button>
-						</div>
-					</Modal>
-
-					<Modal				  	
-						open={this.state.show_product_color_modal} // link some variable to it so that it could be turned off
-						aria-labelledby="server-modal-title"
-						aria-describedby="server-modal-description"
-						className={styles.modal}
-						// onClose={() => {Alert.alert("Modal has been closed.");}}
-					>
-						<div style={{
-							// height:windowHeight, 
-						}}>
-
-							<button onClick={() => this.toggle_product_color_modal()} 
-								style={{
-									// height:windowHeight * 0.4
-								}}>
-							</button>
-							
-							<div style={{backgroundColor: 'blue'}}>
-								<div style={styles.textinputContainer}>
-									<p style={styles.modalText}>
-										Set Quantity Here
-									</p>
-									<form className={styles.root} noValidate autoComplete="off">
-										<TextField 
-											label="Standard" // placeholder 
-											id="standard-basic" // "filled-basic" / "outlined-basic"
-											variant="outlined" // "filled"
-											classes={styles.textinput}
-											onChange={ (product_color) => this.props.product_colorChangeCallback(product_color) }
-										/>
-									</form>
-								</div>
-							</div>
-
-							<button onClick={() => this.toggle_product_color_modal()} 
-								style={{
-									// height:windowHeight * 0.4
-								}}>
-							</button>
-						</div>
-					</Modal>
 
 				</div>
 			);

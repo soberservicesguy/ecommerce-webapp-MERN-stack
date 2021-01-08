@@ -75,14 +75,9 @@ const reducerForCart = (state = initialState, action) => {
 
 			var product_to_edit = filtered_products[0]
 
-			var product_index = currentEntireCart.indexOf(product_to_edit)
-			if (product_index > -1){
-				currentEntireCart.splice(product_index, 1)
-			}
+			product_to_edit.product_color = action.color
 
-			product_to_edit = {...product_to_edit, product_color: action.color}
-			
-			return {...state, entireCart: [...currentEntireCart, product_to_edit]}
+			return {...state, entireCart: [...currentEntireCart]}
 			break;
 
 		case "EDIT_PRODUCT_QUANTITY":
@@ -93,17 +88,11 @@ const reducerForCart = (state = initialState, action) => {
 					return item.id === action.product_id
 				}
 			)
-
 			var product_to_edit = filtered_products[0]
 
-			var product_index = currentEntireCart.indexOf(product_to_edit)
-			if (product_index > -1){
-				currentEntireCart.splice(product_index, 1)
-			}
+			product_to_edit.initial_quantity = action.quantity
 
-			product_to_edit = {...product_to_edit, initial_quantity: action.quantity}
-			
-			return {...state, entireCart: [...currentEntireCart, product_to_edit]}
+			return {...state, entireCart: [...currentEntireCart]}
 			break;
 
 
@@ -114,17 +103,11 @@ const reducerForCart = (state = initialState, action) => {
 					return item.id === action.product_id
 				}
 			)
-
 			var product_to_edit = filtered_products[0]
 
-			var product_index = currentEntireCart.indexOf(product_to_edit)
-			if (product_index > -1){
-				currentEntireCart.splice(product_index, 1)
-			}
+			product_to_edit.product_size = action.size
 
-			product_to_edit = {...product_to_edit, product_size: action.size}
-			
-			return {...state, entireCart: [...currentEntireCart, product_to_edit]}
+			return {...state, entireCart: [...currentEntireCart]}
 			break;
 
 
