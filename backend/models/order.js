@@ -10,6 +10,9 @@ const OrderSchema = new mongoose.Schema({
 	endpoint:String,
 	timestamp_of_order:String,
 
+	order_phone_number_field:String,
+	order_address_field:String,
+
 // other model links
 	user:{ type: Schema.Types.ObjectId, ref: 'User' },
 	products:[{ type: Schema.Types.ObjectId, ref: 'Product' }],

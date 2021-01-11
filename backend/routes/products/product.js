@@ -151,14 +151,15 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 
 
 
-
+// USED
 // get products_list
 router.get('/products-list', function(req, res, next){
 
 	Product
-	.distinct( 'title', {initial_quantity: 0} ) // .distinct(fieldName, query)
+	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
+	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
 	.limit(10)
-	.then((products)=>{
+	.then((products) => {
 		var products_list = []
 		products.map((product, index)=>{
 
@@ -198,8 +199,74 @@ router.get('/products-list', function(req, res, next){
 });
 
 
-// find product
+// USED
+// find variations available based on single input
+// takes req.query.title and searches products having same title and extracts variations from it
+// also gives further narrowed options if anothing else other than title is supplied in the payload
+router.get('/get-all-variations', function(req, res, next){
 	
+	var all_variations = {product_size:[], product_color:[]}
+
+	// delete all keys of payload attributes (variation attributes which are null)
+	let product_payload = req.query
+	Object.keys(product_payload).map((key) => {
+		if ( product_payload[key] === null || product_payload[key] === undefined || product_payload[key] === '' ){
+			console.log('found match')
+			delete product_payload[key]
+		}
+	})
+	Product
+	.find(product_payload)
+	.then((products) => {
+	// variation attributes are product_size, product_color 
+		products.map((product) => {
+
+			if ( product.product_size && !all_variations['product_size'].includes(product.product_size) ){
+
+				all_variations['product_size'].push(product.product_size)
+
+			}
+
+			if ( product.product_color && !all_variations['product_color'].includes(product.product_color) ){
+
+				all_variations['product_color'].push(product.product_color)
+
+			}
+
+		})
+
+		return all_variations
+
+	})
+	.then((all_variations) => {
+
+		if (all_variations['product_color'].length > 0 || all_variations['product_size'].length > 0){
+
+			console.log('VARIATIONS SENT')
+			console.log(all_variations)
+			res.status(200).json(all_variations);
+	
+		} else {
+
+			console.log('COULDNT FIND VARUATION')
+			res.status(401).json({ success: false, msg: "could not find variations" });
+
+		}
+
+	})
+	.catch((err) => {
+
+		next(err);
+
+	});
+
+
+});
+
+
+
+// find product
+// USED 
 router.get('/find-product', function(req, res, next){
 
 	Product.findOne({ endpoint: req.body.endpoint })

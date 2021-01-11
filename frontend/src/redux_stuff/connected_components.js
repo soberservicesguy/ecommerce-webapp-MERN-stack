@@ -21,6 +21,9 @@ import {
 } from "../containers";
 
 
+
+
+
 import {
 	CreateCarousel,
 	ComponentForShowingCarousel,
@@ -48,6 +51,12 @@ import {
 import {
 	ComponentForShowingCart,
 } from "../components/cart"
+
+import {
+	BulkBlogpostUpload,
+	BulkCarouselUpload,
+	BulkProductUpload,
+} from "../components/"
 
 export const ConnectedRootRouterContainer = connect(
 	mapStateToProps,
@@ -187,3 +196,23 @@ export const ConnectedSignUpContainer = connect(
 	mapStateToProps,
 	mapDispatchToProps
 )(SignUpContainer);
+
+
+
+
+export const ConnectedBulkBlogpostUpload = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(BulkBlogpostUpload);
+
+
+export const ConnectedBulkCarouselUpload = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(BulkCarouselUpload);
+
+
+export const ConnectedBulkProductUpload = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(BulkProductUpload);

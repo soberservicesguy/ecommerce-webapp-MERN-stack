@@ -22,7 +22,7 @@ const reducerForCart = (state = initialState, action) => {
 
 				let last_id = currentEntireCart[ currentEntireCart.length-1 ].id
 
-				if (last_id === null){
+				if ( !Number.isInteger(last_id) ){
 
 					new_product = {id: 0, ...action.product_object}
 

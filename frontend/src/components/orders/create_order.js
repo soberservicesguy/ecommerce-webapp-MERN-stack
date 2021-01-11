@@ -70,9 +70,10 @@ class CreateOrder extends Component {
 		this.state = {
 			expanded:false,
 			redirectToRoute: false,
-			endpoint: '',
-			timestamp_of_order: '',
-			order_amount: '',		}
+
+			order_phone_number_field: '',
+			order_delivery_address_field: '',
+		}
 
 	}
 
@@ -105,11 +106,11 @@ class CreateOrder extends Component {
 				  	<div style={styles.textinputContainer}>
 						<form className={styles.root} noValidate autoComplete="off">
 							<TextField 
-								label="Type your endpoint" // placeholder 
+								label="Type your Contact Number" // placeholder 
 								id="standard-basic" // "filled-basic" / "outlined-basic"
 								variant="outlined" // "filled"
 								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, endpoint: event.target.value})) }
+								onChange={ (event) => this.setState( prev => ({...prev, order_phone_number_field: event.target.value})) }
 							/>
 						</form>
 				  	</div>
@@ -118,27 +119,15 @@ class CreateOrder extends Component {
 				  	<div style={styles.textinputContainer}>
 						<form className={styles.root} noValidate autoComplete="off">
 							<TextField 
-								label="Type your timestamp_of_order" // placeholder 
+								label="Type your Delivery Address" // placeholder 
 								id="standard-basic" // "filled-basic" / "outlined-basic"
 								variant="outlined" // "filled"
 								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, timestamp_of_order: event.target.value})) }
+								onChange={ (event) => this.setState( prev => ({...prev, order_delivery_address_field: event.target.value})) }
 							/>
 						</form>
 				  	</div>
 
-
-				  	<div style={styles.textinputContainer}>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your order_amount" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) => this.setState( prev => ({...prev, order_amount: event.target.value})) }
-							/>
-						</form>
-				  	</div>
 
 					<button style={styles.buttonWithoutBG}
 						onClick={ () => {
@@ -146,34 +135,48 @@ class CreateOrder extends Component {
 							let setResponseInCurrentOrder = (arg) => this.props.set_current_order(arg)
 							let redirectToNewOrder = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
 
-							// first create parent object
-							let order_object = {
-								endpoint: this.state.endpoint,
-								timestamp_of_order: this.state.timestamp_of_order,
-								order_amount: this.state.order_amount,
-							}
-
-							// 2nd create child object from redux (linked_object_and_live_object_in_redux in schema)
-							let user_object = {
-
-								user_name: this.props.user_name,
-								phone_number: this.props.phone_number,
-								hash: this.props.hash,
-								salt: this.props.salt,
-								isLoggedIn: this.props.isLoggedIn,
-							}
-
-							// 3rd send post request
-							axios.post(utils.baseUrl + '/orders/create-order-with-user', 
-								{
-									order_object: order_object,
-									user_object: user_object,
+							console.log({
+									products: this.props.complete_cart,
+									phone_number: this.state.order_phone_number_field,
+									delivery_address: this.state.order_delivery_address_field,
 								})
+							// removing unncessary keys like id, image_thumbnail_filepath from payload
+							var final_products_paylaod = this.props.complete_cart.map((product) => {
+
+								delete product.id
+								delete product.image_thumbnail_filepath
+
+								return product
+							})
+
+							// const formData = new FormData()
+							// formData.append('products', this.props.complete_cart)
+							// formData.append('phone_number', this.state.order_phone_number_field)
+							// formData.append('delivery_address', this.state.order_delivery_address_field)
+// id
+// image_thumbnail_filepath
+// initial_quantity
+// title
+
+							console.log({
+								products: final_products_paylaod,
+								phone_number: this.state.order_phone_number_field,
+								delivery_address: this.state.order_delivery_address_field,
+							})
+
+							axios.post(utils.baseUrl + '/paypal/create-order-with-paypal', 
+								// formData,
+								{
+									products: final_products_paylaod,
+									phone_number: this.state.order_phone_number_field,
+									delivery_address: this.state.order_delivery_address_field,
+								}
+							)
 							.then(function (response) {
-								console.log(response.data) // current order screen data
+								console.log(response.data)
 								
 								// set to current parent object
-								setResponseInCurrentOrder(response.data)
+								// setResponseInCurrentOrder(response.data)
 
 								// change route to current_order
 								redirectToNewOrder()

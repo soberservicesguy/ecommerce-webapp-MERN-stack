@@ -73,9 +73,6 @@ class CartContainer extends Component {
 		this.state = {
 			redirectToRoute: false,
 
-			show_product_size_modal: false,
-			show_initial_quantity_modal: false,
-			show_product_color_modal: false,	
 		}	
 	}
 
@@ -126,22 +123,24 @@ class CartContainer extends Component {
 					<Grid container direction="row" spacing={4} style={{backgroundColor: '#eee'}}>
 
 						{ cart.map((item, index) => (
-							<Provider value={{
-								getCompleteObjectAndSwitchToItsContainer: () => this.getCompleteObjectAndSwitchToItsContainer(),
-								set_current_cart_item: () => this.props.set_current_item_in_Cart( item )
+							<Provider
+								key = {String(index)} 
+								value={{
+									getCompleteObjectAndSwitchToItsContainer: () => this.getCompleteObjectAndSwitchToItsContainer(),
+									set_current_cart_item: () => this.props.set_current_item_in_Cart( item )
 							}}>
 								<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
 									<ConnectedComponentForShowingCart
 										dataPayloadFromParent = { item }
 									// not needed, since its redux
-										product_size_modify_callback = { (product_size) => this.props.modify_product_size_of_some_item_in_cart(item.id, product_size) }
-										initial_quantity_modify_callback = { (initial_quantity) => this.props.modify_initial_quantity_of_some_item_in_cart(item.id, initial_quantity) }
-										product_color_modify_callback = { (product_color) => this.props.modify_product_color_of_some_item_in_cart(item.id, product_color) }						
-										remove_from_cart_callback = { () => this.props.remove_product_from_cart(item.id) }
+										// product_size_modify_callback = { (product_size) => this.props.modify_product_size_of_some_item_in_cart(item.id, product_size) }
+										// initial_quantity_modify_callback = { (initial_quantity) => this.props.modify_initial_quantity_of_some_item_in_cart(item.id, initial_quantity) }
+										// product_color_modify_callback = { (product_color) => this.props.modify_product_color_of_some_item_in_cart(item.id, product_color) }						
+										// remove_from_cart_callback = { () => this.props.remove_product_from_cart(item.id) }
 										
-										toggle_size_modal_callback = { () => this.toggle_product_size_modal() }
-										toggle_quantity_modal_callback = { () => this.toggle_initial_quantity_modal() }
-										toggle_color_modal_callback = { () => this.toggle_product_color_modal() }
+										// toggle_size_modal_callback = { () => this.toggle_product_size_modal() }
+										// toggle_quantity_modal_callback = { () => this.toggle_initial_quantity_modal() }
+										// toggle_color_modal_callback = { () => this.toggle_product_color_modal() }
 									/>
 								</Grid>
 							</Provider>

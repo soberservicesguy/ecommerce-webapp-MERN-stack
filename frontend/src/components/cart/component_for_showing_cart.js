@@ -15,6 +15,10 @@ import {
 	Modal, 
 	Grid, 
 	// Button 
+	InputLabel,
+	MenuItem,
+	FormControl,
+	Select,
 } from "@material-ui/core";
 
 const styles = theme => ({
@@ -27,16 +31,55 @@ class ComponentForShowingCart extends Component {
 		super(props);
 // STATE	
 		this.state = {
+			show_product_size_modal: false,
+			show_initial_quantity_modal: false,
+			show_product_color_modal: false,
 
+			product_size: '',
+			product_color: '',
+			title: this.props.dataPayloadFromParent.title,
+
+		// variations
+			product_size_options: [],
+			product_color_options: [],
 		}
 
 	}
 
 // COMPONENT DID MOUNT
 	componentDidMount() {
-
+		console.log(this.props.dataPayloadFromParent.title)
+		this.get_variations()
 		// console.log('COMPONENT')
 		// console.log(this.props.dataPayloadFromParent)
+	}
+
+	get_variations(){
+
+		axios.get(utils.baseUrl + '/products/get-all-variations', 
+			{
+				params:{
+					product_size: this.state.product_size,
+					product_color: this.state.product_color,
+					title: this.props.dataPayloadFromParent.title,
+				}
+			}
+		)
+		.then((response) => {
+			this.setState(
+				prev => (
+					{
+						...prev,
+						product_size_options: response.data.product_size,
+						product_color_options: response.data.product_color,
+					}
+				)
+			)
+		})
+		.catch(function (error) {
+			console.log(error);
+		});	
+
 	}
 
 	toggle_product_size_modal(){
@@ -77,6 +120,27 @@ class ComponentForShowingCart extends Component {
 	render() {
 		const data = this.props.dataPayloadFromParent // data being plugged from parent flatlist
 		var base64Image = "data:image/jpeg;base64," + data.image_thumbnail_filepath
+
+		const product_color_menu = this.state.product_color_options.map((option, index) => {
+
+			return (
+				<MenuItem key={String(index)} value={`${option}`}>
+					{`${option}`}
+				</MenuItem>
+			)
+
+		})
+
+		const product_size_menu = this.state.product_size_options.map((option, index) => {
+
+			return (
+				<MenuItem key={String(index)} value={`${option}`}>
+					{`${option}`}
+				</MenuItem>
+			)
+
+		})
+
 
 		return (
 
@@ -127,9 +191,13 @@ class ComponentForShowingCart extends Component {
 					<button onClick = { () => this.toggle_product_size_modal() }>
 						toggle_size_modal_callback
 					</button>
+					<button onClick = { () => this.toggle_initial_quantity_modal() }>
+						toggle_initial_quantity_modal
+					</button>
+					<button onClick = { () => this.toggle_product_color_modal() }>
+						toggle_product_color_modal
+					</button>
 				</div>
-
-
 
 
 
@@ -151,23 +219,33 @@ class ComponentForShowingCart extends Component {
 							}}>
 						</button>
 						
-						<div style={{backgroundColor: 'blue'}}>
-							<div style={styles.textinputContainer}>
-								<p style={styles.modalText}>
-									Set Quantity Here
-								</p>
-								<form className={styles.root} noValidate autoComplete="off">
-									<TextField 
-										label="Standard" // placeholder 
-										id="standard-basic" // "filled-basic" / "outlined-basic"
-										variant="outlined" // "filled"
-										classes={styles.textinput}
-										onChange={ (event) => this.props.modify_initial_quantity_of_some_item_in_cart(data.id, event.target.value) }
-									/>
-								</form>
-							</div>
-						</div>
+	
+						<div style={{marginTop: 10,}}>
+							<FormControl variant="outlined" style={styles.formControl}>
+								<InputLabel id="demo-simple-select-outlined-label" style={{fontSize:20}}>
+									Select Product Size
+								</InputLabel>
+								<Select
+									style={{width:280, fontSize:20}}
+									labelId="demo-simple-select-outlined-label"
+									id="demo-simple-select-outlined"
+									label="Select Product Size"
+									onChange={(event) => {
+										this.props.modify_product_size_of_some_item_in_cart(data.id, event.target.value)
+										this.get_variations()
+									}}
+									// value={this.state.privileges_selected}
+								>
+									<MenuItem value="">
+										<em>None</em>
+									</MenuItem>
 
+									{product_size_menu}
+
+								</Select>
+							</FormControl>
+						</div>
+	
 						<button onClick={() => this.toggle_product_size_modal()} 
 							style={{
 								// height:windowHeight * 0.4
@@ -192,7 +270,7 @@ class ComponentForShowingCart extends Component {
 								// height:windowHeight * 0.4
 							}}>
 						</button>
-						
+
 						<div style={{backgroundColor: 'blue'}}>
 							<div style={styles.textinputContainer}>
 								<p style={styles.modalText}>
@@ -204,7 +282,7 @@ class ComponentForShowingCart extends Component {
 										id="standard-basic" // "filled-basic" / "outlined-basic"
 										variant="outlined" // "filled"
 										classes={styles.textinput}
-										onChange={ (initial_quantity) => this.props.initial_quantityChangeCallback(initial_quantity) }
+										onChange={ (event) => this.props.modify_initial_quantity_of_some_item_in_cart(data.id, event.target.value) }
 									/>
 								</form>
 							</div>
@@ -234,22 +312,28 @@ class ComponentForShowingCart extends Component {
 								// height:windowHeight * 0.4
 							}}>
 						</button>
-						
-						<div style={{backgroundColor: 'blue'}}>
-							<div style={styles.textinputContainer}>
-								<p style={styles.modalText}>
-									Set Quantity Here
-								</p>
-								<form className={styles.root} noValidate autoComplete="off">
-									<TextField 
-										label="Standard" // placeholder 
-										id="standard-basic" // "filled-basic" / "outlined-basic"
-										variant="outlined" // "filled"
-										classes={styles.textinput}
-										onChange={ (product_color) => this.props.product_colorChangeCallback(product_color) }
-									/>
-								</form>
-							</div>
+
+						<div style={{marginTop: 10,}}>
+							<FormControl variant="outlined" style={styles.formControl}>
+								<InputLabel id="demo-simple-select-outlined-label" style={{fontSize:20}}>
+									Select Product Color
+								</InputLabel>
+								<Select
+									style={{width:280, fontSize:20}}
+									labelId="demo-simple-select-outlined-label"
+									id="demo-simple-select-outlined"
+									label="Select Product Color"
+									onChange={(event) => this.props.modify_product_color_of_some_item_in_cart(data.id, event.target.value) }
+									// value={this.state.privileges_selected}
+								>
+									<MenuItem value="">
+										<em>None</em>
+									</MenuItem>
+
+									{product_color_menu}
+
+								</Select>
+							</FormControl>
 						</div>
 
 						<button onClick={() => this.toggle_product_color_modal()} 

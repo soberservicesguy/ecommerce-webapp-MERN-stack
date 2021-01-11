@@ -2,6 +2,8 @@ require('../../models/order');
 require('../../models/user');
 require('../../models/product');
 
+const paypal = require('paypal-rest-sdk');
+
 const base64_encode = require('../../lib/image_to_base64')
 const mongoose = require('mongoose');
 const router = require('express').Router();
@@ -10,10 +12,13 @@ const Product = mongoose.model('Product');
 const User = mongoose.model('User');
 const passport = require('passport');
 
+
 const currency = "USD"
 
 router.post('/create-order-with-paypal', passport.authenticate('jwt', { session: false }), function(req, res, next){
-	
+
+	console.log('PRODUCTS PAYLOAD')
+	console.log(req.body.products)
 	let products_in_order = req.body.products // carries only product endpoints and variations including quantity
 	let final_order_content = []
 	let order_amount = 0
@@ -26,6 +31,9 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 
 		Product.findOne(ordered_product)
 		.then((product_found) => {
+
+			console.log('FOUND PRODUCT')
+			console.log(product_found)
 
 			product_objects.push(product_found)
 
@@ -45,8 +53,6 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 
 		})
 
-
-
 	})
 
 	const newOrder = new Order({
@@ -56,6 +62,8 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 		products: product_objects,
 		order_amount: order_amount,
 
+		order_phone_number_field: req.body.phone_number,
+		order_delivery_address_field: req.body.delivery_address,
 	});
 
 	newOrder.save(function (err, newOrder) {
@@ -79,8 +87,8 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 						"payment_method": "paypal"
 					},
 					"redirect_urls": {
-						"return_url": "http://localhost:3001/success",
-						"cancel_url": "http://localhost:3001/cancel"
+						"return_url": "http://localhost:3001/success", // MAKES REQUEST TO THIS URL IF REQUEST IS SUCCESSFUL
+						"cancel_url": "http://localhost:3001/cancel" // MAKES REQUEST TO THIS URL IF REQUEST IS CANCELLED
 					},
 					"transactions": [
 						{

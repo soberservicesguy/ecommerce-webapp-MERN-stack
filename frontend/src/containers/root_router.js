@@ -43,6 +43,9 @@ import {
 	ConnectedIndividualOrder,
 	ConnectedBlogPostContainer,
 	ConnectedIndividualBlogPost,
+	ConnectedBulkBlogpostUpload,
+	ConnectedBulkCarouselUpload,
+	ConnectedBulkProductUpload,
 } from "../redux_stuff/connected_components";
 
 // IMPORT material-ui stuff
@@ -444,6 +447,20 @@ class RootRouterContainer extends Component {
 							<ConnectedIndividualOrder/>
 						</Route>
 
+
+
+
+						<Route exact path="/Bulk-Upload-Blogpost">
+							<ConnectedBulkBlogpostUpload/>
+						</Route>
+
+						<Route exact path="/Bulk-Upload-Carousel">
+							<ConnectedBulkCarouselUpload/>
+						</Route>
+
+						<Route exact path="/Bulk-Upload-Product">
+							<ConnectedBulkProductUpload/>
+						</Route>
 
 
 
