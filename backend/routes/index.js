@@ -13,7 +13,7 @@ router.use('/blogpostings', require('./blogposts/blogpost'));
 
 router.use('/uploads', require('./uploads/bulk_blogpost_upload'));
 router.use('/uploads', require('./uploads/bulk_product_upload'));
-
+router.use('/uploads', require('./uploads/bulk_carousel_upload'));
 
 
 // router.use('/testing', require('./tests'))

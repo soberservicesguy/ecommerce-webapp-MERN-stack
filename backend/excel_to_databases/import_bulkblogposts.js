@@ -9,17 +9,25 @@ const {resolve} = require('path')
 const mongoose = require('mongoose');
 
 require('../models/blogpost');
+// require('../models/comment');
+// require('../models/like');
+require('../models/user');
 
 const BlogPost = mongoose.model('BlogPost');
+// const Comment = mongoose.model('Comment');
+
+// const Like = mongoose.model('Like');
+
+const User = mongoose.model('User');
 
 const file_name = excel_file || '/home/arsalan/Work_stuff/Full_stack_apps/REACT_APPS/Final_portfolio/ecommerce_app/backend/excel_to_databases/all_blogposts.xlsx'
-// const file_name = 'all_blogposts.xlsx';
+// const file_name = '/home/arsalan/Work_stuff/Full_stack_apps/REACT_APPS/Final_portfolio/content_app/backend/excel_to_databases/all_blogposts.xlsx'
 
 const sheet_to_class_mapper = (sheet_name, db_object) => {
 	if (sheet_name === 'all_blogposts'){
 
 		return new BlogPost(db_object)
-
+	
 	} else {
 
 		null
@@ -45,9 +53,15 @@ const save_parent_and_children_in_db = (parent_children_rows_dict, sheet_to_clas
 
 		} 
 
-		const carousel = sheet_to_class_mapper(parent_sheet, {...parent_db_object_dict, _id: new mongoose.Types.ObjectId()})
+		console.log('parent sheet name used')
+		console.log(parent_sheet)
 
-		carousel.save(function (err, carousel) {
+		const blogpost = sheet_to_class_mapper(parent_sheet, {...parent_db_object_dict, _id: new mongoose.Types.ObjectId()})
+
+		blogpost.save(function (err, blogpost) {
+
+			console.log('BEING SAVED')
+			console.log(blogpost)
 
 			if (err) return handleError(err);
 
@@ -75,22 +89,21 @@ const save_parent_and_children_in_db = (parent_children_rows_dict, sheet_to_clas
 							child_db_object_dict[ child_header[m] ] = parent_row[m]
 						} 
 
-						const related_child = sheet_to_class_mapper(child_sheet, {...child_db_object_dict, carousel: carousel._id})
+						const related_child = sheet_to_class_mapper(child_sheet, {...child_db_object_dict, blogpost: blogpost._id})
 
 						related_child.save(function (err) {
 						  if (err) return handleError(err);
 						});
 
-
-						}
+	
 					} 
 				} 
 				// saving parent object after assigning child objects to it
  
- 				carousel.save()
+ 				blogpost.save()
 
-			})			
-		// })
+			}			
+		})
 	}
 }
 
@@ -99,7 +112,7 @@ const save_parent_and_children_in_db = (parent_children_rows_dict, sheet_to_clas
 
 
 const parent_children_detailed = (file_name, old_parent_child_relationship_data ,  parent_completely_detailed, sheet_to_class_dict) =>{
-
+	console.log('ENTERED IN 4TH')
 	/**
 	 * -------------- CODE BLOCK 1 START ----------------
 	 * GOALS:
@@ -132,6 +145,10 @@ const parent_children_detailed = (file_name, old_parent_child_relationship_data 
 			 * --------------  NESTED LOOP 1 START ----------------
 			 * LOOP OVER: parent_child_relationship_data, PROCESS OVER CHILDREN: open parent sheet
 			 */
+
+			 console.log('LAST')
+			 console.log(old_parent_child_relationship_data)
+
 				old_parent_child_relationship_data.map((parent_child_data, index1)=>{
 					// console.log(parent_child_data)
 					var parent_details = parent_child_data.parent;
@@ -212,6 +229,9 @@ const parent_children_detailed = (file_name, old_parent_child_relationship_data 
 						/**
 						 * --------------  NESTED LOOP 3 ENDS ----------------
 						 */
+
+						 console.log('RETURN FROM 4TH')
+						 console.log(parent_completely_detailed)
 							return parent_completely_detailed
 						})
 						// 'BELOW IS BEING DONE SINCE ITS IN A LOOP, THAT IS TO REMOVE ALL OTHER ENTRIES EXCEPT LAST FROM THE LOOP AND ONLY THEN FEED TO NEXT .then FUNCTION, AND THEN SAME IS DONT IN IT BEFORE FEEDING TO save_parent_and_children_in_db function'
@@ -327,6 +347,9 @@ const generate_parent_completely_detailed = (file_name, parent_child_relationshi
 				 /**
 				  * -------------- NESTED LOOP ENDS ----------------
 				  */
+
+				  	console.log('RETURN FROM 3RD FUNCTION')
+				  	console.log(parent_complete_details)
 					  return parent_complete_details
 					}) // from .then block
 					// .then( res => console.log(res) )
@@ -408,6 +431,8 @@ const pull_parent_child_data_from_excel = (file_name, sheet_to_class_dict) => {
 				}
 			})
 
+		console.log('RETURN FROM 2ND FUNCTION')
+		console.log(all_collection)
 		return all_collection
 
 	})
@@ -418,6 +443,10 @@ const pull_parent_child_data_from_excel = (file_name, sheet_to_class_dict) => {
 
 
 const sheet_to_class = (file_name) => {
+
+	console.log('FILE NAME IN main function')
+	console.log(file_name)
+
 	const sheet_to_class_dict = {};
 
 	readXlsxFile( String(file_name), { sheet: String('sheets_classes') })
@@ -430,6 +459,8 @@ const sheet_to_class = (file_name) => {
 				sheet_to_class_dict[ key_row[i] ] = value_row[i]
 			} 
 		
+		console.log('RETURN FROM MAIN FUNCTION')
+		console.log(sheet_to_class_dict)
 		return sheet_to_class_dict
 
 		})
@@ -437,6 +468,7 @@ const sheet_to_class = (file_name) => {
 		.then ( (sheet_to_class_dict) => pull_parent_child_data_from_excel(file_name, sheet_to_class_dict) )
 		.catch( err => console.log(err) )	
 }
+
 
 // sheet_to_class(file_name)
 

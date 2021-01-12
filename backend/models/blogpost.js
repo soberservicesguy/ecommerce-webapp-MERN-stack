@@ -13,7 +13,7 @@ const BlogPostSchema = new mongoose.Schema({
 	first_para:String,
 	initial_tags:String,
 	second_para:String,
-	qouted_para:String,
+	// qouted_para:String,
 	// source_of_qoutation:String,
 	third_para:String,
 	fourth_para:String,

@@ -1,3 +1,8 @@
+
+// const file_name = 'all_products.xlsx';
+
+
+
 require('./db_settings')
 
 var arguments_supplied = process.argv.slice(2);
@@ -9,18 +14,22 @@ const {resolve} = require('path')
 const mongoose = require('mongoose');
 
 require('../models/product');
-
 const Product = mongoose.model('Product');
+
+require('../models/user');
+const User = mongoose.model('User');
+
 const file_name = excel_file || '/home/arsalan/Work_stuff/Full_stack_apps/REACT_APPS/Final_portfolio/ecommerce_app/backend/excel_to_databases/all_products.xlsx'
-// const file_name = 'all_products.xlsx';
+// const file_name = '/home/arsalan/Work_stuff/Full_stack_apps/REACT_APPS/Final_portfolio/content_app/backend/excel_to_databases/all_products.xlsx'
 
 const sheet_to_class_mapper = (sheet_name, db_object) => {
 	if (sheet_name === 'all_products'){
 
 		return new Product(db_object)
-
+	
 	} else {
 
+		console.log('OTHER SHEET CALLED')
 		null
 
 	}
@@ -44,9 +53,9 @@ const save_parent_and_children_in_db = (parent_children_rows_dict, sheet_to_clas
 
 		} 
 
-		const carousel = sheet_to_class_mapper(parent_sheet, {...parent_db_object_dict, _id: new mongoose.Types.ObjectId()})
+		const product = sheet_to_class_mapper(parent_sheet, {...parent_db_object_dict, _id: new mongoose.Types.ObjectId()})
 
-		carousel.save(function (err, carousel) {
+		product.save(function (err, product) {
 
 			if (err) return handleError(err);
 
@@ -74,22 +83,37 @@ const save_parent_and_children_in_db = (parent_children_rows_dict, sheet_to_clas
 							child_db_object_dict[ child_header[m] ] = parent_row[m]
 						} 
 
-						const related_child = sheet_to_class_mapper(child_sheet, {...child_db_object_dict, carousel: carousel._id})
+						const related_child = sheet_to_class_mapper(child_sheet, {...child_db_object_dict, product: product._id})
 
 						related_child.save(function (err) {
 						  if (err) return handleError(err);
 						});
 
+	
+						if (child_sheet === 'comments'){
 
+							product.comments.push(related_child._id)
+
+		
+						} else if (child_sheet === 'likes'){
+
+							product.likes.push(related_child._id)
+
+		
+						} else if (child_sheet === 'users'){
+
+							product.users.push(related_child._id)
+
+	
 						}
 					} 
 				} 
 				// saving parent object after assigning child objects to it
  
- 				carousel.save()
+ 				product.save()
 
-			})			
-		// })
+			}			
+		})
 	}
 }
 
@@ -438,13 +462,12 @@ const sheet_to_class = (file_name) => {
 }
 
 
-
 // sheet_to_class(file_name)
 
 if (excel_file){
 	null
 } else {
-	// console.log('attempted to import blogposts')
+	// console.log('attempted to import products')
 	// sheet_to_class(file_name)
 }
 

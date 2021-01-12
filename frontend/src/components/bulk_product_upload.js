@@ -93,7 +93,7 @@ class BulkProductUpload extends Component {
 			this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))
 
 			// redirecting
-			return <Redirect to = {{ pathname: "/blogposts" }} />
+			return <Redirect to = {{ pathname: "/products" }} />
 
 		} else {
 
@@ -104,11 +104,11 @@ class BulkProductUpload extends Component {
 
 					<div style={styles.textinputContainer}>
 						<p style={styles.headingOverInput}>
-							UPLOAD BLOPOST IMAGES HERE
+							UPLOAD PRODUCT IMAGES HERE
 						</p>
 						<form className={styles.root} noValidate autoComplete="off">
 							<input
-								name="blogpost_image_main" // name of input field or fieldName simply
+								name="product_images_upload" // name of input field or fieldName simply
 								multiple="multiple" // for selecting multiple files
 								enctype="multipart/form-data"
 								type="file"
@@ -124,11 +124,11 @@ class BulkProductUpload extends Component {
 
 					<div style={styles.textinputContainer}>
 						<p style={styles.headingOverInput}>
-							UPLOAD BLOPOST EXCEL SHEET HERE
+							UPLOAD PRODUCT EXCEL SHEET HERE
 						</p>
 						<form className={styles.root} noValidate autoComplete="off">
 							<input
-								name="excel_sheet_for_blogpost" // name of input field or fieldName simply
+								name="excel_sheet_for_products" // name of input field or fieldName simply
 								// multiple="multiple" // for selecting multiple files
 								enctype="multipart/form-data"
 								type="file"
@@ -154,11 +154,11 @@ class BulkProductUpload extends Component {
 							const formData = new FormData()
 							// attaching multiple files with formData
 							Array.from(this.state.image_main).forEach((file) => {
-								formData.append('blogpost_image_main', file, file.name)
+								formData.append('product_images_upload', file, file.name)
 							})
-							formData.append('excel_sheet_for_blogpost', this.state.excel_sheet, this.state.excel_sheet.name)
+							formData.append('excel_sheet_for_products', this.state.excel_sheet, this.state.excel_sheet.name)
 
-							axios.post(utils.baseUrl + '/uploads/bulk-upload-blogposts', formData)
+							axios.post(utils.baseUrl + '/uploads/bulk-upload-products', formData)
 							.then(function (response) {
 								console.log(response.data) // current blogpost screen data
 								
@@ -176,14 +176,14 @@ class BulkProductUpload extends Component {
 						}}
 					>
 						<p style={styles.innerText}>
-							Press To Create Bulk BlogPosts
+							Press To Create Bulk Products
 						</p>
 					</button>
 
 					<div>
 						<button style={styles.buttonWithoutBG}
 							onClick={ () => {
-								axios.get(utils.baseUrl + '/uploads/bulk-delete-blogposts')
+								axios.get(utils.baseUrl + '/uploads/bulk-delete-products')
 								.then(function (response) {
 									console.log(response.data)
 								})
@@ -193,7 +193,7 @@ class BulkProductUpload extends Component {
 							}}
 						>
 							<p style={styles.innerText}>
-								Press To DELETE ALL BLOGPOSTS
+								Press To DELETE ALL PRODUCTS
 							</p>
 						</button>
 					</div>

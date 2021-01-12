@@ -156,10 +156,12 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 router.get('/products-list', function(req, res, next){
 
 	Product
+	.find()
+	// .distinct('title') // .distinct(fieldName, query)
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
-	.limit(10)
 	.then((products) => {
+		console.log(products)
 		var products_list = []
 		products.map((product, index)=>{
 
@@ -182,11 +184,14 @@ router.get('/products-list', function(req, res, next){
 
 		if (products_list.length > 0){
 
+			console.log('PRODUCTS SENT')
+			console.log(products_list)
 			res.status(200).json(products_list);
 	
 		} else {
 
-			res.status(401).json({ success: false, msg: "could not find Products list" });
+			console.log('NO PRODUCTS SENT')
+			res.status(200).json([]);
 
 		}
 
@@ -294,6 +299,104 @@ router.get('/find-product', function(req, res, next){
 });
 
 
+// get products_list_with_children
+router.get('/products-list-with-children', function(req, res, next){
+
+	Product.
+	find().
+	limit(10).
+	then((products)=>{
+		var newProducts_list = []
+		products.map((product, index)=>{
+			var newProduct = {}
+
+			// newProduct.serial_number = product[ 'serial_number' ]
+			newProduct.image_thumbnail_filepath = base64_encode( product[ 'image_thumbnail_filepath' ] )
+			newProduct.title = product[ 'title' ]
+
+			newProducts_list.push({...newProduct})
+			newProduct = {}
+		});
+
+		return newProducts_list
+	})
+
+	.then((newProducts_list) => {
+
+		if (!newProducts_list) {
+
+			res.status(401).json({ success: false, msg: "could not find Products_list" });
+
+		} else {
+
+			res.status(200).json(newProducts_list);
+
+		}
+
+	})
+	.catch((err) => {
+
+		next(err);
+
+	});
+});
+
+
+
+
+// get products_list_next_10_with_children
+
+router.get('/products-list-next-10-with-children', function(req, res, next){
+
+	Product.
+	find().
+	skip(10).
+	limit(10).
+	then((products)=>{
+		var newProducts_list = []
+		products.map((product, index)=>{
+			var newProduct = {}
+
+			newProduct.serial_number = product[ 'serial_number' ]
+			newProduct.image_thumbnail = base64_encode( product[ 'image_thumbnail' ] )
+			newProduct.title = product[ 'title' ]
+
+			newProducts_list.push({...newProduct})
+			newProduct = {}
+		});
+
+		return newProducts_list
+	})
+
+	.then((newProducts_list) => {
+
+		if (!newProducts_list) {
+
+			res.status(401).json({ success: false, msg: "could not find Products_list" });
+
+		} else {
+
+			res.status(200).json(newProducts_list);
+
+		}
+
+	})
+	.catch((err) => {
+
+		next(err);
+
+	});
+
+});
+
+
+
+
+
+
+
+
+
 
 
 
@@ -340,94 +443,7 @@ router.post('/create-product-with-children', function(req, res, next){
 });
 
 
-// get products_list_with_children
 
-router.get('/products-list-with-children', function(req, res, next){
-
-	Product.
-	find().
-	limit(10).
-	populate('user').
-	then((products)=>{
-		var newProducts_list = []
-		products.map((product, index)=>{
-			var newProduct = {}
-
-			// newProduct.serial_number = product[ 'serial_number' ]
-			newProduct.image_thumbnail_filepath = base64_encode( product[ 'image_thumbnail_filepath' ] )
-			newProduct.title = product[ 'title' ]
-
-			newProducts_list.push({...newProduct})
-			newProduct = {}
-		});
-
-		return newProducts_list
-	})
-
-	.then((newProducts_list) => {
-
-		if (!newProducts_list) {
-
-			res.status(401).json({ success: false, msg: "could not find Products_list" });
-
-		} else {
-
-			res.status(200).json(newProducts_list);
-
-		}
-
-	})
-	.catch((err) => {
-
-		next(err);
-
-	});
-});
-
-// get products_list_next_10_with_children
-
-router.get('/products-list-next-10-with-children', function(req, res, next){
-
-	Product.
-	find().
-	skip(10).
-	limit(10).
-	then((products)=>{
-		var newProducts_list = []
-		products.map((product, index)=>{
-			var newProduct = {}
-
-			newProduct.serial_number = product[ 'serial_number' ]
-			newProduct.image_thumbnail = base64_encode( product[ 'image_thumbnail' ] )
-			newProduct.title = product[ 'title' ]
-
-			newProducts_list.push({...newProduct})
-			newProduct = {}
-		});
-
-		return newProducts_list
-	})
-
-	.then((newProducts_list) => {
-
-		if (!newProducts_list) {
-
-			res.status(401).json({ success: false, msg: "could not find Products_list" });
-
-		} else {
-
-			res.status(200).json(newProducts_list);
-
-		}
-
-	})
-	.catch((err) => {
-
-		next(err);
-
-	});
-
-});
 
 
 

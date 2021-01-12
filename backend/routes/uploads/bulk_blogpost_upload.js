@@ -33,16 +33,16 @@ const bulk_posts_storage = multer.diskStorage({
 
 		if (file.fieldname === "blogpost_image_main") {
 
-			let file_path = path.join(__dirname , '../../assets/bulk_blogposts/images')
+			let file_path = path.join(__dirname , '../../assets/images/uploads/bulk_blogposts/images')
 			cb(null, file_path)	
 
 		} else {
 
-			fs.mkdir( path.join(__dirname , `../../assets/bulk_blogposts/${currentDate}_${currentTime}`), { recursive: true }, (err) => {
+			fs.mkdir( path.join(__dirname , `../../assets/images/uploads/bulk_blogposts/${currentDate}_${currentTime}`), { recursive: true }, (err) => {
 				if (err) throw err;
 			})
 			
-			let file_path = path.join(__dirname , `../../assets/bulk_blogposts/${currentDate}_${currentTime}`)
+			let file_path = path.join(__dirname , `../../assets/images/uploads/bulk_blogposts/${currentDate}_${currentTime}`)
 			cb(null, file_path)	
 
 		}
@@ -129,7 +129,8 @@ router.post('/bulk-upload-blogposts', function(req, res, next){
 			try {
 				// console.log( req.files['excel_sheet_for_blogpost'][0] )
 				// give path
-				let uploaded_excel_sheet = path.join(__dirname , `../../assets/bulk_blogposts/${currentDate}_${currentTime}/${req.files['excel_sheet_for_blogpost'][0].filename}`) 
+				let uploaded_excel_sheet = path.join(__dirname , `../../assets/images/uploads/bulk_blogposts/${currentDate}_${currentTime}/${req.files['excel_sheet_for_blogpost'][0].filename}`) 
+				console.log(uploaded_excel_sheet)
 				sheet_to_class( uploaded_excel_sheet )
 				res.status(200).json({ success: true, msg: 'new blogposts created'});	
 

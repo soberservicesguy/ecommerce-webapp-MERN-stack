@@ -40,13 +40,13 @@ class CarouselContainer extends Component {
 	componentDidMount() {
 
 // FETCHING DATA FOR COMPONENT
-			axios.get(utils.baseUrl + '/carousels/carousels-list-with-children',)
-			.then((response) => {
-				this.props.set_fetched_carousels(response.data)
-			})
-			.catch((error) => {
-				console.log(error);
-			})
+		axios.get(utils.baseUrl + '/carousels/carousels-list-with-children',)
+		.then((response) => {
+			this.props.set_fetched_carousels(response.data)
+		})
+		.catch((error) => {
+			console.log(error);
+		})
 
 
 	}

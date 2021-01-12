@@ -40,13 +40,13 @@ class ProductContainer extends Component {
 	componentDidMount() {
 
 // FETCHING DATA FOR COMPONENT
-			axios.get(utils.baseUrl + '/products/products-list-with-children',)
-			.then((response) => {
-				this.props.set_fetched_products(response.data)
-			})
-			.catch((error) => {
-				console.log(error);
-			})
+		axios.get(utils.baseUrl + '/products/products-list',)
+		.then((response) => {
+			this.props.set_fetched_products(response.data)
+		})
+		.catch((error) => {
+			console.log(error);
+		})
 
 
 	}

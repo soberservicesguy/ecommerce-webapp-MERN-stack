@@ -172,14 +172,25 @@ class CreateOrder extends Component {
 									delivery_address: this.state.order_delivery_address_field,
 								}
 							)
-							.then(function (response) {
-								console.log(response.data)
-								
+							.then(function (res) {
+							
+								if (res.status === 200) {
+
+									console.log('GOING TO PAYPAL URL FOR PAYMENT VERIFICATION')
+									console.log(res.data)
+									window.location = res.data.forwardLink
+
+								} else {
+
+									console.log('SOMETHING IS WRONG')
+
+								}
+
 								// set to current parent object
-								// setResponseInCurrentOrder(response.data)
+								// setResponseInCurrentOrder(res.data)
 
 								// change route to current_order
-								redirectToNewOrder()
+								// redirectToNewOrder()
 
 							})
 							.catch(function (error) {

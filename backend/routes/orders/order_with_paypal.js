@@ -15,25 +15,27 @@ const passport = require('passport');
 
 const currency = "USD"
 
-router.post('/create-order-with-paypal', passport.authenticate('jwt', { session: false }), function(req, res, next){
+router.post('/create-order-with-paypal', passport.authenticate('jwt', { session: false }), async function(req, res, next){
 
-	console.log('PRODUCTS PAYLOAD')
-	console.log(req.body.products)
+	// console.log('PRODUCTS PAYLOAD')
+	// console.log(req.body.products)
 	let products_in_order = req.body.products // carries only product endpoints and variations including quantity
 	let final_order_content = []
 	let order_amount = 0
 	let product_objects = []
 
-	products_in_order.map((ordered_product) => {
-		
+	let loop_result = await Promise.all(products_in_order.map(async (ordered_product) => {
+		let quantity = ordered_product.initial_quantity
+		// console.log(`ORDERED QUANTITY IS ${quantity}`)
+
 		delete ordered_product.price
 		delete ordered_product.initial_quantity
 
-		Product.findOne(ordered_product)
+		await Product.findOne(ordered_product)
 		.then((product_found) => {
 
-			console.log('FOUND PRODUCT')
-			console.log(product_found)
+			// console.log('FOUND PRODUCT')
+			// console.log(product_found)
 
 			product_objects.push(product_found)
 
@@ -42,18 +44,23 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 				name: product_found.title,
 				sku: product_found.endpoint,
 				price: product_found.price,
-				quantity: ordered_product.initial_quantity,
+				quantity: quantity,
 				currency: currency,
-				// additional fields
-				product_size: ordered_product.product_size,
-				product_color: ordered_product.product_color,
+			// NO additional fields, PAYPAL GIVES ERRORS
+				// product_size: ordered_product.product_size,
+				// product_color: ordered_product.product_color,
 			})
-
-			order_amount += product_found.price * ordered_product.initial_quantity
+			// console.log('1')
+			// console.log('PRODUCT RESULTS')
+			// console.log(Number(product_found.price) * Number(quantity))
+			order_amount += Number(product_found.price) * Number(quantity)
 
 		})
 
-	})
+	}))
+	// console.log('2')
+	console.log('order_amount')
+	console.log(order_amount)
 
 	const newOrder = new Order({
 
@@ -66,14 +73,14 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 		order_delivery_address_field: req.body.delivery_address,
 	});
 
-	newOrder.save(function (err, newOrder) {
+	newOrder.save(async function (err, newOrder) {
 
 		if (err){
 			res.status(404).json({ success: false, msg: 'couldnt create blogpost database entry'})
 			return console.log(err)
 		}
 		// assign user object then save
-		User.findOne({ phone_number: req.user.user_object.phone_number }) // using req.user from passport js middleware
+		await User.findOne({ phone_number: req.user.user_object.phone_number }) // using req.user from passport js middleware
 		.then((user) => {
 			if (user){
 
@@ -107,14 +114,18 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 				// getting approval url from payment.links and redirecting to approval url
 				// approval url is paypals external url which lets you pay from users own paypal account
 				// this does not create the payment but it opens paypal approval url for user to authorize the payment 	
+			// COMMENTED OUT
+				console.log('CONTACTING PAYPAL')
 				paypal.payment.create(create_payment_json, function (error, payment) {
 					if (error) {
-						throw error;
+						console.log(error);
 					} else {
 						// console.log(payment) // this can be done to see payment
 						for(let i = 0;i < payment.links.length;i++){
 							if(payment.links[i].rel === 'approval_url'){
-								res.redirect(payment.links[i].href);
+								// res.redirect(payment.links[i].href); // DOESNT WORK DUE TO CORS IN FRONTEND
+								res.json({forwardLink: payment.links[i].href});
+
 							}
 						}
 					}

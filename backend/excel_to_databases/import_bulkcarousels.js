@@ -88,7 +88,7 @@ const save_parent_and_children_in_db = (parent_children_rows_dict, sheet_to_clas
  
  				carousel.save()
 
-			}			
+			// }			
 		})
 	}
 }

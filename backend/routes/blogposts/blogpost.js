@@ -160,6 +160,7 @@ router.get('/blogposts-list-with-children', function(req, res, next){
 	find().
 	limit(10).
 	then((blogposts)=>{
+		console.log(blogposts)
 		var newBlogPosts_list = []
 		blogposts.map((blogpost, index)=>{
 			var newBlogPost = {}
@@ -181,10 +182,11 @@ router.get('/blogposts-list-with-children', function(req, res, next){
 
 		if (!newBlogPosts_list) {
 
-			res.status(401).json({ success: false, msg: "could not find BlogPosts_list" });
+			res.status(200).json({ success: false, msg: "could not find BlogPosts_list" });
 
 		} else {
 
+			// console.log(newBlogPosts_list)
 			res.status(200).json(newBlogPosts_list);
 
 		}
