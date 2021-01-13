@@ -123,20 +123,22 @@ paypal.configure({
 const env = require("dotenv").config({ path: "./.env" });
 
 // GIVING SRIPE SECRET KEY
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const { resolve } = require("path");
 
-app.use(
-	express.json({
-		// We need the raw body to verify webhook signatures.
-		// Let's compute it only when hitting the Stripe webhook endpoint.
-		verify: function(req, res, buf) {
-			if (req.originalUrl.startsWith("/webhook")) {
-				req.rawBody = buf.toString();
-			}
-		}
-	})
-);
+// NOT USING STRIPE FROM HERE
+// const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+// const { resolve } = require("path");
+
+// app.use(
+// 	express.json({
+// 		// We need the raw body to verify webhook signatures.
+// 		// Let's compute it only when hitting the Stripe webhook endpoint.
+// 		verify: function(req, res, buf) {
+// 			if (req.originalUrl.startsWith("/webhook")) {
+// 				req.rawBody = buf.toString();
+// 			}
+// 		}
+// 	})
+// );
 
 // --------------------------STRIPE ends here-------------------------------
 

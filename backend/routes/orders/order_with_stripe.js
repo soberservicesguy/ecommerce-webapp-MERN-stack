@@ -10,10 +10,18 @@ const Product = mongoose.model('Product');
 const User = mongoose.model('User');
 const passport = require('passport');
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+// const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const Stripe = require('stripe');
+const stripe = Stripe('sk_test_51I98eiADpqLOsbfMbkWlNoifhK1MloLBAcqTBlGMqbOBTuTiaI5njBY6QEGDQtOemxTDpTAsOKPDzWX8tKVoLbKD00jqWgtlIf');
+
+const { get_all_product_objects_and_order_amount_for_stripe } = require('../handy_functions/get_all_product_objects_and_order_amount_for_stripe')
+
+const currency = "usd"
+
+
 
 let getProductDetails = () => {
-	return { currency: "EUR", amount: 9900 };
+	return { currency: currency, amount: 9900 };
 };
 
 // SENDING PUBLISHABLE KEY
@@ -26,6 +34,110 @@ router.get("/product-details", (req, res) => {
 	res.send(data);
 });
 
+router.post('/create-order-with-stripe', passport.authenticate('jwt', { session: false }), async function(req, res, next){
+	
+	let products_in_order = req.body.products
+	let {order_amount, product_objects, final_order_content} = await get_all_product_objects_and_order_amount_for_stripe(req.body.products)
+	// let order_amount = 0
+	// let product_objects = []
+	// let final_order_content = []
+	// DRYed OUT
+	// let loop_result = await Promise.all(products_in_order.map(async (ordered_product) => {
+	// 	let quantity = ordered_product.initial_quantity
+	// 	// console.log(`ORDERED QUANTITY IS ${quantity}`)
+
+	// 	delete ordered_product.price
+	// 	delete ordered_product.initial_quantity
+
+	// 	await Product.findOne(ordered_product)
+	// 	.then((product_found) => {
+
+	// 		// console.log('FOUND PRODUCT')
+	// 		// console.log(product_found)
+
+	// 		product_objects.push(product_found)
+
+	// 		final_order_content.push({
+	// 			// paypal fields
+	// 			name: product_found.title,
+	// 			sku: product_found.endpoint,
+	// 			price: product_found.price,
+	// 			quantity: quantity,
+	// 			currency: currency,
+	// 		// NO additional fields, PAYPAL GIVES ERRORS
+	// 			// product_size: ordered_product.product_size,
+	// 			// product_color: ordered_product.product_color,
+	// 		})
+	// 		// console.log('1')
+	// 		// console.log('PRODUCT RESULTS')
+	// 		// console.log(Number(product_found.price) * Number(quantity))
+	// 		order_amount += Number(product_found.price) * Number(quantity)
+
+	// 	})
+
+	// }))
+
+	// console.log('2')
+	console.log('order_amount')
+	console.log(order_amount)
+
+	const newOrder = new Order({
+
+		_id: new mongoose.Types.ObjectId(),
+		// user: ,
+		products: product_objects,
+		order_amount: order_amount,
+
+		order_phone_number_field: req.body.phone_number,
+		order_delivery_address_field: req.body.delivery_address,
+	});
+
+	newOrder.save(async function (err, newOrder) {
+
+		if (err){
+			res.status(404).json({ success: false, msg: 'couldnt create blogpost database entry'})
+			return console.log(err)
+		}
+		// assign user object then save
+		await User.findOne({ phone_number: req.user.user_object.phone_number }) // using req.user from passport js middleware
+		.then(async (user) => {
+			if (user){
+
+				newOrder.user = user
+				newOrder.save()
+
+			// now working on stripe
+				try {
+
+					const session = await stripe.checkout.sessions.create({
+						payment_method_types: ['card'],
+						line_items: final_order_content,
+						mode: 'payment',
+						success_url: "http://localhost:3000/orders",
+						cancel_url: "http://localhost:3000/products",
+						// success_url: 'https://yoursite.com/success.html',
+						// cancel_url: 'https://example.com/cancel',
+					});
+
+					res.json({ id: session.id });
+
+				} catch (err) {
+
+					res.json(err);
+
+				}
+			}
+		})
+		.catch((err) => {
+
+			next(err);
+
+		});
+
+	})
+
+})
+
 
 router.post("/create-payment-intent", async (req, res) => {
 	
@@ -34,7 +146,7 @@ router.post("/create-payment-intent", async (req, res) => {
 	// GETTING PRODUCT DETAILS FROM OWN SERVER
 	const productDetails = getProductDetails();
 
-    // const {email} = req.body;
+    const {email} = req.body;
 
 	// CREATING DICT WITH PAYLOAD FROM POST REQUEST AND PRODUCT DETAILS
 	const options = {
@@ -125,112 +237,6 @@ router.post("/webhook", async (req, res) => {
 
 });
 
-
-const currency = "USD"
-
-router.post('/create-order-with-stripe', passport.authenticate('jwt', { session: false }), async function(req, res, next){
-	
-	let products_in_order = req.body.products // carries only product endpoints and variations including quantity
-	let final_order_content = []
-	let order_amount = 0
-	let product_objects = []
-
-	products_in_order.map((ordered_product) => {
-		
-		delete ordered_product.price
-		delete ordered_product.initial_quantity
-
-		Product.findOne(ordered_product)
-		.then((product_found) => {
-
-			product_objects.push(product_found)
-
-			final_order_content.push({
-				// paypal fields
-				name: product_found.title,
-				sku: product_found.endpoint,
-				price: product_found.price,
-				quantity: ordered_product.initial_quantity,
-				currency: currency,
-				// additional fields
-				product_size: ordered_product.product_size,
-				product_color: ordered_product.product_color,
-			})
-
-			order_amount += product_found.price * ordered_product.initial_quantity
-
-		})
-
-	})
-
-	const newOrder = new Order({
-
-		_id: new mongoose.Types.ObjectId(),
-		// user: ,
-		products: product_objects,
-		order_amount: order_amount,
-
-	});
-
-	newOrder.save(async function (err, newOrder) {
-
-		if (err){
-			res.status(404).json({ success: false, msg: 'couldnt create blogpost database entry'})
-			return console.log(err)
-		}
-		// assign user object then save
-		User.findOne({ phone_number: req.user.user_object.phone_number }) // using req.user from passport js middleware
-		.then(async (user) => {
-			if (user){
-
-				newOrder.user = user
-				newOrder.save()
-
-			// now working on stripe
-
-				// BODY IS ASSIGNED OPTIONS OBJECT IE options = {payment_method_types: ["card"]} 
-				const body = req.body; // req.body = { stripeToken, stripeTokenType, stripeEmail, payment_method_types  or amything additional}
-
-			    // const {email} = req.body;
-
-				// CREATING DICT WITH PAYLOAD FROM POST REQUEST AND PRODUCT DETAILS
-				const options = {
-					// stripe fields
-					...body,
-					amount: order_amount,
-					currency: currency,
-					metadata: {integration_check: 'accept_a_payment'},
-					receipt_email: email,
-					// additional fields
-				};
-
-				// CREATE PAYMENT INTENT BY RUNNING SINGLE FUNCTION BY PASSING ABOVE DICT
-				try {
-
-					const paymentIntent = await stripe.paymentIntents.create(options);
-					res.json(paymentIntent); // this sends payment intent IN THE FORM OF SECRET
-
-				} catch (err) {
-
-					res.json(err);
-
-				}
-
-			} else {
-
-				res.status(200).json({ success: false, msg: "user doesnt exists, try logging in again" });
-
-			}
-		})
-		.catch((err) => {
-
-			next(err);
-
-		});
-
-	})
-
-})
 
 
 

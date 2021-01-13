@@ -22,6 +22,10 @@ import {
 import { withStyles } from '@material-ui/styles';
 import withResponsiveness from "../../responsiveness_hook";
 
+import { loadStripe } from '@stripe/stripe-js';
+const stripePromise = loadStripe('pk_test_51I98eiADpqLOsbfMg7Sqh5TvQFPRvifh1U1za4bv3wDhEwbQdShvbzQ37NNLfd8sAENcd845FPSUjYZatN9dHHf700QcVrGvdq');
+
+
 const styles = theme => ({
 	root: {
 		height: 48,
@@ -73,6 +77,8 @@ class CreateOrder extends Component {
 
 			order_phone_number_field: '',
 			order_delivery_address_field: '',
+
+			order_email:'',
 		}
 
 	}
@@ -129,17 +135,13 @@ class CreateOrder extends Component {
 				  	</div>
 
 
+{/*Paypal payment*/}
 					<button style={styles.buttonWithoutBG}
 						onClick={ () => {
 
 							let setResponseInCurrentOrder = (arg) => this.props.set_current_order(arg)
 							let redirectToNewOrder = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
 
-							console.log({
-									products: this.props.complete_cart,
-									phone_number: this.state.order_phone_number_field,
-									delivery_address: this.state.order_delivery_address_field,
-								})
 							// removing unncessary keys like id, image_thumbnail_filepath from payload
 							var final_products_paylaod = this.props.complete_cart.map((product) => {
 
@@ -149,23 +151,7 @@ class CreateOrder extends Component {
 								return product
 							})
 
-							// const formData = new FormData()
-							// formData.append('products', this.props.complete_cart)
-							// formData.append('phone_number', this.state.order_phone_number_field)
-							// formData.append('delivery_address', this.state.order_delivery_address_field)
-// id
-// image_thumbnail_filepath
-// initial_quantity
-// title
-
-							console.log({
-								products: final_products_paylaod,
-								phone_number: this.state.order_phone_number_field,
-								delivery_address: this.state.order_delivery_address_field,
-							})
-
 							axios.post(utils.baseUrl + '/paypal/create-order-with-paypal', 
-								// formData,
 								{
 									products: final_products_paylaod,
 									phone_number: this.state.order_phone_number_field,
@@ -181,16 +167,8 @@ class CreateOrder extends Component {
 									window.location = res.data.forwardLink
 
 								} else {
-
 									console.log('SOMETHING IS WRONG')
-
 								}
-
-								// set to current parent object
-								// setResponseInCurrentOrder(res.data)
-
-								// change route to current_order
-								// redirectToNewOrder()
 
 							})
 							.catch(function (error) {
@@ -200,9 +178,80 @@ class CreateOrder extends Component {
 						}}
 					>
 						<p style={styles.innerText}>
-							Press To Create Order
+							Press To Create Order With PAYPAL
 						</p>
 					</button>
+
+
+
+
+
+
+{/*Stripe payment*/}
+					<button style={styles.buttonWithoutBG}
+						onClick={ () => {
+
+							let setResponseInCurrentOrder = (arg) => this.props.set_current_order(arg)
+							let redirectToNewOrder = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
+
+							// removing unncessary keys like id, image_thumbnail_filepath from payload
+							var final_products_paylaod = this.props.complete_cart.map((product) => {
+
+								delete product.id
+								delete product.image_thumbnail_filepath
+
+								return product
+							})
+
+							axios.post(utils.baseUrl + '/paypal/create-order-with-stripe', 
+								{
+									products: final_products_paylaod,
+									phone_number: this.state.order_phone_number_field,
+									delivery_address: this.state.order_delivery_address_field,
+									// order_email: this.state.order_email,
+								}
+							)
+							.then(async function (res) {
+							
+								const stripe = await stripePromise;
+								const session = await res.json();
+								const result = await stripe.redirectToCheckout({
+									sessionId: session.id,
+							    });
+
+							// OLD STRIPE WORKFLOW
+								// const clientSecret = res.data['client_secret'];
+								// const result = await stripe.confirmCardPayment(clientSecret, {
+								// 	payment_method: {
+								// 		card: elements.getElement(CardElement),
+								// 		billing_details: {
+								// 			email: email,
+								// 		},
+								// 	},
+								// });
+							// PAYPAL WORKFLOW
+								// if (res.status === 200) {
+
+								// 	console.log('GOING TO PAYPAL URL FOR PAYMENT VERIFICATION')
+								// 	console.log(res.data)
+								// 	window.location = res.data.forwardLink
+
+								// } else {
+								// 	console.log('SOMETHING IS WRONG')
+								// }
+							})
+							.catch(function (error) {
+								console.log(error)
+							});						
+
+						}}
+					>
+						<p style={styles.innerText}>
+							Press To Create Order With STRIPE
+						</p>
+					</button>
+
+
 				</div>
 			);
 		}			

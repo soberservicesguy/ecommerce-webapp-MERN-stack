@@ -32,7 +32,7 @@ ProductSchema.pre('save', function(next) {
 	this.endpoint = String( endpoint_number )
 	this.timestamp_of_uploading = String( Date.now() )
 
-	this.initial_quantity = 0
+	this.initial_quantity = 1
 	
     next();
 
