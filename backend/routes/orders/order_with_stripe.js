@@ -128,7 +128,7 @@ router.post("/webhook", async (req, res) => {
 
 const currency = "USD"
 
-router.post('/create-order-with-paypal', passport.authenticate('jwt', { session: false }), async function(req, res, next){
+router.post('/create-order-with-stripe', passport.authenticate('jwt', { session: false }), async function(req, res, next){
 	
 	let products_in_order = req.body.products // carries only product endpoints and variations including quantity
 	let final_order_content = []
@@ -186,7 +186,7 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 				newOrder.user = user
 				newOrder.save()
 
-			// now working on paypal
+			// now working on stripe
 
 				// BODY IS ASSIGNED OPTIONS OBJECT IE options = {payment_method_types: ["card"]} 
 				const body = req.body; // req.body = { stripeToken, stripeTokenType, stripeEmail, payment_method_types  or amything additional}

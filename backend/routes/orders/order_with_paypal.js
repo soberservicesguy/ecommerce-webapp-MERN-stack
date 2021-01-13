@@ -15,11 +15,9 @@ const passport = require('passport');
 
 const currency = "USD"
 
-router.post('/create-order-with-paypal', passport.authenticate('jwt', { session: false }), async function(req, res, next){
+async function get_all_product_objects_and_order_amount(products_list){
 
-	// console.log('PRODUCTS PAYLOAD')
-	// console.log(req.body.products)
-	let products_in_order = req.body.products // carries only product endpoints and variations including quantity
+	let products_in_order = products_list // carries only product endpoints and variations including quantity
 	let final_order_content = []
 	let order_amount = 0
 	let product_objects = []
@@ -58,6 +56,58 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 		})
 
 	}))
+
+	return {order_amount:order_amount, product_objects:final_order_content}
+}
+
+router.post('/create-order-with-paypal', passport.authenticate('jwt', { session: false }), async function(req, res, next){
+
+	// console.log('PRODUCTS PAYLOAD')
+	// console.log(req.body.products)
+	let order_payload_result = await get_all_product_objects_and_order_amount(req.body.products)
+	let order_amount = order_payload_result.order_amount
+	let product_objects = order_payload_result.product_objects
+
+	// DRYed OUT
+	// let products_in_order = req.body.products // carries only product endpoints and variations including quantity
+	// let final_order_content = []
+	// let order_amount = 0
+	// let product_objects = []
+
+	// let loop_result = await Promise.all(products_in_order.map(async (ordered_product) => {
+	// 	let quantity = ordered_product.initial_quantity
+	// 	// console.log(`ORDERED QUANTITY IS ${quantity}`)
+
+	// 	delete ordered_product.price
+	// 	delete ordered_product.initial_quantity
+
+	// 	await Product.findOne(ordered_product)
+	// 	.then((product_found) => {
+
+	// 		// console.log('FOUND PRODUCT')
+	// 		// console.log(product_found)
+
+	// 		product_objects.push(product_found)
+
+	// 		final_order_content.push({
+	// 			// paypal fields
+	// 			name: product_found.title,
+	// 			sku: product_found.endpoint,
+	// 			price: product_found.price,
+	// 			quantity: quantity,
+	// 			currency: currency,
+	// 		// NO additional fields, PAYPAL GIVES ERRORS
+	// 			// product_size: ordered_product.product_size,
+	// 			// product_color: ordered_product.product_color,
+	// 		})
+	// 		// console.log('1')
+	// 		// console.log('PRODUCT RESULTS')
+	// 		// console.log(Number(product_found.price) * Number(quantity))
+	// 		order_amount += Number(product_found.price) * Number(quantity)
+
+	// 	})
+
+	// }))
 	// console.log('2')
 	console.log('order_amount')
 	console.log(order_amount)
@@ -100,7 +150,7 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 					"transactions": [
 						{
 							"item_list": {
-								"items": final_order_content
+								"items": product_objects
 							},
 							"amount": {
 								"currency": currency,
@@ -157,19 +207,7 @@ router.get('/success', (req, res) => {
 
 	const payerId = req.query.PayerID; // is supplied by paypals approval url if payment successfull
 	const paymentId = req.query.paymentId; // is supplied by paypals approval url if payment successfull
-
-	const execute_payment_json = {
-		"payer_id": payerId,
-		"transactions": [
-			{
-				"amount": {
-					"currency": currency,
-					"total": String(order_amount)
-				}
-			}
-		]
-	};
-
+	const execute_payment_json = {"payer_id": payerId};
 
 	// this executes the payment finally
 	paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {

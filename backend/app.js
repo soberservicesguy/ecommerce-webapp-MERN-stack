@@ -39,10 +39,10 @@ app.use(express.urlencoded({extended: true}));
 
 // setting up cors
 app.use(
-  cors({
-    origin: "http://localhost:3000", // restrict calls to those this address
-    methods: ['GET', 'POST'] // only allow GET, POST requests
-  })
+	cors({
+		origin: "http://localhost:3000", // restrict calls to those this address
+		methods: ['GET', 'POST'] // only allow GET, POST requests
+	})
 );
 
 
@@ -62,7 +62,7 @@ app.use(require('./routes'));
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/*', function(req, res){
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+	res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 
@@ -86,14 +86,14 @@ app.use(express.static(path.join(__dirname, "push_notifications")));
 
 // public and private keys are generated using some command on terminal
 const publicVapidKey =
-  "BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo";
+	"BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo";
 const privateVapidKey = "3KzvKasA2SoCxsp0iIG_o9B0Ozvl1XDwI63JRKNIWBM";
 
 // SEARCH ABOUT BOTTOM ???
 webpush.setVapidDetails(
-  "mailto:test@test.com",
-  publicVapidKey,
-  privateVapidKey
+	"mailto:test@test.com",
+	publicVapidKey,
+	privateVapidKey
 );
 
 // --------------------------PUSH NOTIFICATIONS ends here-------------------------------
@@ -107,9 +107,9 @@ webpush.setVapidDetails(
 const paypal = require('paypal-rest-sdk');
 
 paypal.configure({
-  'mode': 'sandbox', //sandbox or live
-  'client_id': 'AaU8tQfmz1_MFDTKuf84yYERXvdDt2ZFJVrxhNW_49DazF4A_F0VBuKyV5_nntyEdZqUa5Oq9ZBj65GV',
-  'client_secret': 'EAZ8aFDU4lHHLy1bQqULYWqznf3dBknXZW3AH__zFC0bUs8AGUyR6RNbm-jHvqtikX7PsSqMO5vxuvKm'
+	'mode': 'sandbox', //sandbox or live
+	'client_id': 'AQye1v_Efj97EIvqKjfKKYG8JL2vKbtwVda0-gThF-f5wnxhPmn9DfBQaA3JRVkyjnRwjrb-5osgVNtG',
+	'client_secret': 'EC18QpJ154o-o1y2lsLtM4IXsxOhXzRHdubgvbgJf2fsVzYZGQdVqhnf7oE8cn4vW_APN3sHnHUs_htS'
 });
 
 // --------------------------PAYPAL ends here-------------------------------
@@ -127,15 +127,15 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { resolve } = require("path");
 
 app.use(
-  express.json({
-    // We need the raw body to verify webhook signatures.
-    // Let's compute it only when hitting the Stripe webhook endpoint.
-    verify: function(req, res, buf) {
-      if (req.originalUrl.startsWith("/webhook")) {
-        req.rawBody = buf.toString();
-      }
-    }
-  })
+	express.json({
+		// We need the raw body to verify webhook signatures.
+		// Let's compute it only when hitting the Stripe webhook endpoint.
+		verify: function(req, res, buf) {
+			if (req.originalUrl.startsWith("/webhook")) {
+				req.rawBody = buf.toString();
+			}
+		}
+	})
 );
 
 // --------------------------STRIPE ends here-------------------------------
