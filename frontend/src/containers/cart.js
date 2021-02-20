@@ -90,7 +90,7 @@ class CartContainer extends Component {
 
 			return (
 				<div>
-					<Grid container direction="row" spacing={4} style={{backgroundColor: '#eee'}}>
+					<Grid container direction="row" style={{backgroundColor: '#eee'}}>
 
 						{ cart.map((item, index) => (
 							<Provider
