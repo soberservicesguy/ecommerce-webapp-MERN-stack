@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 					
@@ -10,10 +9,6 @@ import utils from "../../utilities";
 import { withStyles } from '@material-ui/styles';
 import withResponsiveness from "../../responsiveness_hook";
 
-const styles = theme => ({
-	outerContainer: {
-	},
-});
 
 class ComponentForShowingProduct extends Component {
 	constructor(props) {
@@ -31,6 +26,10 @@ class ComponentForShowingProduct extends Component {
 	}
 
 	render() {
+
+		const styles = {
+
+		}
 
 		const data = this.props.dataPayloadFromParent // data being plugged from parent flatlist
 		var base64Image = "data:image/jpeg;base64," + data.image_thumbnail_filepath
@@ -79,4 +78,4 @@ ComponentForShowingProduct.defaultProps = {
 };
 
 // export default ComponentForShowingProduct;  // REMOVE withResponsiveness and withStyles as much as possible
-export default withResponsiveness(withStyles(styles)(ComponentForShowingProduct))
+export default withResponsiveness(ComponentForShowingProduct)

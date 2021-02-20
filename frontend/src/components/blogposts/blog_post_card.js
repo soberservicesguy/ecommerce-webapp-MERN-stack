@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -9,37 +8,13 @@ import {
 
 import axios from 'axios';
 import firebase from 'firebase';
+import utils from "../../utilities";
+
 
 import {
 	ComponentForShowingBlogPost
 } from "."
 
-import utils from "../../utilities";
-
-import { withStyles } from '@material-ui/styles';
-import withResponsiveness from "../../responsiveness_hook";
-
-
-const styles = theme => ({
-	root: {
-		maxWidth: 380,
-	},
-	media: {
-		height: 0,
-		paddingTop: '56.25%', // 16:9
-	},
-	expand: {
-		transform: 'rotate(0deg)',
-		marginLeft: 'auto',
-		transition: theme.transitions.create('transform', {
-			duration: theme.transitions.duration.shortest,
-		}),
-	},
-	expandOpen: {
-		transform: 'rotate(180deg)',
-	},
-
-});
 
 class BlogPostCard extends Component {
 	constructor(props) {
@@ -58,6 +33,10 @@ class BlogPostCard extends Component {
 	}
 
 	render() {
+
+		const styles = {
+
+		}
 
 		return (
 		  	<div>
@@ -90,5 +69,4 @@ BlogPostCard.defaultProps = {
 
 };
 
-// export default BlogPostCard; // REMOVE withResponsiveness and withStyles as much as possible
-export default withResponsiveness(withStyles(styles)(BlogPostCard));
+export default BlogPostCard;

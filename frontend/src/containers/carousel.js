@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -18,15 +17,6 @@ import {
 } from '../redux_stuff/connected_components';
 
 
-const styles = theme => ({
-  root: {
-    height: 48,
-//    color: props => (props.cool) ? 'red' : 'black',
-    [theme.breakpoints.up('sm')]:{
-    	paddingLeft:100
-    },
-  },
-});
 
 class CarouselContainer extends Component {
 	constructor(props) {
@@ -66,7 +56,12 @@ class CarouselContainer extends Component {
 		const total_carousels = this.props.total_carousels
 
 		const { classes } = this.props;
+
 	  	const {_xs, _sm, _md, _lg, _xl} = this.props
+
+	  	const styles = {
+
+	  	}
 
 		return (
 
@@ -97,5 +92,4 @@ CarouselContainer.defaultProps = {
 	// : ,
 };
 
-export default withResponsiveness(withStyles(styles)(CarouselContainer));
-
+export default withResponsiveness(CarouselContainer);

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -31,39 +30,6 @@ import { withStyles } from '@material-ui/styles';
 import withResponsiveness from "../responsiveness_hook";
 
 const { Provider, Consumer } = React.createContext();
-
-const styles = theme => ({
-	modal:{
-
-	},
-	root: {
-		maxWidth: 380,
-		color: props => (props.cool) ? 'red' : 'black',
-		[theme.breakpoints.up('sm')]:{
-			paddingLeft:100
-		},
-		'&:hover':{
-			paddingLeft:10  
-		},
-	},
-	media: {
-		height: 0,
-		paddingTop: '56.25%', // 16:9
-	},
-	expand: {
-		transform: 'rotate(0deg)',
-		marginLeft: 'auto',
-		transition: theme.transitions.create('transform', {
-			duration: theme.transitions.duration.shortest,
-		}),
-	},
-	expandOpen: {
-		transform: 'rotate(180deg)',
-	},
-	avatar: {
-		// backgroundColor: red[500],
-	},
-});
 
 
 class CartContainer extends Component {
@@ -106,6 +72,10 @@ class CartContainer extends Component {
 
 		// parameters being passed from previous route
 		const endpoint_params_passed = this.props.match.params
+
+		const styles = {
+
+		}
 
 
 		if ( this.state.redirectToRoute !== false ){
@@ -158,6 +128,6 @@ CartContainer.defaultProps = {
 };
 
 // export default CartContainer // REMOVE withResponsiveness and withStyles as much as possible
-export default withRouter(withResponsiveness(withStyles(styles)(CartContainer)))
+export default withRouter(withResponsiveness(CartContainer))
 
 export { Consumer };

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
@@ -15,28 +14,6 @@ import {
 import { withStyles } from '@material-ui/styles';
 import withResponsiveness from "../responsiveness_hook";
 
-const styles = theme => ({
-	root: {
-		maxWidth: 380,
-	},
-	media: {
-		height: 0,
-		paddingTop: '56.25%', // 16:9
-	},
-	expand: {
-		transform: 'rotate(0deg)',
-		marginLeft: 'auto',
-		transition: theme.transitions.create('transform', {
-			duration: theme.transitions.duration.shortest,
-		}),
-	},
-	expandOpen: {
-		transform: 'rotate(180deg)',
-	},
-	avatar: {
-		// backgroundColor: red[500],
-	},
-});
 
 class IndividualCartItem extends Component {
 	constructor(props) {
@@ -51,6 +28,10 @@ class IndividualCartItem extends Component {
 
 // FETCHING DATA FOR COMPONENT
 		const { serial_number } = this.props.navigation.params
+
+		const styles = {
+
+		}
 
 		axios.get(utils.baseUrl + '/blogposts/blogpost-with-summarized-children', 
 			{params: {serial_number: serial_number } }
@@ -104,5 +85,4 @@ IndividualCartItem.defaultProps = {
 
 
 // export default IndividualCartItem // REMOVE withResponsiveness and withStyles as much as possible
-export default withRouter(withResponsiveness(withStyles(styles)(IndividualCartItem)))
-
+export default withRouter(withResponsiveness(IndividualCartItem))

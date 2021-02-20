@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 					
@@ -10,10 +9,6 @@ import utils from "../../utilities";
 import { withStyles } from '@material-ui/styles';
 import withResponsiveness from "../../responsiveness_hook";
 
-const styles = theme => ({
-	outerContainer: {
-	},
-});
 
 class ComponentForShowingOrder extends Component {
 	constructor(props) {
@@ -31,6 +26,10 @@ class ComponentForShowingOrder extends Component {
 	}
 
 	render() {
+
+		const styles = {
+
+		}
 
 		const data = this.props.dataPayloadFromParent // data being plugged from parent flatlist
 
@@ -55,4 +54,4 @@ ComponentForShowingOrder.defaultProps = {
 };
 
 // export default ComponentForShowingOrder;  // REMOVE withResponsiveness and withStyles as much as possible
-export default withResponsiveness(withStyles(styles)(ComponentForShowingOrder))
+export default withResponsiveness(ComponentForShowingOrder)

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -18,15 +17,6 @@ import {
 } from '../redux_stuff/connected_components';
 
 
-const styles = theme => ({
-  root: {
-    height: 48,
-//    color: props => (props.cool) ? 'red' : 'black',
-    [theme.breakpoints.up('sm')]:{
-    	paddingLeft:100
-    },
-  },
-});
 
 class BlogPostContainer extends Component {
 	constructor(props) {
@@ -65,8 +55,11 @@ class BlogPostContainer extends Component {
 			
 		const total_blogposts = this.props.total_blogposts
 
-		const { classes } = this.props;
 	  	const {_xs, _sm, _md, _lg, _xl} = this.props
+
+	  	const styles = {
+
+	  	}
 
 		return (
 
@@ -97,5 +90,4 @@ BlogPostContainer.defaultProps = {
 	// : ,
 };
 
-export default withResponsiveness(withStyles(styles)(BlogPostContainer));
-
+export default withResponsiveness(BlogPostContainer);

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -20,26 +19,6 @@ import { withStyles } from '@material-ui/styles';
 import withResponsiveness from "../../responsiveness_hook";
 
 
-const styles = theme => ({
-	root: {
-		maxWidth: 380,
-	},
-	media: {
-		height: 0,
-		paddingTop: '56.25%', // 16:9
-	},
-	expand: {
-		transform: 'rotate(0deg)',
-		marginLeft: 'auto',
-		transition: theme.transitions.create('transform', {
-			duration: theme.transitions.duration.shortest,
-		}),
-	},
-	expandOpen: {
-		transform: 'rotate(180deg)',
-	},
-
-});
 
 class OrderCard extends Component {
 	constructor(props) {
@@ -59,6 +38,10 @@ class OrderCard extends Component {
 	}
 
 	render() {
+
+		const styles = {
+
+		}
 
 		return (
 		  	<div>
@@ -92,4 +75,4 @@ OrderCard.defaultProps = {
 };
 
 // export default OrderCard; // REMOVE withResponsiveness and withStyles as much as possible
-export default withResponsiveness(withStyles(styles)(OrderCard));
+export default withResponsiveness(OrderCard);

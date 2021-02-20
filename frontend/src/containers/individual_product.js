@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -13,16 +12,6 @@ import {
 import withResponsiveness from "../responsiveness_hook";
 
 import { withRouter } from "react-router-dom";
-
-const styles = theme => ({
-  root: {
-    height: 48,
-    // color: props => (props.cool) ? 'red' : 'black',
-    [theme.breakpoints.up('sm')]:{
-    	paddingLeft:100
-    },
-  },
-});
 
 
 class IndividualIndividualProduct extends Component {
@@ -42,45 +31,49 @@ class IndividualIndividualProduct extends Component {
 // RENDER METHOD
 	render() {
 		const { classes } = this.props;
-	  	const {_xs, _sm, _md, _lg, _xl} = this.props
+		const {_xs, _sm, _md, _lg, _xl} = this.props
 
-  		var base64Image = "data:image/jpeg;base64," + this.props.current_product.image_thumbnail_filepath
+		const styles = {
 
-	  	return (
-  			<div style={styles.imageContainer}>
-  				<img src={base64Image} alt="" 
-  					style={{
-  						width:200, 
-  						height:400, 
-  						resizeMode: "contain"
-  					}}
-  				/>
+		}
 
-  				<p>
-  					{this.props.current_product.category}
-  				</p>
-  				
-  				<p>
-  					{this.props.current_product.title}
-  				</p>
-  				
-  				<p>
-  					{this.props.current_product.initial_quantity}
-  				</p>
-  				
-  				<p>
-  					{this.props.current_product.product_size}
-  				</p>
-  				
-  				<p>
-  					{this.props.current_product.product_color}
-  				</p>
-  				
-  				<p>
-  					{this.props.current_product.price}
-  				</p>
-  				
-  			</div>
+		var base64Image = "data:image/jpeg;base64," + this.props.current_product.image_thumbnail_filepath
+
+		return (
+			<div style={styles.imageContainer}>
+				<img src={base64Image} alt="" 
+					style={{
+						width:200, 
+						height:400, 
+						resizeMode: "contain"
+					}}
+				/>
+
+				<p>
+					{this.props.current_product.category}
+				</p>
+				
+				<p>
+					{this.props.current_product.title}
+				</p>
+				
+				<p>
+					{this.props.current_product.initial_quantity}
+				</p>
+				
+				<p>
+					{this.props.current_product.product_size}
+				</p>
+				
+				<p>
+					{this.props.current_product.product_color}
+				</p>
+				
+				<p>
+					{this.props.current_product.price}
+				</p>
+				
+			</div>
 		);
 
 	}
@@ -90,4 +83,4 @@ IndividualIndividualProduct.defaultProps = {
 	//:,
 };
 
-export default withRouter(withResponsiveness(withStyles(styles)(IndividualIndividualProduct)));
+export default withRouter(withResponsiveness(IndividualIndividualProduct));

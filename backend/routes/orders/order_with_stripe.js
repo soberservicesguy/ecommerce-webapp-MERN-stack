@@ -165,6 +165,8 @@ router.post("/create-payment-intent", async (req, res) => {
 		const paymentIntent = await stripe.paymentIntents.create(options);
 		res.json(paymentIntent); // this sends payment intent IN THE FORM OF SECRET
 
+
+
 	} catch (err) {
 
 		res.json(err);

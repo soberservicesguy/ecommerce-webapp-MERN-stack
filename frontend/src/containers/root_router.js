@@ -465,9 +465,9 @@ class RootRouterContainer extends Component {
 
 
 
-						{/*<Route path="/home">
-							<HomeContainer/>
-						</Route>*/}
+						<Route path="/*">
+							<ConnectedSignUpContainer/>
+						</Route>
 					</Switch>
 				</div>
 			</Router>

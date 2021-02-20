@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react';
 import axios from 'axios';
 
@@ -19,104 +18,6 @@ import {
 
 import { verify_privilege } from "../handy_functions/"
 
-const styles = theme => ({
-	iconStyle:{
-		alignSelf:'center',
-	},
-	screenContainer:{
-		alignItems:'center',
-		flex:1,
-		// display:'flex',
-		// flexDirection: 'column',
-		alignItems:'center',
-		justifyContent: 'space-between', 
-	},
-
-	lowerButton:{
-		alignItems: 'center',
-		width:'100%',
-		paddingTop:15,
-		paddingBottom:15,
-		marginBottom:0,
-		backgroundColor: 'grey',
-	},
-
-	buttonWithoutBG:{
-		marginTop:50,
-		marginBottom:50,
-
-	},
-	textinput:{
-		marginTop:20,
-		textAlign:'left',
-		borderWidth:1,
-		borderColor:(utils.lightGrey),
-		borderStyle:'solid',
-		paddingLeft:20,
-		paddingTop:15,
-		paddingBottom:15,
-		fontSize:18,
-	},
-	orText:{
-		color:utils.lightGrey,
-		fontSize:20,
-		textAlign:'center',
-	},
-	orTextChild:{
-		flex:1,
-	},
-	rightBar:{
-		flex:3,
-		borderBottomWidth:1,
-		borderColor:utils.lightGrey,
-		width:'100%',
-	},
-	leftBar:{
-		flex:3,
-		borderBottomWidth:1,
-		borderColor:utils.lightGrey,
-	},
-	orContainer:{
-		marginTop:20,
-		display:'flex',
-		flexDirection:'row',
-		alignItems:'center',
-		justifyContent: 'center',
-		width:'80%',
-	},
-	buttonContainer:{
-		marginTop:30,
-		justifyContent: 'center',
-		alignSelf:'center',
-		height:100,
-		width:'80%',
-	},
-	roundButton:{
-		borderRadius:50,
-		borderColor:'green',
-		borderWidth:2,
-		backgroundColor: 'green',
-		borderStyle:'solid',
-		width:'100%',
-		paddingTop:15,
-		paddingBottom:15,
-	},
-	text:{
-		fontSize:20,
-		color:'white',
-		textAlign:'center',
-	},
-	headingOverInput:{
-		width:'100%',
-		marginTop:20,
-		fontSize:18,
-		fontWeight:'bold',
-		textAlign:'left',
-	},
-	textinputContainer:{
-		width:'80%',
-	},
-});
 
 class LoginContainer extends Component {
 	constructor(props) {
@@ -220,6 +121,11 @@ class LoginContainer extends Component {
 	}
 
 	render() {
+
+		const styles = {
+
+		}
+
 		return(
 			<div style={styles.screenContainer}>
 				
@@ -301,4 +207,4 @@ class LoginContainer extends Component {
 }
 
 // export default LoginContainer;  // REMOVE withResponsiveness and withStyles as much as possible
-export default withResponsiveness(withStyles(styles)(LoginContainer))
+export default withResponsiveness(LoginContainer)
