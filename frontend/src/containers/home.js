@@ -30,7 +30,10 @@ import {
 import { Carousel } from 'react-responsive-carousel'; // https://codesandbox.io/s/github/leandrowd/react-responsive-carousel/tree/master/codesandbox/default?file=/src/index.js
 import "react-responsive-carousel/lib/styles/carousel.min.css";  // required and can't be ignored
 
-
+import LocalShipping from '@material-ui/icons/LocalShipping';
+import ContactSupport from '@material-ui/icons/ContactSupport';
+import Payment from '@material-ui/icons/Payment';
+import Schedule from '@material-ui/icons/Schedule';
 
 class HomeContainer extends Component {
 	constructor(props) {
@@ -395,6 +398,64 @@ class HomeContainer extends Component {
 					</Grid>					
 				</div>
 
+
+			{/* four blocks like free shipping, 24/7 customer service */}
+				<div style={{
+					width:'90%',
+					margin:'auto',
+					marginTop:100,
+					backgroundColor: '#3A3B3C',
+					height:300,
+					paddingTop:100,
+					marginBottom:100,
+				}}>
+					<Grid container orientation = "row">
+						<Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+							<div style={{
+								textAlign:'center',
+
+							}}>
+								<LocalShipping style={{color:'white', fontSize:50,}}/>
+								<p style={{fontSize:20, color:'white'}}>
+									Free Shipping
+								</p>
+							</div>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+							<div style={{
+								textAlign:'center'
+							}}>
+								<ContactSupport style={{color:'white', fontSize:50,}}/>							
+								<p style={{fontSize:20, color:'white'}}>
+									24/7 Customer Service
+								</p>
+							</div>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+							<div style={{
+								textAlign:'center'
+							}}>
+								<Payment style={{color:'white', fontSize:50,}}/>
+								<p style={{fontSize:20, color:'white'}}>
+									Payment Options
+								</p>
+							</div>
+						</Grid>
+
+						<Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+							<div style={{
+								textAlign:'center'
+							}}>
+								<Schedule style={{color:'white', fontSize:50,}}/>
+								<p style={{fontSize:20, color:'white'}}>
+									30 Days Returns
+								</p>
+							</div>
+						</Grid>
+					</Grid>					
+				</div>
 
 
 			</div>
