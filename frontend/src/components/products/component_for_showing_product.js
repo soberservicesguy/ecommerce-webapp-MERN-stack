@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/styles';
 import withResponsiveness from "../../responsiveness_hook";
 
 
+
 class ComponentForShowingProduct extends Component {
 	constructor(props) {
 		super(props);
@@ -35,40 +36,41 @@ class ComponentForShowingProduct extends Component {
 		var base64Image = "data:image/jpeg;base64," + data.image_thumbnail_filepath
 
 		return (
-			<div style={styles.outerContainer}>
-				<div style={styles.imageContainer}>
-					<img src={base64Image} alt="" 
-						style={{
-							width:200, 
-							height:400, 
-							resizeMode: "contain"
-						}}
-					/>
-				</div>
 
-				<p>
-					{ data.endpoint }
+			<div style={{
+				marginLeft:10,
+				marginRight:10,
+			}}>
+				<img 
+					// src={base64Image}
+					src={utils.image} 
+					alt="" 
+					style={{
+						width:'100%', 
+						height:400, 
+						resizeMode: "stretch"
+					}}
+				/>
+
+				<p style={{
+					fontSize:20,
+					marginTop:20,
+					color:'grey',
+				}}>
+					Product name{ data.title }  <span style={{float:'right'}}>Size:{ data.product_size }</span>
 				</p>
 
-				<p>
-					{ data.title }
+				<p style={{
+					fontSize:20,
+					marginTop:20,
+					fontWeight:'bold',
+				}}>
+					<span style={{textDecoration: 'line-through', fontWeight:'normal',}}>${ data.price + 20 }</span> ${ data.price } 10 <span style={{float:'right', fontWeight:'normal', color:'grey'}}>Size:{ data.product_color }</span>
 				</p>
-				<p>
-					{ data.price }
-				</p>
-				<p>
-					{ data.initial_quantity }
-				</p>
-				<p>
-					{ data.product_size }
-				</p>
-				<p>
-					{ data.product_color }
-				</p>
-				<p>
-					{ data.timestamp_of_uploading }
-				</p>
-			</div>
+
+
+
+			</div>			
 		);
 	}
 }
@@ -79,3 +81,10 @@ ComponentForShowingProduct.defaultProps = {
 
 // export default ComponentForShowingProduct;  // REMOVE withResponsiveness and withStyles as much as possible
 export default withResponsiveness(ComponentForShowingProduct)
+					// { data.endpoint }
+				// <p>
+				// 	{ data.initial_quantity }
+				// </p>
+				// <p>
+				// 	{ data.timestamp_of_uploading }
+				// </p>

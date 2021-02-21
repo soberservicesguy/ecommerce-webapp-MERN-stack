@@ -48,18 +48,6 @@ class BlogPostCard extends Component {
 			  		/>
 		  		</div>
 
-				<div>
-					{/* 2nd show individual summary of childs */}
-				</div>
-
-				<div>
-					{/* 3rd show individual button for showing childs */}
-				</div>
-
-				<div>
-					{/* 4th create individual child options like comment / like */}
-				</div>
-
 		  	</div>
 		);
 	}

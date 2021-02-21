@@ -18,6 +18,8 @@ import {
 	IndividualCartItem,	
 	LoginContainer,
 
+	HomeContainer,
+
 } from "../containers";
 
 
@@ -57,6 +59,11 @@ import {
 	BulkCarouselUpload,
 	BulkProductUpload,
 } from "../components/"
+
+export const ConnectedHomeContainer = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(HomeContainer);
 
 export const ConnectedRootRouterContainer = connect(
 	mapStateToProps,

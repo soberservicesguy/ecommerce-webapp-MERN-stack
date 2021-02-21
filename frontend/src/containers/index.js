@@ -10,5 +10,11 @@ export {default as LoginContainer } from "./login.js";
 export {default as OrderContainer } from "./order.js";
 export {default as ProductContainer } from "./product.js";
 export {default as RootRouterContainer } from "./root_router.js";
-
 export {default as SignUpContainer} from "./sign_up"
+
+
+
+export {default as FooterContainer} from "./footer_container"
+export {default as HomeContainer} from "./home"
+export {default as TwoSidedCustomMasonryContainer} from "./two_sided_masonry_container"
+export {default as VerticalMasonriesContainer} from "./vertical_masonries"

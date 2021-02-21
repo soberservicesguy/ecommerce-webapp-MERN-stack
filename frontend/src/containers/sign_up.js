@@ -26,112 +26,6 @@ import {
 	Redirect,
 } from "react-router-dom";
 
-const styles = theme => ({
-	iconStyle:{
-		alignSelf:'center',
-	},
-	screenContainer:{
-		alignItems:'center',
-		flex:1,
-		// display:'flex',
-		// flexDirection: 'column',
-		alignItems:'center',
-		justifyContent: 'space-between', 
-	},
-
-	lowerButton:{
-		alignItems: 'center',
-		width:'100%',
-		paddingTop:15,
-		paddingBottom:15,
-		marginBottom:0,
-		backgroundColor: 'grey',
-	},
-
-	buttonWithoutBG:{
-		marginTop:50,
-		marginBottom:50,
-
-	},
-	textinput:{
-		marginTop:20,
-		textAlign:'left',
-		borderWidth:1,
-		borderColor:(utils.lightGrey),
-		borderStyle:'solid',
-		paddingLeft:20,
-		paddingTop:15,
-		paddingBottom:15,
-		fontSize:18,
-	},
-	orText:{
-		color:utils.lightGrey,
-		fontSize:20,
-		textAlign:'center',
-	},
-	orTextChild:{
-		flex:1,
-	},
-	rightBar:{
-		flex:3,
-		borderBottomWidth:1,
-		borderColor:utils.lightGrey,
-		width:'100%',
-	},
-	leftBar:{
-		flex:3,
-		borderBottomWidth:1,
-		borderColor:utils.lightGrey,
-	},
-	orContainer:{
-		marginTop:20,
-		display:'flex',
-		flexDirection:'row',
-		alignItems:'center',
-		justifyContent: 'center',
-		width:'80%',
-	},
-	buttonContainer:{
-		marginTop:30,
-		justifyContent: 'center',
-		alignSelf:'center',
-		height:100,
-		width:'80%',
-	},
-	roundButton:{
-		borderRadius:50,
-		borderColor:'green',
-		borderWidth:2,
-		backgroundColor: 'green',
-		borderStyle:'solid',
-		width:'100%',
-		paddingTop:15,
-		paddingBottom:15,
-	},
-	text:{
-		fontSize:20,
-		color:'white',
-		textAlign:'center',
-	},
-	headingOverInput:{
-		width:'100%',
-		marginTop:20,
-		fontSize:18,
-		fontWeight:'bold',
-		textAlign:'left',
-	},
-	textinputContainer:{
-		width:'80%',
-	},
-
-	formControl: {
-		margin: theme.spacing(1),
-		minWidth: 500,
-	},
-	selectEmpty: {
-		marginTop: theme.spacing(2),
-	},
-});
 
 class SignUpContainer extends Component {
 	constructor(props) {
@@ -163,7 +57,9 @@ class SignUpContainer extends Component {
 		formData.append('phone_number', this.state.phone_number)
 		formData.append('privileges_selected', this.state.privileges_selected)
 		formData.append('category', 'avatar')
-		formData.append('avatar_image', this.state.user_image, this.state.user_image.name)
+		if(this.state.user_image !== ''){
+			formData.append('avatar_image', this.state.user_image, this.state.user_image.name)
+		}
 
 
 		axios.post(utils.baseUrl + '/users/signup-and-get-privileges', formData, {
@@ -196,6 +92,89 @@ class SignUpContainer extends Component {
 
 	render() {
 
+		const styles = {
+			outerContainer:{
+				backgroundColor: 'white',
+				// height:500,
+				marginBottom:10,
+				paddingTop:30,
+				paddingBottom:30,
+			},
+
+
+		// round text input
+			roundTextInputContainer:{
+				width:'55%', 
+				height:50,
+				margin:'auto',
+				marginTop:10,
+				marginLeft:10,
+				marginRight:10,
+				// marginBottom:0,
+				// backgroundColor: '#000000',
+			},
+			roundTextInput:{
+				outline:'none', 
+				width:'100%', 
+				height:50, 
+				paddingLeft:20,
+				paddingRight:100, 
+				color:'black', 
+				borderRadius:30,
+				borderWidth:1, 
+				borderStyle:'solid',
+				borderColor:'#eee', 
+				backgroundColor: '#eee',
+			},
+
+		// roundButton
+			formAndRounButtonContainer:{
+				marginTop:20,
+				// flex:1,
+				flexBasis:'50%',
+				// width: '20%',
+				// width: 100,
+				height: 40,
+				backgroundColor: 'none',
+				borderRadius: 40,
+				borderWidth: 1, 
+				borderStyle: 'solid',
+				borderColor: 'grey', 
+				backgroundColor: 'grey',
+
+				// position: 'relative',
+				// bottom: (this.state.tracked_height2 + 2) + (this.state.tracked_height1 + 2 - this.state.tracked_height2 - 2)/2, // self_height_including_border_thickness + difference in heights of both / 2
+				// left: this.state.tracked_width1 + 2 - this.state.tracked_width2 - 10, // tracked_width - self_width - some_gap 
+			},
+			roundButton:{
+				width:'100%',
+				height:'100%',
+				border:'none',
+				background: 'none',
+				outline:'none',
+				color:'white',
+				fontWeight:'bold',
+			},
+
+			uploadImageContainer:{
+				flexBasis:'50%',
+				// height:60,
+				margin:'auto',
+				// marginTop:5,
+				display:'flex',
+				flexDirection:'row',
+				justifyContent: 'space-between', 
+				alignItems:'center',
+			},
+			uploadImageButton:{
+				paddingTop:20,
+				// paddingBottom:20,
+				fontWeight:'bold',
+				color:'grey'
+			}
+
+		}
+
 		if ( this.state.redirectToRoute !== false ){
 
 			// switching it back to false
@@ -207,82 +186,94 @@ class SignUpContainer extends Component {
 		} else {
 
 			return(
-				<div style={styles.screenContainer}>
-					
-					<div style={styles.buttonContainer}>
-						<button style={styles.roundButton} onClick={() => null} activeOpacity={0.2}>
-							<p style={styles.text}>
-								SIGN UP WITH FACEBOOK
-							</p>
+				<div style={styles.outerContainer}>
+
+					<div style={{...styles.formAndRounButtonContainer, width:'30%', margin:'auto', backgroundColor: '#3B5998'}}>
+						<button 
+							style={styles.roundButton}
+							onClick={ () => {}}
+						>
+							SIGN UP WITH FACEBOOK
 						</button>
 					</div>
 
-				
-					<div style={styles.orContainer}>
-						<div style={styles.leftBar}>
+					<p style={{textAlign:'center', marginTop:20, fontSize:20, fontWeight:'bold'}}>
+						OR
+					</p>
+
+					<div style={{
+						width:'80%',
+						margin:'auto',
+						display:'flex',
+						flexDirection:'column',
+						justifyContent: 'space-around',
+						alignItems:'center',
+						// height:60,
+						marginBottom:20,
+					}}>
+
+						<div style={styles.roundTextInputContainer}>
+							<form>
+								<input 
+									placeholder="Set your User name" 
+									type="text" 
+									// name="post_text"
+									// multiline={true}
+									onChange={ (event) =>  this.setState(prev => ({...prev, user_name: event.target.value})) }
+									style={styles.roundTextInput} 
+								/>
+							</form>
 						</div>
 
-						<div style={styles.orTextChild}>
-							<p style={styles.orText}>
-								OR
-							</p>
+						<div style={styles.roundTextInputContainer}>
+							<form>
+								<input 
+									placeholder="Type your Phone number" 
+									type="text" 
+									// name="post_text"
+									// multiline={true}
+									onChange={ (event) =>  this.setState(prev => ({...prev, phone_number: event.target.value})) }
+									style={styles.roundTextInput} 
+								/>
+							</form>
 						</div>
 
-						<div style={styles.rightBar}>
+						<div style={styles.roundTextInputContainer}>
+							<form>
+								<input 
+									placeholder="Set your password" 
+									type="password" 
+									// name="post_text"
+									// multiline={true}
+									onChange={ (event) =>  this.setState(prev => ({...prev, password: event.target.value})) }
+									style={styles.roundTextInput} 
+								/>
+							</form>
 						</div>
+
 					</div>
 
-					<div style={styles.textinputContainer}>
-						<p style={styles.headingOverInput}>
-							USER_NAME
-						</p>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your user name" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) =>  this.setState(prev => ({...prev, user_name: event.target.value})) }
-							/>
-						</form>
-					</div>
 
-					<div style={styles.textinputContainer}>
-						<p style={styles.headingOverInput}>
-							PHONE_NUMBER
-						</p>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your phone number" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) =>  this.setState(prev => ({...prev, phone_number: event.target.value})) }
-							/>
-						</form>
-					</div>
-
-					<div style={styles.textinputContainer}>
-						<p style={styles.headingOverInput}>
-							PASSWORD
-						</p>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your password" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
-								onChange={ (event) =>  this.setState(prev => ({...prev, password: event.target.value})) }
-							/>
-						</form>
-					</div>
-
-					<div style={styles.textinputContainer}>
-						<p style={styles.headingOverInput}>
-							USER_IMAGE
-						</p>
-						<form className={styles.root} noValidate autoComplete="off">
+					<div style={{
+						display:'flex',
+						flexDirection:'row',
+						justifyContent: 'space-around',
+						alignItems:'center',
+						height:60,
+						marginBottom:20,
+					}}>
+						{/*image upload*/}
+						<div>
+							<label htmlFor="myImageInput">
+								{/* below div will act as myInput button*/}
+								<div style={styles.uploadImageButton}>
+									Upload Image
+								</div>
+							</label>
 							<input
+								id="myImageInput"
+								style={{display:'none'}}
+								enctype="multipart/form-data"
 								name="avatar_image" // name of input field or fieldName simply
 								enctype="multipart/form-data"
 								type="file"
@@ -293,64 +284,86 @@ class SignUpContainer extends Component {
 									this.setState(prev => ({...prev, user_image: event.target.files[0]}))
 								}}
 							/>
-						</form>
+						</div>
+
+						<div>
+							<FormControl variant="outlined" style={styles.formControl}>
+								<InputLabel id="demo-simple-select-outlined-label" style={{fontSize:20}}>
+									Select Privileges To Use
+								</InputLabel>
+								<Select
+									style={{width:280, fontSize:20}}
+									labelId="demo-simple-select-outlined-label"
+									id="demo-simple-select-outlined"
+									value={this.state.privileges_selected}
+									label="Select Privileges To Use"
+									onChange={(event) => {
+										// console logging selected file from menu
+										console.log( event.target.value ) // gives first file
+										// setState method with event.target.files[0] as argument
+										this.setState(prev => ({...prev, privileges_selected: event.target.value}))
+									}}
+								>
+									<MenuItem value="">
+										<em>None</em>
+									</MenuItem>
+									<MenuItem value={'Basic'}>
+										Basic (surfing and ordering products)
+									</MenuItem>
+									<MenuItem value={'Products control'}>
+										Uploading Products
+									</MenuItem>
+									<MenuItem value={'Blogposts control'}>
+										Uploading Blogposts
+									</MenuItem>
+									<MenuItem value={'Total control'}>
+										All Privileges
+									</MenuItem>
+								</Select>
+							</FormControl>
+						</div>
 					</div>
 
-					<div style={{marginTop: 10,}}>
-						<FormControl variant="outlined" style={styles.formControl}>
-							<InputLabel id="demo-simple-select-outlined-label" style={{fontSize:20}}>
-								Select Privileges To Use
-							</InputLabel>
-							<Select
-								style={{width:280, fontSize:20}}
-								labelId="demo-simple-select-outlined-label"
-								id="demo-simple-select-outlined"
-								value={this.state.privileges_selected}
-								label="Select Privileges To Use"
-								onChange={(event) => {
-									// console logging selected file from menu
-									console.log( event.target.value ) // gives first file
-									// setState method with event.target.files[0] as argument
-									this.setState(prev => ({...prev, privileges_selected: event.target.value}))
-								}}
+
+
+					<div style={{
+						width:'70%',
+						margin:'auto',
+						display:'flex',
+						flexDirection:'row',
+						justifyContent: 'space-around',
+						alignItems:'center',
+						height:60,
+						marginBottom:20,
+					}}>
+						<div style={{...styles.formAndRounButtonContainer, marginRight:50, backgroundColor: '#3B5998'}}>
+							<button 
+								style={styles.roundButton}
+								onClick={ () => {}}
 							>
-								<MenuItem value="">
-									<em>None</em>
-								</MenuItem>
-								<MenuItem value={'Basic'}>
-									Basic (surfing and ordering products)
-								</MenuItem>
-								<MenuItem value={'Products control'}>
-									Uploading Products
-								</MenuItem>
-								<MenuItem value={'Blogposts control'}>
-									Uploading Blogposts
-								</MenuItem>
-								<MenuItem value={'Total control'}>
-									All Privileges
-								</MenuItem>
-							</Select>
-						</FormControl>
+								Already have an account ?
+							</button>
+						</div>
+
+
+
+						<div style={{...styles.formAndRounButtonContainer, marginLeft:50,}}>
+							<button 
+								style={styles.roundButton}
+								onClick={ () => this.signup_and_get_privileges() }
+							>
+								Create Account
+							</button>
+						</div>
 					</div>
 
-
-					<button  onClick={() => {}} style={styles.buttonWithoutBG}>
-						<p style={styles.lowerText}>
-							Already have an account ?
-						</p>
-					</button>
-						
-					<button style={styles.lowerButton} activeOpacity={0.2}
-						onClick={ () => this.signup_and_get_privileges() }
-					>
-						Create Account
-					</button>
 									
 				</div>
+
 			);
 		}
 	}
 }
 
 // export default SignUpContainer;  // REMOVE withResponsiveness and withStyles as much as possible
-export default withResponsiveness(withStyles(styles)(SignUpContainer))
+export default withResponsiveness(SignUpContainer)
