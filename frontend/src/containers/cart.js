@@ -29,7 +29,6 @@ import {
 import { withStyles } from '@material-ui/styles';
 import withResponsiveness from "../responsiveness_hook";
 
-const { Provider, Consumer } = React.createContext();
 
 
 class CartContainer extends Component {
@@ -90,30 +89,128 @@ class CartContainer extends Component {
 
 			return (
 				<div>
-					<Grid container direction="row" style={{backgroundColor: '#eee'}}>
+					{/* cart header */}
+
+					<div style={{
+						display:'flex',
+						flexDirection:'row',
+						justifyContent:'space-between',
+						alignItems:'center',
+						width:'90%',
+						margin:'auto',
+						marginTop:10,
+						marginBottom:10,
+						borderTopWidth:3,
+						borderTopColor:'#eee',
+						borderTopStyle:'solid',
+						paddingTop:20,
+					}}>	
+						<div style={{flexBasis:50,}}>
+							<p style={{paddingLeft:10,}}>
+								#
+							</p>
+						</div>			
+
+						<div style={{flex:1, textAlign:'center'}}>
+							<p>Image</p>
+						</div>
+
+						<div style={{flexBasis:200, textAlign:'center'}}>
+							<p>
+								Title
+							</p>
+						</div>
+
+						<div style={{flex:2, textAlign:'center'}}>
+							<p>Product Color</p>
+						</div>
+
+						<div style={{flex:2, textAlign:'center'}}>
+							<p>Product Size</p>
+						</div>
+
+						<div style={{flex:1, fontSize:20, paddingTop:10, textAlign:'center'}}>
+							<p>
+								Unit Price
+							</p>
+						</div>
+
+
+		{/*				<p>
+							{ data.endpoint }
+						</p>*/}
+
+		{/*				<p>
+							{ data.product_size }
+						</p>
+
+						<p>
+							{ data.product_color }
+						</p>*/}
+
+		{/*				<p>
+							{ data.initial_quantity }
+						</p>*/}
+
+		{/*				<p>
+							{ data.timestamp_of_uploading }
+						</p>*/}
+
+
+		{/*				<button onClick = { () => this.toggle_product_size_modal() }>
+							toggle_size_modal_callback
+						</button>
+					
+						<button onClick = { () => this.toggle_initial_quantity_modal() }>
+							toggle_initial_quantity_modal
+						</button>
+					
+						<button onClick = { () => this.toggle_product_color_modal() }>
+							toggle_product_color_modal
+						</button>*/}
+
+						<div style={{flex:1, textAlign:'center'}}>
+							<p>Quantity</p>
+						</div>
+
+
+						<div style={{flex:1, fontSize:20, fontWeight:'bold', paddingTop:10, textAlign:'center'}}>
+							<p>
+								Total
+							</p>
+						</div>
+
+
+						<div style={{
+							flexBasis: 20,
+							fontWeight:'bold',							
+							fontSize:20,
+						}}>
+							<p>Remove</p>
+						</div>
+
+				</div>
+
+
+
+
+					<Grid container direction="column">
 
 						{ cart.map((item, index) => (
-							<Provider
-								key = {String(index)} 
-								value={{
-									getCompleteObjectAndSwitchToItsContainer: () => this.getCompleteObjectAndSwitchToItsContainer(),
-									set_current_cart_item: () => this.props.set_current_item_in_Cart( item )
-							}}>
-								<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-									<ConnectedComponentForShowingCart
-										dataPayloadFromParent = { item }
-									// not needed, since its redux
-										// product_size_modify_callback = { (product_size) => this.props.modify_product_size_of_some_item_in_cart(item.id, product_size) }
-										// initial_quantity_modify_callback = { (initial_quantity) => this.props.modify_initial_quantity_of_some_item_in_cart(item.id, initial_quantity) }
-										// product_color_modify_callback = { (product_color) => this.props.modify_product_color_of_some_item_in_cart(item.id, product_color) }						
-										// remove_from_cart_callback = { () => this.props.remove_product_from_cart(item.id) }
-										
-										// toggle_size_modal_callback = { () => this.toggle_product_size_modal() }
-										// toggle_quantity_modal_callback = { () => this.toggle_initial_quantity_modal() }
-										// toggle_color_modal_callback = { () => this.toggle_product_color_modal() }
-									/>
-								</Grid>
-							</Provider>
+							<Grid item xs={12}>
+								<ConnectedComponentForShowingCart
+									dataPayloadFromParent = { item }
+								// not needed, since its redux
+									// product_size_modify_callback = { (product_size) => this.props.modify_product_size_of_some_item_in_cart(item.id, product_size) }
+									// initial_quantity_modify_callback = { (initial_quantity) => this.props.modify_initial_quantity_of_some_item_in_cart(item.id, initial_quantity) }
+									// product_color_modify_callback = { (product_color) => this.props.modify_product_color_of_some_item_in_cart(item.id, product_color) }						
+									// remove_from_cart_callback = { () => this.props.remove_product_from_cart(item.id) }
+									
+									// toggle_size_modal_callback = { () => this.toggle_product_size_modal() }
+									// toggle_quantity_modal_callback = { () => this.toggle_initial_quantity_modal() }
+									// toggle_color_modal_callback = { () => this.toggle_product_color_modal() }
+								/>
+							</Grid>
 						))}
 					</Grid>
 
@@ -129,5 +226,3 @@ CartContainer.defaultProps = {
 
 // export default CartContainer // REMOVE withResponsiveness and withStyles as much as possible
 export default withRouter(withResponsiveness(CartContainer))
-
-export { Consumer };

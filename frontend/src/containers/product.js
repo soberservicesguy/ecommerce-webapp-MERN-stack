@@ -73,14 +73,18 @@ class ProductContainer extends Component {
 				{total_products.map((item, index)=>(
 
 					<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-						<ConnectedProductCard
-							dataPayloadFromParent = { item }
 
-							// showCompleteProductCallback = {  }
-							addToCartCallback = { () => this.props.add_product_to_cart(item.id) }
-							removeFromCartCallback = { () => this.props.remove_product_from_cart(item.id) }
-						
-						/>
+						<div style={{marginTop:(index > 2) ? 50 : 0,}}>
+							<ConnectedProductCard
+								dataPayloadFromParent = { item }
+
+								// showCompleteProductCallback = {  }
+								addToCartCallback = { () => this.props.add_product_to_cart(item.id) }
+								removeFromCartCallback = { () => this.props.remove_product_from_cart(item.id) }
+							
+							/>
+						</div>
+				
 					</Grid>
 
 				))}

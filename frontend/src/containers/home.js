@@ -35,6 +35,12 @@ import ContactSupport from '@material-ui/icons/ContactSupport';
 import Payment from '@material-ui/icons/Payment';
 import Schedule from '@material-ui/icons/Schedule';
 
+import { 
+	withRouter,
+	Link,
+} from "react-router-dom";
+
+
 class HomeContainer extends Component {
 	constructor(props) {
 		super(props);
@@ -320,11 +326,17 @@ class HomeContainer extends Component {
 			  			// {[...total_categories, 1, 2].map((item, index) => {
 			  				return(
 			  					<div>
-				  					<ComponentForShowingCategory
-				  						dataPayloadFromParent = { item }
-				  						index={ index }
-				  						local_height = {this.get_height_of_nth_child_in_masonry_through_pattern(total_children, child_addition_pattern_heights)[index]}						  			
-				  					/>
+		  					  		<Link 
+		  					  			to={`/products/:id=${item.endpoint}`} 
+		  					  			style={{color: 'inherit', textDecoration: 'inherit'}}
+		  							>
+					  					<ComponentForShowingCategory
+					  						dataPayloadFromParent = { item }
+					  						index={ index }
+					  						local_height = {this.get_height_of_nth_child_in_masonry_through_pattern(total_children, child_addition_pattern_heights)[index]}						  			
+					  					/>
+
+				  					</Link>
 			  					</div>
 				  			)
 
@@ -378,7 +390,6 @@ class HomeContainer extends Component {
 
 
 			{/* 3 blogcards block */}
-
 				<div style={{
 					width:'90%',
 					margin:'auto',

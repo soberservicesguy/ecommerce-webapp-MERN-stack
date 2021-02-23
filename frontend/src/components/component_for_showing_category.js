@@ -82,19 +82,14 @@ class ComponentForShowingCategory extends Component {
 			>
 
 				<div style={(this.state.hovered) ? styles.innerContentContainer : styles.innerContentHiddenContainer}>
-			  		<Link 
-			  			to={`/images/:id=${this.props.dataPayloadFromParent.endpoint}`} 
-			  			style={{color: 'inherit', textDecoration: 'inherit'}}
-					>
-						<div style={{height:70,}}>
-							<p style={styles.titleText}>
-								Title { data.title }
-							</p>						
-							<p style={styles.categoryText}>
-								Category { data.category }
-							</p>
-						</div>
-					</Link>
+					<div style={{height:70,}}>
+						<p style={styles.titleText}>
+							Title { data.title }
+						</p>						
+						<p style={styles.categoryText}>
+							Category { data.category }
+						</p>
+					</div>
 
 					{this.props.children}
 
