@@ -113,6 +113,8 @@ class ComponentForShowingCart extends Component {
 
 	render() {
 
+		const { _xs, _sm, _md, _lg, _xl } = this.props
+
 		const styles = {
 
 		}
@@ -183,9 +185,9 @@ class ComponentForShowingCart extends Component {
 				</div>
 
 				<div style={{flex:2, }}>
-					<FormControl variant="outlined" style={{width:'80%'}}>
+					<FormControl variant="outlined" style={{width:(_xs || _sm) ? '100%' : '80%'}}>
 						<InputLabel id="demo-simple-select-outlined-label" style={{fontSize:20}}>
-							Select Product Color
+							Color
 						</InputLabel>
 						<Select
 							style={{width:'100%', fontSize:20}}
@@ -209,13 +211,13 @@ class ComponentForShowingCart extends Component {
 					</FormControl>
 				</div>
 
-				<div style={{flex:2}}>
-					<FormControl variant="outlined" style={{width:'100%'}}>
-						<InputLabel id="demo-simple-select-outlined-label" style={{fontSize:20}}>
-							Select Product Size
+				<div style={{flex:2,}}>
+					<FormControl variant="outlined" style={{width:(_xs || _sm) ? '100%' : '80%'}}>
+						<InputLabel id="demo-simple-select-outlined-label" style={{fontSize:20,}}>
+							Size
 						</InputLabel>
 						<Select
-							style={{width:'80%', fontSize:20}}
+							style={{width:'100%', fontSize:20,}}
 							labelId="demo-simple-select-outlined-label"
 							id="demo-simple-select-outlined"
 							label="Select Product Size"

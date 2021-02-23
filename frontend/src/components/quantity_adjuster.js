@@ -36,25 +36,29 @@ class QuantityAdjuster extends React.Component {
 
 	render() {
 	
+		const {_xs, _sm, _md, _lg, _xl } = this.props
+
 		return (
 			<div style={{
 				display:'flex',
 				flexDirection:'row',
 				justifyContent: 'center',
 				alignItems:'center',
+				width:(_xs || _sm) ? 70 : 100,
+				margin:'auto',
 			}}>
-				<div style={{flexBasis:30,}}>
+				<div style={{flexBasis:'20%',}}>
 					<button onClick={this.decrement} style={{height:50, width:'100%'}}>
 						-
 					</button>
 				</div>
 
-				<div style={{flexBasis:30,}}>
-					<input type="text" value={this.state.value} readonly style={{width:50, height:50, width:50, textAlign:'center'}}/>
+				<div style={{flexBasis: '40%'}}>
+					<input type="text" value={this.state.value} readonly style={{height:50, width:40, textAlign:'center'}}/>
 				</div>
 
-				<div style={{flexBasis:30}}>
-					<button onClick={this.increment} style={{height:50, width:'100%'}}>
+				<div style={{flexBasis: '20%'}}>
+					<button onClick={this.increment} style={{height:50,}}>
 						+
 					</button>  
 				</div>

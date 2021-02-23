@@ -89,8 +89,9 @@ class CartContainer extends Component {
 
 			return (
 				<div>
-					{/* cart header */}
 
+
+				{/* cart header */}
 					<div style={{
 						display:'flex',
 						flexDirection:'row',
@@ -106,90 +107,53 @@ class CartContainer extends Component {
 						paddingTop:20,
 					}}>	
 						<div style={{flexBasis:50,}}>
-							<p style={{paddingLeft:10,}}>
+							<p style={{paddingLeft:10, fontWeight:'bold'}}>
 								#
 							</p>
 						</div>			
 
-						<div style={{flex:1, textAlign:'center'}}>
+						<div style={{flex:1, textAlign:'center', fontWeight:'bold'}}>
 							<p>Image</p>
 						</div>
 
-						<div style={{flexBasis:200, textAlign:'center'}}>
+						<div style={{flexBasis:200, textAlign:'center', fontWeight:'bold'}}>
 							<p>
 								Title
 							</p>
 						</div>
 
-						<div style={{flex:2, textAlign:'center'}}>
+						<div style={{flex:2, textAlign:'center', fontWeight:'bold'}}>
 							<p>Product Color</p>
 						</div>
 
-						<div style={{flex:2, textAlign:'center'}}>
+						<div style={{flex:2, textAlign:'center', fontWeight:'bold',}}>
 							<p>Product Size</p>
 						</div>
 
-						<div style={{flex:1, fontSize:20, paddingTop:10, textAlign:'center'}}>
+						<div style={{flex:1, textAlign:'center', fontWeight:'bold'}}>
 							<p>
 								Unit Price
 							</p>
 						</div>
 
-
-		{/*				<p>
-							{ data.endpoint }
-						</p>*/}
-
-		{/*				<p>
-							{ data.product_size }
-						</p>
-
-						<p>
-							{ data.product_color }
-						</p>*/}
-
-		{/*				<p>
-							{ data.initial_quantity }
-						</p>*/}
-
-		{/*				<p>
-							{ data.timestamp_of_uploading }
-						</p>*/}
-
-
-		{/*				<button onClick = { () => this.toggle_product_size_modal() }>
-							toggle_size_modal_callback
-						</button>
-					
-						<button onClick = { () => this.toggle_initial_quantity_modal() }>
-							toggle_initial_quantity_modal
-						</button>
-					
-						<button onClick = { () => this.toggle_product_color_modal() }>
-							toggle_product_color_modal
-						</button>*/}
-
-						<div style={{flex:1, textAlign:'center'}}>
+						<div style={{flex:1, textAlign:'center', fontWeight:'bold'}}>
 							<p>Quantity</p>
 						</div>
 
-
-						<div style={{flex:1, fontSize:20, fontWeight:'bold', paddingTop:10, textAlign:'center'}}>
+						<div style={{flex:1, fontWeight:'bold',  textAlign:'center', fontWeight:'bold'}}>
 							<p>
 								Total
 							</p>
 						</div>
 
-
 						<div style={{
 							flexBasis: 20,
-							fontWeight:'bold',							
-							fontSize:20,
+							fontWeight:'bold',
+							fontWeight:'bold'
 						}}>
 							<p>Remove</p>
 						</div>
-
-				</div>
+					</div>
 
 
 
