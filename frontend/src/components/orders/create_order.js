@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 					
 import axios from 'axios';
-import firebase from 'firebase';
 
 import utils from "../../utilities";
 
@@ -51,6 +50,55 @@ class CreateOrder extends Component {
 	render() {
 
 		const styles = {
+			outerContainer:{
+				backgroundColor: 'white',
+				// height:500,
+				marginBottom:10,
+				paddingTop:30,
+				paddingBottom:30,
+
+				// margin:'auto',
+			},
+
+
+		// round text input
+			roundTextInputContainer:{
+				width:'55%', 
+				height:50,
+				margin:'auto',
+				marginTop:10,
+				// marginLeft:10,
+				// marginRight:10,
+				// marginBottom:0,
+				// backgroundColor: '#000000',
+			},
+			roundTextInput:{
+				outline:'none', 
+				width:'100%', 
+				height:50, 
+				paddingLeft:20,
+				paddingRight:100, 
+				color:'black', 
+				borderRadius:30,
+				borderWidth:1, 
+				borderStyle:'solid',
+				borderColor:'#eee', 
+				backgroundColor: '#eee',
+			},
+
+
+
+			buttonWithoutBG:{
+				width:'100%',
+				height:'100%',
+				border:'none',
+				background: 'none',
+				outline:'none',
+				color:'black',
+				fontWeight:'bold',
+
+			},
+
 
 		}
 
@@ -72,147 +120,158 @@ class CreateOrder extends Component {
 				<div style={styles.outerContainer}>
 
 
-				  	<div style={styles.textinputContainer}>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your Contact Number" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
+					<div style={styles.roundTextInputContainer}>
+						<form>
+							<input 
+								placeholder="Type your Contact Number" 
+								type="text" 
+								// name="post_text"
+								// multiline={true}
 								onChange={ (event) => this.setState( prev => ({...prev, order_phone_number_field: event.target.value})) }
+								style={styles.roundTextInput} 
 							/>
 						</form>
-				  	</div>
+					</div>
 
 
-				  	<div style={styles.textinputContainer}>
-						<form className={styles.root} noValidate autoComplete="off">
-							<TextField 
-								label="Type your Delivery Address" // placeholder 
-								id="standard-basic" // "filled-basic" / "outlined-basic"
-								variant="outlined" // "filled"
-								classes={styles.textinput}
+					<div style={styles.roundTextInputContainer}>
+						<form>
+							<input 
+								placeholder="Type your Delivery Address" 
+								type="text" 
+								// name="post_text"
+								// multiline={true}
 								onChange={ (event) => this.setState( prev => ({...prev, order_delivery_address_field: event.target.value})) }
+								style={styles.roundTextInput} 
 							/>
 						</form>
-				  	</div>
-
-
-{/*Paypal payment*/}
-					<button style={styles.buttonWithoutBG}
-						onClick={ () => {
-
-							let setResponseInCurrentOrder = (arg) => this.props.set_current_order(arg)
-							let redirectToNewOrder = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
-
-							// removing unncessary keys like id, image_thumbnail_filepath from payload
-							var final_products_paylaod = this.props.complete_cart.map((product) => {
-
-								delete product.id
-								delete product.image_thumbnail_filepath
-
-								return product
-							})
-
-							axios.post(utils.baseUrl + '/paypal/create-order-with-paypal', 
-								{
-									products: final_products_paylaod,
-									phone_number: this.state.order_phone_number_field,
-									delivery_address: this.state.order_delivery_address_field,
-								}
-							)
-							.then(function (res) {
-							
-								if (res.status === 200) {
-
-									console.log('GOING TO PAYPAL URL FOR PAYMENT VERIFICATION')
-									console.log(res.data)
-									window.location = res.data.forwardLink
-
-								} else {
-									console.log('SOMETHING IS WRONG')
-								}
-
-							})
-							.catch(function (error) {
-								console.log(error)
-							});						
-
-						}}
-					>
-						<p style={styles.innerText}>
-							Press To Create Order With PAYPAL
-						</p>
-					</button>
+					</div>
 
 
 
+					<div style={{
+						width:'90%',
+						margin:'auto',
+						display:'flex',
+						flexDirection:'row',
+						justifyContent: 'center',
+						alignItems:'center',
+						height:60,
+						marginBottom:20,
+					}}>
 
+					{/*Paypal payment*/}
+						<button style={styles.buttonWithoutBG}
+							onClick={ () => {
 
+								let setResponseInCurrentOrder = (arg) => this.props.set_current_order(arg)
+								let redirectToNewOrder = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
 
-{/*Stripe payment*/}
-					<button style={styles.buttonWithoutBG}
-						onClick={ () => {
+								// removing unncessary keys like id, image_thumbnail_filepath from payload
+								var final_products_paylaod = this.props.complete_cart.map((product) => {
 
-							let setResponseInCurrentOrder = (arg) => this.props.set_current_order(arg)
-							let redirectToNewOrder = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
+									delete product.id
+									delete product.image_thumbnail_filepath
 
-							// removing unncessary keys like id, image_thumbnail_filepath from payload
-							var final_products_paylaod = this.props.complete_cart.map((product) => {
+									return product
+								})
 
-								delete product.id
-								delete product.image_thumbnail_filepath
+								axios.post(utils.baseUrl + '/paypal/create-order-with-paypal', 
+									{
+										products: final_products_paylaod,
+										phone_number: this.state.order_phone_number_field,
+										delivery_address: this.state.order_delivery_address_field,
+									}
+								)
+								.then(function (res) {
+								
+									if (res.status === 200) {
 
-								return product
-							})
+										console.log('GOING TO PAYPAL URL FOR PAYMENT VERIFICATION')
+										console.log(res.data)
+										window.location = res.data.forwardLink
 
-							axios.post(utils.baseUrl + '/paypal/create-order-with-stripe', 
-								{
-									products: final_products_paylaod,
-									phone_number: this.state.order_phone_number_field,
-									delivery_address: this.state.order_delivery_address_field,
-									// order_email: this.state.order_email,
-								}
-							)
-							.then(async function (res) {
-							
-								const stripe = await stripePromise;
-								const session = await res.json();
-								const result = await stripe.redirectToCheckout({
-									sessionId: session.id,
-							    });
+									} else {
+										console.log('SOMETHING IS WRONG')
+									}
 
-							// OLD STRIPE WORKFLOW
-								// const clientSecret = res.data['client_secret'];
-								// const result = await stripe.confirmCardPayment(clientSecret, {
-								// 	payment_method: {
-								// 		card: elements.getElement(CardElement),
-								// 		billing_details: {
-								// 			email: email,
-								// 		},
-								// 	},
-								// });
-							// PAYPAL WORKFLOW
-								// if (res.status === 200) {
+								})
+								.catch(function (error) {
+									console.log(error)
+								});						
 
-								// 	console.log('GOING TO PAYPAL URL FOR PAYMENT VERIFICATION')
-								// 	console.log(res.data)
-								// 	window.location = res.data.forwardLink
+							}}
+						>
+							<p style={styles.innerText}>
+								Order With PAYPAL
+							</p>
+						</button>
 
-								// } else {
-								// 	console.log('SOMETHING IS WRONG')
-								// }
-							})
-							.catch(function (error) {
-								console.log(error)
-							});						
+					{/*Stripe payment*/}
+						<button style={styles.buttonWithoutBG}
+							onClick={ () => {
 
-						}}
-					>
-						<p style={styles.innerText}>
-							Press To Create Order With STRIPE
-						</p>
-					</button>
+								let setResponseInCurrentOrder = (arg) => this.props.set_current_order(arg)
+								let redirectToNewOrder = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
+
+								// removing unncessary keys like id, image_thumbnail_filepath from payload
+								var final_products_paylaod = this.props.complete_cart.map((product) => {
+
+									delete product.id
+									delete product.image_thumbnail_filepath
+
+									return product
+								})
+
+								axios.post(utils.baseUrl + '/paypal/create-order-with-stripe', 
+									{
+										products: final_products_paylaod,
+										phone_number: this.state.order_phone_number_field,
+										delivery_address: this.state.order_delivery_address_field,
+										// order_email: this.state.order_email,
+									}
+								)
+								.then(async function (res) {
+								
+									const stripe = await stripePromise;
+									const session = await res.json();
+									const result = await stripe.redirectToCheckout({
+										sessionId: session.id,
+								    });
+
+								// OLD STRIPE WORKFLOW
+									// const clientSecret = res.data['client_secret'];
+									// const result = await stripe.confirmCardPayment(clientSecret, {
+									// 	payment_method: {
+									// 		card: elements.getElement(CardElement),
+									// 		billing_details: {
+									// 			email: email,
+									// 		},
+									// 	},
+									// });
+								// PAYPAL WORKFLOW
+									// if (res.status === 200) {
+
+									// 	console.log('GOING TO PAYPAL URL FOR PAYMENT VERIFICATION')
+									// 	console.log(res.data)
+									// 	window.location = res.data.forwardLink
+
+									// } else {
+									// 	console.log('SOMETHING IS WRONG')
+									// }
+								})
+								.catch(function (error) {
+									console.log(error)
+								});						
+
+							}}
+						>
+							<p style={styles.innerText}>
+								Order With STRIPE
+							</p>
+						</button>
+
+					</div>
 
 
 				</div>

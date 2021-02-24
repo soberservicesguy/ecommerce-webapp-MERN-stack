@@ -49,9 +49,14 @@ class ProductCard extends Component {
 
 		  		<div>
 					{/* first the parent / card component */}
-			  		<ComponentForShowingProduct
-						dataPayloadFromParent = { this.props.dataPayloadFromParent }
-			  		/>
+			  		<Link 
+			  			to={`/products/:id=${this.props.dataPayloadFromParent.endpoint}`} 
+			  			style={{color: 'inherit', textDecoration: 'inherit'}}
+					>
+				  		<ComponentForShowingProduct
+							dataPayloadFromParent = { this.props.dataPayloadFromParent }
+				  		/>
+				  	</Link>
 		  		</div>
 
 				<div style={{

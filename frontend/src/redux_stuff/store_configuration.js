@@ -134,7 +134,7 @@ const persistConfig = {
 			'current_order',
 			'total_blogposts',
 			'current_blogpost',
-			'cart_content',
+			// 'cart_content',
 	],
 }
 

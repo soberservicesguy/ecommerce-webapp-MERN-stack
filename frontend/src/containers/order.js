@@ -59,18 +59,20 @@ class OrderContainer extends Component {
 	  	const {_xs, _sm, _md, _lg, _xl} = this.props
 
 	  	const styles = {
-
+	  		outerContainer:{
+	  			marginTop:50,
+	  		}
 	  	}
 
 		return (
 
-			<Grid container direction="row" style={{backgroundColor: '#eee'}} >
 				
 				<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-		  			<ConnectedCreateOrder/>
-		  		</Grid>
+					<div style={styles.outerContainer}>
+			  			<ConnectedCreateOrder/>
+					</div>
 
-				{total_orders.map((item, index)=>(
+{/*				{total_orders.map((item, index)=>(
 
 					<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
 						<ConnectedOrderCard
@@ -82,7 +84,7 @@ class OrderContainer extends Component {
 						/>
 					</Grid>
 
-				))}
+				))}*/}
 
 			</Grid>
 

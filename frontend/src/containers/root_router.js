@@ -33,7 +33,6 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import {
 	ConnectedSignUpContainer,
 	ConnectedLoginContainer,
-	ConnectedCarouselContainer,
 	ConnectedIndividualCarousel,
 	ConnectedProductContainer,
 	ConnectedIndividualProduct,
@@ -190,6 +189,7 @@ class RootRouterContainer extends Component {
 		return (
 			<Router>
 				<div className={classes.grow}>
+
 					<AppBar position="static">
 						<Toolbar>
 							<IconButton
@@ -261,15 +261,6 @@ class RootRouterContainer extends Component {
 									</IconButton>
 								</Link>
 
-								<Link to="/carousels">
-									<IconButton aria-label="show 4 new mails" color="inherit">
-										<p>
-											Carousel
-										</p>
-
-									</IconButton>
-								</Link>
-
 								<Link to="/cart">
 									<IconButton aria-label="show 4 new mails" color="inherit">
 										<p>
@@ -296,36 +287,8 @@ class RootRouterContainer extends Component {
 									</IconButton>
 								</Link>
 							
-								<Link to="/home">
-									<IconButton
-										edge="end"
-										aria-label="account of current user"
-										aria-controls={menuId}
-										aria-haspopup="true"
-										onClick={handleProfileMenuOpen}
-										color="inherit"
-									>
-										<AccountCircle />
-									</IconButton>
-								</Link>
 							
 							</div>
-
-{/* ------------ THREE VERTICAL DOTS BUTTON ONLY FOR MOBILE STARTS HERE ------------ */}
-							<Link to="/home" className={classes.sectionMobile}> 
-								<div className={classes.sectionMobile}>
-									<IconButton
-										aria-label="show more"
-										aria-controls={mobileMenuId}
-										aria-haspopup="true"
-										onClick={handleMobileMenuOpen}
-										color="inherit"
-									>
-										<MoreIcon />
-									</IconButton>
-								</div>
-							</Link>
-{/* ------------ THREE VERTICAL DOTS BUTTON ONLY FOR MOBILE ENDS HERE ------------ */}							
 
 						</Toolbar>
 
@@ -351,11 +314,6 @@ class RootRouterContainer extends Component {
 							<ConnectedHomeContainer/>
 						</Route>
 
-
-
-						<Route exact path="/carousels">
-							<ConnectedCarouselContainer/>
-						</Route>
 
 						<Route path="/Individual-Carousel">
 							<ConnectedIndividualCarousel/>
@@ -415,10 +373,10 @@ class RootRouterContainer extends Component {
 
 
 
-
 						<Route path="/*">
 							<ConnectedSignUpContainer/>
 						</Route>
+
 					</Switch>
 
 					<div style={{backgroundColor: 'black'}}>
