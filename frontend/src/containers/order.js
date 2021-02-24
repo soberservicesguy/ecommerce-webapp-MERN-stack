@@ -17,7 +17,6 @@ import {
 } from '../redux_stuff/connected_components';
 
 
-
 class OrderContainer extends Component {
 	constructor(props) {
 		super(props);
@@ -66,11 +65,13 @@ class OrderContainer extends Component {
 
 		return (
 
+
 				
 				<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
 					<div style={styles.outerContainer}>
 			  			<ConnectedCreateOrder/>
 					</div>
+
 
 {/*				{total_orders.map((item, index)=>(
 

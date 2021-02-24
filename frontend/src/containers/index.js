@@ -18,3 +18,5 @@ export {default as FooterContainer} from "./footer_container"
 export {default as HomeContainer} from "./home"
 export {default as TwoSidedCustomMasonryContainer} from "./two_sided_masonry_container"
 export {default as VerticalMasonriesContainer} from "./vertical_masonries"
+
+export {default as MyResponsiveNavigation} from "./my_responsive_navigation"
