@@ -42,7 +42,6 @@ class MyResponsiveNavigation extends Component {
 	  		{option_name:'Blogposts', endpoint:'blogposts'},
 	  		{option_name:'Cart', endpoint:'cart'},
 	  		{option_name:'Order', endpoint:'order'},
-	  		// {option_name:'Home', endpoint:'home'},
 	  	]
 
 		return (
@@ -61,7 +60,7 @@ class MyResponsiveNavigation extends Component {
 							alignItems:'center', 
 							width:'30%', 
 							margin:(_xs || _sm) ? 'auto' : 0,
-							marginBottom:20,
+							marginBottom:(_xs || _sm) ? 20 : 0,
 						}}>
 							<img src={utils.image} alt="" 
 								style={{
@@ -90,7 +89,7 @@ class MyResponsiveNavigation extends Component {
 							<Grid item xs={12} sm={12} md={1} lg={1} xl={1}>
 
 						  		<Link 
-						  			to={item.endpoint} 
+						  			to={`/${item.endpoint}`} 
 						  			style={{
 						  				color: 'inherit', 
 						  				textDecoration: 'inherit',

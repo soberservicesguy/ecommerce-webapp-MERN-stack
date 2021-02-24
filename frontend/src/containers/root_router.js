@@ -1,17 +1,15 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 
 import {
 	BrowserRouter as Router,
 	Switch,
 	Route,
 	Link,
-		useParams,
-		useRouteMatch
 } from "react-router-dom";
 
 import {
 	MyResponsiveNavigation,
+	FooterContainer,
 } from "./"
 
 // IMPORT CONNECTED CONTAINERS
@@ -34,15 +32,6 @@ import {
 	ConnectedHomeContainer,
 } from "../redux_stuff/connected_components";
 
-// IMPORT material-ui stuff
-import { withStyles } from '@material-ui/styles';
-import { Grid, Button } from "@material-ui/core";
-// IMPORT responsiveness hook
-import withResponsiveness from "../responsiveness_hook";
-
-import {
-	FooterContainer,
-} from "./"
 
 
 class RootRouterContainer extends Component {
@@ -50,22 +39,10 @@ class RootRouterContainer extends Component {
 		super(props);
 
 		this.state = {
-			anchorEl:null,
-			mobileMoreAnchorEl:null,
 		}
-
 	}
 
 	render() {
-
-		const styles = {
-
-		}
-
-		const classes = {
-
-		}
-
 
 
 		return (
@@ -85,13 +62,9 @@ class RootRouterContainer extends Component {
 							<ConnectedLoginContainer/>
 						</Route>
 
+
 						<Route exact path="/home">
 							<ConnectedHomeContainer/>
-						</Route>
-
-
-						<Route path="/Individual-Carousel">
-							<ConnectedIndividualCarousel/>
 						</Route>
 
 
@@ -100,7 +73,7 @@ class RootRouterContainer extends Component {
 							<ConnectedProductContainer/>
 						</Route>
 
-						<Route path="/Individual-Product">
+						<Route path="/products/:id">
 							<ConnectedIndividualProduct/>
 						</Route>
 
@@ -120,12 +93,10 @@ class RootRouterContainer extends Component {
 							<ConnectedCartContainer/>
 						</Route>
 
-
-
-
 						<Route exact path="/orders">
 							<ConnectedOrderContainer/>
 						</Route>
+
 
 						<Route path="/orders/:endpoint-param">
 							<ConnectedIndividualOrder/>
@@ -147,9 +118,9 @@ class RootRouterContainer extends Component {
 						</Route>
 
 
-
+					{/* in case no match made in route */}
 						<Route path="/*">
-							<ConnectedSignUpContainer/>
+							<ConnectedHomeContainer/>
 						</Route>
 
 					</Switch>
@@ -165,8 +136,7 @@ class RootRouterContainer extends Component {
 }
 
 
-export default withResponsiveness(RootRouterContainer);
-// export default RootRouterContainer;
+export default RootRouterContainer;
 
 
 
