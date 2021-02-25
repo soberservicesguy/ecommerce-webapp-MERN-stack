@@ -191,7 +191,7 @@ class FooterContainer extends Component {
 									</Link>
 								</div>
 
-								{!(this.props.isAllowedProductsControl) ? (
+								{(this.props.isAllowedProductsControl) ? (
 
 									<div style={{marginTop:10,}}>
 										<Link to="/Bulk-Upload-Product">
@@ -206,7 +206,7 @@ class FooterContainer extends Component {
 									)
 								}
 
-								{!(this.props.isAllowedCarouselsControl) ? (
+								{(this.props.isAllowedCarouselsControl) ? (
 
 									<div style={{marginTop:10,}}>
 										<Link to="/Bulk-Upload-Carousel">
@@ -221,7 +221,7 @@ class FooterContainer extends Component {
 									)
 								}
 
-								{!(this.props.isAllowedBlogpostsControl) ? (
+								{(this.props.isAllowedBlogpostsControl) ? (
 
 									<div style={{marginTop:10,}}>
 										<Link to="/Bulk-Upload-Blogpost">

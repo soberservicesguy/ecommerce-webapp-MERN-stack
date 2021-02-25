@@ -65,11 +65,20 @@ class ProductContainer extends Component {
 		return (
 
 			<Grid container direction="row" style={{backgroundColor: '#eee'}} >
-				
-				<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-		  			<ConnectedCreateProduct/>
-		  		</Grid>
 
+				{(this.props.isAllowedProductsControl) ? (
+
+					<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+			  			<ConnectedCreateProduct/>
+			  		</Grid>
+
+					):(
+
+					null
+
+				)}
+
+				
 				{total_products.map((item, index)=>(
 
 					<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>

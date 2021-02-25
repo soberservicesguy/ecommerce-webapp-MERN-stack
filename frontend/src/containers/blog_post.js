@@ -65,9 +65,17 @@ class BlogPostContainer extends Component {
 
 			<Grid container direction="row" style={{backgroundColor: '#eee'}} >
 				
-				<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-		  			<ConnectedCreateBlogPost/>
-		  		</Grid>
+				{(this.props.isAllowedBlogpostsControl) ? (
+
+					<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+			  			<ConnectedCreateBlogPost/>
+			  		</Grid>
+
+					):(
+
+					null
+
+				)}
 
 				{total_blogposts.map((item, index)=>(
 

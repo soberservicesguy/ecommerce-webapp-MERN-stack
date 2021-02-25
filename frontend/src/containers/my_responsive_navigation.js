@@ -37,12 +37,12 @@ class MyResponsiveNavigation extends Component {
 	  	}
 
 	  	const navigation_options = [
-	  		{option_name:'Login', endpoint:'login'},
-	  		{option_name:'Signup', endpoint:'signup'},
 	  		{option_name:'Home', endpoint:'home'},
 	  		{option_name:'Products', endpoint:'products'},
 	  		{option_name:'Blogposts', endpoint:'blogposts'},
 	  		{option_name:'Cart', endpoint:'cart'},
+	  		{option_name:'Login', endpoint:'login'},
+	  		{option_name:'Signup', endpoint:'signup'},
 	  		{option_name:'Order', endpoint:'order'},
 	  	]
 

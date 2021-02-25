@@ -327,7 +327,8 @@ class HomeContainer extends Component {
 			  				return(
 			  					<div>
 		  					  		<Link 
-		  					  			to={`/products/:id=${item.endpoint}`} 
+		  					  			// to={`/products/:id=${item.endpoint}`}
+		  					  			to={{pathname:`/products`, state:{endpoint: item.endpoint}}}  
 		  					  			style={{color: 'inherit', textDecoration: 'inherit'}}
 		  							>
 					  					<ComponentForShowingCategory
