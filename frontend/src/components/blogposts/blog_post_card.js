@@ -43,9 +43,14 @@ class BlogPostCard extends Component {
 
 		  		<div>
 					{/* first the parent / card component */}
-			  		<ComponentForShowingBlogPost
-						dataPayloadFromParent = { this.props.dataPayloadFromParent }
-			  		/>
+			  		<Link 
+			  			to={{ pathname: `/blogposts/:id=${this.props.dataPayloadFromParent.endpoint}`, state:{price:'valueable'} }}
+			  			style={{color: 'inherit', textDecoration: 'inherit'}}
+					>
+				  		<ComponentForShowingBlogPost
+							dataPayloadFromParent = { this.props.dataPayloadFromParent }
+				  		/>
+				  	</Link>
 		  		</div>
 
 		  	</div>

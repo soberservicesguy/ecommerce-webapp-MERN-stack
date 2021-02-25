@@ -83,7 +83,7 @@ class RootRouterContainer extends Component {
 							<ConnectedBlogPostContainer/>
 						</Route>
 
-						<Route path="/Individual-BlogPost">
+						<Route path="/blogposts/:id">
 							<ConnectedIndividualBlogPost/>
 						</Route>
 
@@ -93,7 +93,7 @@ class RootRouterContainer extends Component {
 							<ConnectedCartContainer/>
 						</Route>
 
-						<Route exact path="/orders">
+						<Route exact path="/order">
 							<ConnectedOrderContainer/>
 						</Route>
 

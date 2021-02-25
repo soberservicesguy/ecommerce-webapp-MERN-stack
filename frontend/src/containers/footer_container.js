@@ -191,12 +191,12 @@ class FooterContainer extends Component {
 									</Link>
 								</div>
 
-								{(this.props.isAllowedImagesControl) ? (
+								{!(this.props.isAllowedProductsControl) ? (
 
 									<div style={{marginTop:10,}}>
-										<Link to="/Bulk-Upload-Image">
+										<Link to="/Bulk-Upload-Product">
 											<p style={styles.secondColumnLinkText}>
-												UPLOAD BULK IMAGES
+												UPLOAD BULK PRODUCTS
 											</p>
 										</Link>
 									</div>
@@ -206,12 +206,12 @@ class FooterContainer extends Component {
 									)
 								}
 
-								{(this.props.isAllowedVideosControl) ? (
+								{!(this.props.isAllowedCarouselsControl) ? (
 
 									<div style={{marginTop:10,}}>
-										<Link to="/Bulk-Upload-Video">
+										<Link to="/Bulk-Upload-Carousel">
 											<p style={styles.secondColumnLinkText}>
-												UPLOAD BULK VIDEOS
+												UPLOAD BULK CAROUSELS
 											</p>
 										</Link>
 									</div>
@@ -221,7 +221,7 @@ class FooterContainer extends Component {
 									)
 								}
 
-								{(this.props.isAllowedBlogpostsControl) ? (
+								{!(this.props.isAllowedBlogpostsControl) ? (
 
 									<div style={{marginTop:10,}}>
 										<Link to="/Bulk-Upload-Blogpost">
