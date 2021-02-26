@@ -6,8 +6,8 @@ async function get_allowed_privileges_list(user_object){
 
 	let privileges_names = [] 
 
-	console.log('user_object.privileges')
-	console.log(user_object.privileges)
+	// console.log('user_object.privileges')
+	// console.log(user_object.privileges)
 
 // getting privilege names
 	await Promise.all(user_object.privileges.map(async (privilege_id) => {
@@ -17,8 +17,8 @@ async function get_allowed_privileges_list(user_object){
 		privileges_names.push( privilege_object.privilege_name )
 	}))
 
-	console.log('names')
-	console.log(privileges_names)
+	// console.log('names')
+	// console.log(privileges_names)
 
 	// console.log('FROM PRIVILEGES')
 	// console.log(user_object)
@@ -50,8 +50,8 @@ async function get_allowed_privileges_list(user_object){
 
 	})
 
-	console.log('privileges_list output')
-	console.log(privileges_list)
+	// console.log('privileges_list output')
+	// console.log(privileges_list)
 
 // add revoked or privileges that are not given
 	// if ( !privileges_list.includes('Basic') ){
@@ -79,8 +79,8 @@ async function get_allowed_privileges_list(user_object){
 
 	} 
 
-	console.log('privileges_list final output')
-	console.log(privileges_list)
+	// console.log('privileges_list final output')
+	// console.log(privileges_list)
 
 	return privileges_list
 }

@@ -19,6 +19,7 @@ import {
 	LoginContainer,
 
 	HomeContainer,
+	FooterContainer,
 
 } from "../containers";
 
@@ -59,6 +60,12 @@ import {
 	BulkCarouselUpload,
 	BulkProductUpload,
 } from "../components/"
+
+export const ConnectedFooterContainer = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(FooterContainer);
+
 
 export const ConnectedHomeContainer = connect(
 	mapStateToProps,

@@ -64,8 +64,7 @@ router.post('/signup-and-get-privileges',async  (req, res, next) => {
 	// console.log('OUTER LOG')
 	// console.log(req.body)
 	user_avatar_image_upload(req, res, (err) => {
-	// user_avatar_image_upload(req, res, (err) => {
-		/* new section starts here */
+	// wrapping in IIFE since await requires async keyword which cant be applied to above multer function
 		{(async () => {
 			if(err){
 
@@ -81,7 +80,7 @@ router.post('/signup-and-get-privileges',async  (req, res, next) => {
 
 					let newUser
 					let newImage
-					// saving image
+				// saving image
 					try{
 
 						newImage = new Image({
@@ -91,12 +90,13 @@ router.post('/signup-and-get-privileges',async  (req, res, next) => {
 
 						});
 						await newImage.save()
+						// await new Image({args}).save shortcut
 
 					} catch (image_error){
 						res.status(404).json({ success: false, msg: 'couldnt create image database entry'})
 					}
 
-					// creating user, which needs image object
+				// creating user, which needs image object
 					try{
 						let user_found = await User.findOne({ phone_number: req.body.phone_number })
 						if (!user_found){
@@ -125,39 +125,22 @@ router.post('/signup-and-get-privileges',async  (req, res, next) => {
 					}
 
 					// getting privileges to assign
-					let privileges_list = []
-
-					// console.log('PRIVILEGE PAYLOAD IS BELOW')
-					// console.log(req.body.privileges_selected)
-					
+					let privileges_list = []					
 					if ( req.body.privileges_selected === 'Basic' ){
 
 						privileges_list.push('allow_surfing')
-
-						// console.log('TO APPLY')
-						// console.log(privileges_list)
 
 					} else if ( req.body.privileges_selected === 'Products control' ){
 
 						privileges_list.push('is_allowed_product_upload')
 
-						// console.log('TO APPLY')
-						// console.log(privileges_list)
-
 					} else if ( req.body.privileges_selected === 'Carousels control' ){
 
 						privileges_list.push('is_allowed_carousel_upload')
 
-						// console.log('TO APPLY')
-						// console.log(privileges_list)
-
-
 					} else if ( req.body.privileges_selected === 'Blogposts control' ){
 
 						privileges_list.push('is_allowed_writing_blopost')
-
-						// console.log('TO APPLY')
-						// console.log(privileges_list)
 
 					} else if ( req.body.privileges_selected === 'Total control' ){
 
@@ -166,21 +149,13 @@ router.post('/signup-and-get-privileges',async  (req, res, next) => {
 						privileges_list.push('is_allowed_carousel_upload')
 						privileges_list.push('is_allowed_writing_blopost')
 
-						// console.log('TO APPLY')
-						// console.log(privileges_list)
-
 					} else {
 					}
 
 					// going to assign privileges
 					let all_work = await Promise.all(privileges_list.map(async (privilege_name, index) => {
 
-						console.log(index)
-
 						let privilege = await Privilege.findOne({ privilege_name: privilege_name })
-
-						console.log('found')
-						console.log(privilege)
 
 						if (!privilege){
 
@@ -196,9 +171,6 @@ router.post('/signup-and-get-privileges',async  (req, res, next) => {
 
 							newUser.privileges.push(newPrivilege)
 
-							// console.log('newUser')
-							// console.log(newUser)
-
 						} else if (privilege) {
 
 							privilege.users.push(newUser)
@@ -206,22 +178,17 @@ router.post('/signup-and-get-privileges',async  (req, res, next) => {
 
 							newUser.privileges.push(privilege)
 
-							// console.log('newUser')
-							// console.log(newUser)
-
 						} else {
 						}
 
 					}))
+
 					await newUser.save()
-					console.log('newUser')
-					console.log(newUser)
 					res.status(200).json({ success: true, msg: 'new user saved' });
 
 				}
 			}
 		})()}
-		/* new section ends here */
 
 	})
 

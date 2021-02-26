@@ -22,7 +22,6 @@ class MyResponsiveNavigation extends Component {
 		super(props);
 // STATE	
 		this.state = {
-			current_route:null,
 		}	
 	}
 
@@ -45,6 +44,8 @@ class MyResponsiveNavigation extends Component {
 	  		{option_name:'Signup', endpoint:'signup'},
 	  		{option_name:'Order', endpoint:'order'},
 	  	]
+
+	  	const {pathname} = this.props.location;
 
 		return (
 
@@ -96,7 +97,6 @@ class MyResponsiveNavigation extends Component {
 						  				color: 'inherit', 
 						  				textDecoration: 'inherit',
 						  			}}
-						  			onClick={ () => { this.setState(prev => ({...prev, current_route: item.endpoint }))} }
 								>
 									<p style={{
 										textAlign:'center',
@@ -106,7 +106,7 @@ class MyResponsiveNavigation extends Component {
 										fontWeight:'bold',
 										// color:'grey',
 									// color of active link
-										color:( item.endpoint === this.state.current_route) ? 'black' : 'grey',
+										color:( `/${item.endpoint}` === pathname) ? 'black' : 'grey',
 									// border below active link
 										// borderBottomWidth:( item.endpoint === this.state.current_route) ? 3 : 0,
 										// borderBottomColor:'black',
@@ -136,4 +136,4 @@ MyResponsiveNavigation.defaultProps = {
 	// : ,
 };
 
-export default withResponsiveness(MyResponsiveNavigation);
+export default withRouter(withResponsiveness(MyResponsiveNavigation));

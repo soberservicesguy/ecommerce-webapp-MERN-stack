@@ -62,6 +62,9 @@ class LoginContainer extends Component {
 		)
 		.then(function (response) {
 			if (response.data.success === true){
+
+				axios.defaults.headers.common['Authorization'] = response.data.token				
+
 				console.log('true')
 				console.log('privileges are below')
 				console.log(response.data.privileges)
@@ -112,9 +115,6 @@ class LoginContainer extends Component {
 					}
 				})
 
-
-				// console.log(response.data)
-				axios.defaults.headers.common['Authorization'] = response.data.token				
 				this.props.set_is_signed_in( true )
 				this.props.set_phone_number( this.state.phone_number )
 

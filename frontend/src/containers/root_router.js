@@ -9,7 +9,6 @@ import {
 
 import {
 	MyResponsiveNavigation,
-	FooterContainer,
 } from "./"
 
 // IMPORT CONNECTED CONTAINERS
@@ -30,6 +29,7 @@ import {
 	ConnectedBulkProductUpload,
 
 	ConnectedHomeContainer,
+	ConnectedFooterContainer,
 } from "../redux_stuff/connected_components";
 
 
@@ -126,7 +126,7 @@ class RootRouterContainer extends Component {
 					</Switch>
 
 					<div style={{backgroundColor: 'black'}}>
-						<FooterContainer/>
+						<ConnectedFooterContainer/>
 					</div>
 
 				</div>
