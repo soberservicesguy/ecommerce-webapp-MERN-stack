@@ -16,7 +16,6 @@ import {
 	// Button 
 } from "@material-ui/core";
 
-import { verify_privilege } from "../handy_functions/"
 
 
 class LoginContainer extends Component {
@@ -63,52 +62,61 @@ class LoginContainer extends Component {
 		)
 		.then(function (response) {
 			if (response.data.success === true){
+				console.log('true')
+				console.log('privileges are below')
+				console.log(response.data.privileges)
+
+				// verify_privilege(this, response.data.privileges)
+				response.data.privileges.map((privilege_name) => {
+					if ( privilege_name === 'Basic' ){
+
+						this.props.allow_basic_privilege()
+						console.log('YOU CAN NOW SURF')
+
+					} else if ( privilege_name === 'Products control' ){
+
+						this.props.allow_all_products_privilege()
+						console.log('YOU CAN UPLOAD PRODUCTS')
+
+					} else if ( privilege_name === 'Carousels control' ){
+
+						this.props.allow_carousels_privilege()
+						console.log('YOU CAN UPLOAD CAROUSELS')
+
+					} else if ( privilege_name === 'Blogposts control' ){
+
+						this.props.allow_blogposts_privilege()
+						console.log('YOU CAN UPLOAD BLOGPOSTS')
+
+					} else  if ( privilege_name === 'Revoke Basic' ){
+
+						this.props.revoke_basic_privilege()
+						console.log('YOU CAN NOW SURF ONLY')
+
+					} else if  ( privilege_name === 'Revoke Products control' ){
+
+						this.props.revoke_products_privilege()
+						console.log('YOU CAN NO LONGER UPLOAD PRODUCTS')
+
+					} else if  ( privilege_name === 'Revoke Carousels control' ){
+
+						this.props.revoke_carousels_privilege()
+						console.log('YOU CAN NO LONGER UPLOAD CAROUSELS')
+
+					} else if  ( privilege_name === 'Revoke Blogposts control' ){
+
+						this.props.revoke_blogposts_privilege()
+						console.log('YOU CAN NOW NO LONGER UPLOAD BLOGPOSTS')
+
+					} else {
+					}
+				})
+
 
 				// console.log(response.data)
 				axios.defaults.headers.common['Authorization'] = response.data.token				
 				this.props.set_is_signed_in( true )
 				this.props.set_phone_number( this.state.phone_number )
-
-				verify_privilege(this, response.data.privileges)
-			// not needed anymore, made it DRY using above function
-				// // response.data.privileges.map((privilege_name) => {
-
-				// // 	if ( privilege_name === 'Basic' ){
-
-				// // 		this.props.allow_basic_privilege()
-
-				// // 	} else if ( privilege_name === 'Images control' ){
-
-				// // 		this.props.allow_images_privilege()
-
-				// // 	} else if ( privilege_name === 'Videos control' ){
-
-				// // 		this.props.allow_videos_privilege()
-
-				// // 	} else if ( privilege_name === 'Blogposts control' ){
-
-				// // 		this.props.allow_blogpost_privilege()
-
-				// // 	} else  if ( privilege_name === 'Revoke Basic' ){
-
-				// // 		this.props.revoke_basic_privilege()
-
-				// // 	} else if  ( privilege_name === 'Revoke Images control' ){
-
-				// // 		this.props.revoke_images_privilege()
-
-				// // 	} else if  ( privilege_name === 'Revoke Videos control' ){
-
-				// // 		this.props.revoke_videos_privilege()
-
-				// // 	} else if  ( privilege_name === 'Revoke Blogposts control' ){
-
-				// // 		this.props.revoke_blogpost_privilege()
-
-				// // 	} else {
-				// // 	}
-
-				// })
 
 			} else {
 				console.log('couldnt login')

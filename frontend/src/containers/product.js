@@ -28,15 +28,17 @@ class ProductContainer extends Component {
 
 // COMPONENT DID MOUNT
 	componentDidMount() {
+	  	console.log(this.props.products_control)
+	  	this.props.allow_all_products_privilege()
 
-// FETCHING DATA FOR COMPONENT
-		axios.get(utils.baseUrl + '/products/products-list',)
-		.then((response) => {
-			this.props.set_fetched_products(response.data)
-		})
-		.catch((error) => {
-			console.log(error);
-		})
+// // FETCHING DATA FOR COMPONENT
+// 		axios.get(utils.baseUrl + '/products/products-list',)
+// 		.then((response) => {
+// 			this.props.set_fetched_products(response.data)
+// 		})
+// 		.catch((error) => {
+// 			console.log(error);
+// 		})
 
 
 	}
@@ -62,11 +64,12 @@ class ProductContainer extends Component {
 
 	  	}
 
+
 		return (
 
 			<Grid container direction="row" style={{backgroundColor: '#eee'}} >
-
-				{(this.props.isAllowedProductsControl) ? (
+				{console.log(this.props.products_control)}
+				{(this.props.products_control) ? (
 
 					<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
 			  			<ConnectedCreateProduct/>

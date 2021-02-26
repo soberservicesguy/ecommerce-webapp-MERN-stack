@@ -313,11 +313,14 @@ class SignUpContainer extends Component {
 									<MenuItem value={'Products control'}>
 										Uploading Products
 									</MenuItem>
+									<MenuItem value={'Carousels control'}>
+										Uploading Carousels
+									</MenuItem>
 									<MenuItem value={'Blogposts control'}>
 										Uploading Blogposts
 									</MenuItem>
 									<MenuItem value={'Total control'}>
-										All Privileges
+										Total control
 									</MenuItem>
 								</Select>
 							</FormControl>

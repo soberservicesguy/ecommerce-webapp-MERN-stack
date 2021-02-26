@@ -26,7 +26,7 @@ export const rootReducer = combineReducers({
 	carousels: reducerForCarousel,
 	products: reducerForProduct,
 	orders: reducerForOrder,
-	users: reducerForUser,
+	usersReducer: reducerForUser,
 	blogposts: reducerForBlogPost,
 
 	cart_content: reducerForCart,
@@ -35,6 +35,10 @@ export const rootReducer = combineReducers({
 
 export const mapStateToProps = state => {
   return {
+
+	products_control: state.usersReducer.productsControl,
+	isAllowedCarouselsControl: state.usersReducer.isAllowedCarouselsControl,
+	isAllowedBlogpostsControl: state.usersReducer.isAllowedBlogpostsControl,
 
 	total_carousels: state.carousels.totalCarousel,
 	current_carousel: state.carousels.currentCarousel,
@@ -45,13 +49,13 @@ export const mapStateToProps = state => {
 	total_orders: state.orders.totalOrder,
 	current_order: state.orders.currentOrder,
 
-	userToken: state.users.userToken,
-	isSignedIn: state.users.isSignedIn,
-	user_name: state.users.user_name,
-	phone_number: state.users.phone_number,
-	hash: state.users.hash,
-	salt: state.users.salt,
-	isloggedin: state.users.isloggedin,
+	userToken: state.usersReducer.userToken,
+	isSignedIn: state.usersReducer.isSignedIn,
+	user_name: state.usersReducer.user_name,
+	phone_number: state.usersReducer.phone_number,
+	hash: state.usersReducer.hash,
+	salt: state.usersReducer.salt,
+	isloggedin: state.usersReducer.isloggedin,
 	total_blogposts: state.blogposts.totalBlogPost,
 	current_blogpost: state.blogposts.currentBlogPost,
 
@@ -76,6 +80,15 @@ export const mapStateToProps = state => {
 
 export const mapDispatchToProps = dispatch => {
 	return {
+		allow_basic_privilege: () => dispatch( { type: "ALLOW_BASIC_PRIVILEGE"} ), 
+		allow_all_products_privilege: () => dispatch( { type: "ALLOW_ALL_PRODUCT_PRIVILEGE"} ), 
+		allow_carousels_privilege: () => dispatch( { type: "ALLOW_CAROUSELS_PRIVILEGE"} ), 
+		allow_blogposts_privilege: () => dispatch( { type: "ALLOW_BLOGPOSTS_PRIVILEGE"} ), 
+		revoke_basic_privilege: () => dispatch( { type: "REVOKE_BASIC_PRIVILEGE"} ), 
+		revoke_products_privilege: () => dispatch( { type: "REVOKE_PRODUCTS_PRIVILEGE"} ), 
+		revoke_carousels_privilege: () => dispatch( { type: "REVOKE_CAROUSELS_PRIVILEGE"} ), 
+		revoke_blogposts_privilege: () => dispatch( { type: "REVOKE_BLOGPOSTS_PRIVILEGE"} ), 
+
 
 		set_user_name: (user_name) => dispatch( { type: "SET_USER_NAME", user_name: user_name} ),
 		remove_user_name: () => dispatch( { type: "REMOVE_USER_NAME" } ),
@@ -135,6 +148,7 @@ const persistConfig = {
 			'total_blogposts',
 			'current_blogpost',
 			// 'cart_content',
+			// 'products_control',
 	],
 }
 

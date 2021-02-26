@@ -61,6 +61,9 @@ class BlogPostContainer extends Component {
 
 	  	}
 
+	  	// this.props.allow_blogposts_privilege()
+	  	// console.log(this.props.isAllowedBlogpostsControl)
+
 		return (
 
 			<Grid container direction="row" style={{backgroundColor: '#eee'}} >

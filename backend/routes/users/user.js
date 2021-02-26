@@ -26,9 +26,9 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), isAll
 
 
 // Validate an existing user and issue a JWT
-router.post('/login', function(req, res, next){
+router.post('/login', async function(req, res, next){
 
-    User.findOneAndUpdate({ phone_number: req.body.phone_number }, { $set:{ isLoggedIn:true } }, { new: true }, (err, user) => {
+    User.findOneAndUpdate({ phone_number: req.body.phone_number }, { $set:{ isLoggedIn:true } }, { new: true }, async (err, user) => {
         if (err) {
 
             res.status(401).json({ success: false, msg: "could not find user" });
@@ -46,9 +46,15 @@ router.post('/login', function(req, res, next){
 
             const tokenObject = utils.issueJWT(user);
 
-            let privileges_list = get_allowed_privileges_list(user)
+            console.log('user before privileges')
+            console.log(user)
+
+            let privileges_list = await get_allowed_privileges_list(user)
+
+            console.log({privileges_list})
 
             res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, privileges: privileges_list });
+
 
         } else {
 

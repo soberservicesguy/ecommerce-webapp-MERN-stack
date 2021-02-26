@@ -1,4 +1,7 @@
 const initialState = {
+	productsControl: true,
+	isAllowedCarouselsControl: false,
+	isAllowedBlogpostsControl: false,
 
 	isSignedIn: false,
 	userToken: null,
@@ -13,6 +16,47 @@ const initialState = {
 const reducerForUser = (state = initialState, action) => {
 
 	switch (action.type) {
+
+		case "ALLOW_BASIC_PRIVILEGE":
+
+			return {...state}
+			break;
+
+		case "ALLOW_ALL_PRODUCT_PRIVILEGE":
+			return {...state, productsControl: true,}
+			break;
+
+		case "ALLOW_CAROUSELS_PRIVILEGE":
+
+			return {...state, isAllowedCarouselsControl: true,}
+			break;
+
+		case "ALLOW_BLOGPOSTS_PRIVILEGE":
+
+			return {...state, isAllowedBlogpostsControl: true,}
+			break;
+
+		// case "REVOKE_BASIC_PRIVILEGE":
+
+		// 	return {...state, productsControl: false, isAllowedCarouselsControl:false, isAllowedBlogpostsControl:false}
+		// 	break;
+
+		case "REVOKE_PRODUCTS_PRIVILEGE":
+
+			return {...state, productsControl: false,}
+			break;
+
+		case "REVOKE_CAROUSELS_PRIVILEGE":
+
+			return {...state, isAllowedCarouselsControl: false,}
+			break;
+
+		case "REVOKE_BLOGPOSTS_PRIVILEGE":
+
+			return {...state, isAllowedBlogpostsControl: false,}
+			break;
+
+
 
 		case "SET_IS_SIGNED_IN":
 

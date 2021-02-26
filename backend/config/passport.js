@@ -19,7 +19,7 @@ const options = {
 module.exports = (passport) => {
 
 	// The JWT payload is passed into the verify callback
-	passport.use(new JwtStrategy(options, function(jwt_payload, done) {
+	passport.use(new JwtStrategy(options, async function(jwt_payload, done) {
 
 		// console.log('BELOW IS JWT PAYLOAD')
 		// console.log(jwt_payload);
@@ -28,7 +28,7 @@ module.exports = (passport) => {
 		// User.findOne({_id: jwt_payload.sub}, function(err, user) {
 		User.findOne({_id: jwt_payload.sub})
 		.populate('privileges')
-		.exec(function(err, user) {
+		.exec(async function(err, user) {
 
 			// This flow look familiar?  It is the same as when we implemented
 			// the `passport-local` strategy
@@ -41,7 +41,7 @@ module.exports = (passport) => {
 				// console.log(user)
 
 			// adding privileges payload to req.user so that every request on protected route is privilege protected
-				let privileges_list = get_allowed_privileges_list(user)
+				let privileges_list = await get_allowed_privileges_list(user)
 
 				// overwriting user and incorporating any other payload, since only user can be the payload from this middleware
 				user = { user_object: user, privileges: privileges_list, msg: "I am from passport js payload" }
