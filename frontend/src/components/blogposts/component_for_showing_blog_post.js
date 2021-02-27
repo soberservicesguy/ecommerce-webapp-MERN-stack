@@ -48,8 +48,8 @@ class ComponentForShowingBlogPost extends Component {
 				marginRight:20,
 			}}>
 				<img 
-					// src={base64Image}
-					src={utils.image} 
+					src={base64Image}
+					// src={utils.image} 
 					alt="" 
 					style={{
 						width:'100%', 

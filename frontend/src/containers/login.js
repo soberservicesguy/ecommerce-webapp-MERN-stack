@@ -52,7 +52,21 @@ class LoginContainer extends Component {
 		});	
 	}
 
+
 	login_and_get_jwt_token_and_privileges(){
+
+		let allow_basic_privilege = () => this.props.allow_basic_privilege()
+		let allow_products_privilege = () => this.props.allow_all_products_privilege()
+		let allow_blogposts_privilege = () => this.props.allow_blogposts_privilege()
+		let allow_carousels_privilege = () => this.props.allow_carousels_privilege()
+
+		let revoke_products_privilege = () => this.props.revoke_products_privilege()
+		let revoke_carousels_privilege = () => this.props.revoke_carousels_privilege()
+		let revoke_basic_privilege = () => this.props.revoke_basic_privilege()
+		let revoke_blogposts_privilege = () => this.props.revoke_blogposts_privilege()
+		
+		let set_is_signed_in = () => this.props.set_is_signed_in( true )
+		let set_phone_number= () => this.props.set_phone_number( this.state.phone_number )
 
 		axios.post(utils.baseUrl + '/users/login', 
 			{
@@ -63,60 +77,61 @@ class LoginContainer extends Component {
 		.then(function (response) {
 			if (response.data.success === true){
 
-				axios.defaults.headers.common['Authorization'] = response.data.token				
+				let privileges = response.data.privileges
 
-				console.log('true')
-				console.log('privileges are below')
-				console.log(response.data.privileges)
+				for (let i = 0; i < privileges.length; i++) {
+					let privilege_name = privileges[i]
 
-				// verify_privilege(this, response.data.privileges)
-				response.data.privileges.map((privilege_name) => {
+
 					if ( privilege_name === 'Basic' ){
 
-						this.props.allow_basic_privilege()
-						console.log('YOU CAN NOW SURF')
+						allow_basic_privilege()		
+						console.log('You are allowed basic surfing')
 
 					} else if ( privilege_name === 'Products control' ){
 
-						this.props.allow_all_products_privilege()
+						allow_products_privilege()
 						console.log('YOU CAN UPLOAD PRODUCTS')
 
 					} else if ( privilege_name === 'Carousels control' ){
 
-						this.props.allow_carousels_privilege()
+						allow_carousels_privilege()
 						console.log('YOU CAN UPLOAD CAROUSELS')
 
 					} else if ( privilege_name === 'Blogposts control' ){
 
-						this.props.allow_blogposts_privilege()
+						allow_blogposts_privilege()
 						console.log('YOU CAN UPLOAD BLOGPOSTS')
 
 					} else  if ( privilege_name === 'Revoke Basic' ){
 
-						this.props.revoke_basic_privilege()
+						revoke_basic_privilege()
 						console.log('YOU CAN NOW SURF ONLY')
 
 					} else if  ( privilege_name === 'Revoke Products control' ){
 
-						this.props.revoke_products_privilege()
+						revoke_products_privilege()
 						console.log('YOU CAN NO LONGER UPLOAD PRODUCTS')
 
 					} else if  ( privilege_name === 'Revoke Carousels control' ){
 
-						this.props.revoke_carousels_privilege()
+						revoke_carousels_privilege()
 						console.log('YOU CAN NO LONGER UPLOAD CAROUSELS')
 
 					} else if  ( privilege_name === 'Revoke Blogposts control' ){
 
-						this.props.revoke_blogposts_privilege()
+						revoke_blogposts_privilege()
 						console.log('YOU CAN NOW NO LONGER UPLOAD BLOGPOSTS')
 
 					} else {
 					}
-				})
 
-				this.props.set_is_signed_in( true )
-				this.props.set_phone_number( this.state.phone_number )
+				}
+
+				axios.defaults.headers.common['Authorization'] = response.data.token				
+
+				set_is_signed_in()
+				set_phone_number()
 
 			} else {
 				console.log('couldnt login')

@@ -37,6 +37,8 @@ class CreateProduct extends Component {
 			price: '',
 			product_size: '',
 			product_color: '',
+
+			id_of_new_product: null,
 		}
 
 	}
@@ -120,7 +122,7 @@ class CreateProduct extends Component {
 			this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))
 
 			// redirecting
-			return <Redirect to = {{ pathname: "/Individual-Product" }} />
+			return <Redirect to = {{ pathname: `/products/:${this.state.id_of_new_product}` }} />
 
 		} else {
 
@@ -230,6 +232,11 @@ class CreateProduct extends Component {
 
 								let setResponseInCurrentProduct = (arg) => this.props.set_current_product(arg)
 								let redirectToNewProduct = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
+								let setIDForNewProductInState = (response) => {
+										console.log(response.data.new_product.endpoint)
+										console.log(response.data.new_product)
+										this.setState(prev => ({ ...prev, id_of_new_product: response.data.new_product.endpoint }))
+									}
 
 								const formData = new FormData()
 								formData.append('title', this.state.title)
@@ -245,6 +252,9 @@ class CreateProduct extends Component {
 								.then(function (response) {
 									console.log(response.data) // current product screen data
 									
+									// setting id / endpoint of new product created in state
+									setIDForNewProductInState(response)
+
 									// set to current parent object
 									setResponseInCurrentProduct(response.data.new_product)
 

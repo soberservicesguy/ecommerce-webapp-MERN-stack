@@ -117,6 +117,7 @@ router.post('/create-blogpost-with-user', passport.authenticate('jwt', { session
 							let base64_encoded_image = base64_encode(newBlogPost.image_thumbnail_filepath)
 
 							let new_blogpost = {
+								endpoint: newBlogPost.endpoint, 
 								title: newBlogPost.title,
 								image_thumbnail_filepath: base64_encoded_image,
 								initial_tags: newBlogPost.initial_tags,

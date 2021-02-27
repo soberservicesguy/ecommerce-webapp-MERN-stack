@@ -39,6 +39,8 @@ class CreateBlogPost extends Component {
 			third_para: '',
 			fourth_para: '',
 			all_tags: '',
+
+			new_blogpost_id: null,
 		}
 
 	}
@@ -122,7 +124,7 @@ class CreateBlogPost extends Component {
 			this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))
 
 			// redirecting
-			return <Redirect to = {{ pathname: "/Individual-BlogPost" }} />
+			return <Redirect to = {{ pathname: `/blogposts/:${this.state.new_blogpost_id}` }} />
 
 		} else {
 
@@ -258,6 +260,7 @@ class CreateBlogPost extends Component {
 
 								let setResponseInCurrentBlogPost = (arg) => this.props.set_current_blogpost(arg)
 								let redirectToNewBlogPost = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
+								let setNewBlogpostIDAtState = (response) => this.setState(prev => ({...prev, new_blogpost_id: response.data.new_blogpost.endpoint }))	
 
 								const formData = new FormData()
 								formData.append('title', this.state.title)
@@ -275,7 +278,9 @@ class CreateBlogPost extends Component {
 								.then(function (response) {
 									console.log(response.data) // current blogpost screen data
 									
+									setNewBlogpostIDAtState(response)
 									// set to current parent object
+
 									setResponseInCurrentBlogPost(response.data.new_blogpost)
 
 									// change route to current_blogpost

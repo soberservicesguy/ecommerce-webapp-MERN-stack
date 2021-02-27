@@ -55,6 +55,7 @@ class ProductCard extends Component {
 			  		<Link 
 			  			to={{ pathname: `/products/:id=${this.props.dataPayloadFromParent.endpoint}`, state:{price:'valueable'} }}
 			  			style={{color: 'inherit', textDecoration: 'inherit'}}
+			  			onClick={() => this.props.set_current_product(this.props.dataPayloadFromParent)}
 					>
 				  		<ComponentForShowingProduct
 							dataPayloadFromParent = { this.props.dataPayloadFromParent }

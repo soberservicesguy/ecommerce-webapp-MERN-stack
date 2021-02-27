@@ -42,8 +42,8 @@ class ComponentForShowingProduct extends Component {
 				marginRight:10,
 			}}>
 				<img 
-					// src={base64Image}
-					src={utils.image} 
+					src={base64Image}
+					// src={utils.image} 
 					alt="" 
 					style={{
 						width:'100%', 
@@ -57,7 +57,7 @@ class ComponentForShowingProduct extends Component {
 					marginTop:20,
 					color:'grey',
 				}}>
-					Product name{ data.title }  <span style={{float:'right'}}>Size:{ data.product_size }</span>
+					{ data.title }  <span style={{float:'right'}}>{ data.product_size }</span>
 				</p>
 
 				<p style={{
@@ -65,10 +65,8 @@ class ComponentForShowingProduct extends Component {
 					marginTop:20,
 					fontWeight:'bold',
 				}}>
-					<span style={{textDecoration: 'line-through', fontWeight:'normal',}}>${ data.price + 20 }</span> ${ data.price } 10 <span style={{float:'right', fontWeight:'normal', color:'grey'}}>Size:{ data.product_color }</span>
+					<span style={{textDecoration: 'line-through', fontWeight:'normal',}}>${ data.price + 20 }</span> ${ data.price }<span style={{float:'right', fontWeight:'normal', color:'grey'}}>{ data.product_color }</span>
 				</p>
-
-
 
 			</div>			
 		);

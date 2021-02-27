@@ -86,7 +86,7 @@ class IndividualIndividualBlogPost extends Component {
 			},
 			thirdParaText:{
 				fontSize:20,
-				marginTop:50,
+				marginTop:30,
 				color:'grey',				
 			},
 			fourthParaText:{
@@ -110,8 +110,8 @@ class IndividualIndividualBlogPost extends Component {
 			<div style={styles.outerContainer}>
 				<div style={styles.imageContainer}>
 					<img 
-						// src={base64Image}
-						src={utils.image} 
+						src={base64Image}
+						// src={utils.image} 
 						alt="" 
 						style={styles.image}
 					/>
@@ -136,9 +136,9 @@ class IndividualIndividualBlogPost extends Component {
 					2nd para{this.props.current_blogpost.second_para}
 				</p>
 				
-				<p style={styles.qoutedParaText}>
+{/*				<p style={styles.qoutedParaText}>
 					{this.props.current_blogpost.qouted_para}
-				</p>
+				</p>*/}
 				
 				<p style={styles.thirdParaText}>
 					3rd para{this.props.current_blogpost.third_para}

@@ -123,6 +123,7 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 								product_size: newProduct.product_size,
 								product_color: newProduct.product_color,
 								price: newProduct.price,
+								endpoint: newProduct.endpoint,
 
 							}
 

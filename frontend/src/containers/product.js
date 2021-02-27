@@ -28,8 +28,6 @@ class ProductContainer extends Component {
 
 // COMPONENT DID MOUNT
 	componentDidMount() {
-	  	console.log(this.props.products_control)
-	  	this.props.allow_all_products_privilege()
 
 // // FETCHING DATA FOR COMPONENT
 // 		axios.get(utils.baseUrl + '/products/products-list',)
@@ -68,7 +66,7 @@ class ProductContainer extends Component {
 		return (
 
 			<Grid container direction="row" style={{backgroundColor: '#eee'}} >
-				{console.log(this.props.products_control)}
+
 				{(this.props.products_control) ? (
 
 					<Grid item xs={12} sm={12} md={12} lg={12} xl={12}>

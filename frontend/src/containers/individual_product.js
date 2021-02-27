@@ -39,8 +39,8 @@ class IndividualIndividualProduct extends Component {
 			// title: this.props.dataPayloadFromParent.title,
 
 		// variations
-			// product_size_options:[],
-			product_size_options: [1,2,3],
+			product_size_options:[],
+			// product_size_options: [1,2,3],
 			product_color_options: [],
 			// product_color_options: [4,5,6],
 		}	
@@ -48,12 +48,9 @@ class IndividualIndividualProduct extends Component {
 
 // COMPONENT DID MOUNT
 	componentDidMount() {
-		// console.log(this.props.dataPayloadFromParent.title)
 		console.log('state')
-		console.log(this.props.location.state.something)
+		// console.log(this.props.location.state.something)
 		this.get_variations()
-		// console.log('COMPONENT')
-		// console.log(this.props.dataPayloadFromParent)
 	}
 
 	get_variations(){
@@ -152,8 +149,8 @@ class IndividualIndividualProduct extends Component {
 						textAlign:'center'
 					}}>
 						<img
-							// src={base64Image} 
-							src={utils.image} 
+							src={base64Image} 
+							// src={utils.image} 
 							alt="" 
 							style={{
 								width:'70%', 
