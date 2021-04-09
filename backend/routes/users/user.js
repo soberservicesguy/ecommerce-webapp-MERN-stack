@@ -3,14 +3,51 @@
 
 // passport jwt strategy checks jwt token in each request to verify the user is valid or should be entertained or not
 // passport local strategy checks session ie user.loggedin / isauthenticated methods, once user is logged in it can do what he is allowed to do untill he logs out
+require('../../models/blogpost');
+require('../../models/image');
+require('../../models/product');
 
 const mongoose = require('mongoose');
 const router = require('express').Router();   
 const User = mongoose.model('User');
+const Product = mongoose.model('Product');
+const BlogPost = mongoose.model('BlogPost');
+const Image = mongoose.model('Image');
 const utils = require('../../lib/utils');
 const passport = require('passport');
 const { isAllowedSurfing } = require('../authMiddleware/isAllowedSurfing')
 const get_allowed_privileges_list = require("../../handy_functions/get_allowed_privileges_list")
+
+const {
+    get_image_to_display,
+    // store_video_at_tmp_and_get_its_path,
+    // delete_video_at_tmp,
+    get_multer_storage_to_use,
+    // get_multer_storage_to_use_alternate,
+    // get_multer_storage_to_use_for_bulk_files,
+    get_file_storage_venue,
+    get_file_path_to_use,
+    // get_file_path_to_use_for_bulk_files,
+    // get_snapshots_storage_path,
+    // get_snapshots_fullname_and_path,
+
+    // gcp_bucket,
+    // save_file_to_gcp_storage,
+    save_file_to_gcp,
+    // save_file_to_gcp_for_bulk_files,
+    use_gcp_storage,
+    // get_file_from_gcp,
+    
+    use_aws_s3_storage,
+    // save_file_to_s3,
+    // get_file_from_aws,
+    // save_file_to_aws_s3,
+    // save_file_to_aws_s3_for_bulk_files,
+
+    checkFileTypeForImages,
+    // checkFileTypeForImageAndVideo,
+    // checkFileTypeForImagesAndExcelSheet,
+} = require('../../config/storage/')
 
 
 router.get('/protected', passport.authenticate('jwt', { session: false }), isAllowedSurfing, (req, res, next) => {
@@ -46,14 +83,23 @@ router.post('/login', async function(req, res, next){
 
             const tokenObject = utils.issueJWT(user);
 
-            console.log('user before privileges')
-            console.log(user)
-
             let privileges_list = await get_allowed_privileges_list(user)
 
-            console.log({privileges_list})
+            // console.log('user before privileges')
+            // console.log(user)
 
-            res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, privileges: privileges_list });
+            let user_image = await Image.findOne({ _id: user.user_image })
+            let user_avatar_image_to_use = await get_image_to_display(user_image.image_filepath, user.object_files_hosted_at)
+
+            let user_details = {
+                // user_cover_image: user_cover_image_to_use,
+                user_image: user_avatar_image_to_use,
+                user_name: user.user_name,
+                phone_number: user.phone_number,
+            }
+
+
+            res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, privileges: privileges_list, user_details: user_details })
 
 
         } else {
@@ -68,6 +114,36 @@ router.post('/login', async function(req, res, next){
         next(err1);
 
     });
+
+});
+
+
+router.get('/delete-all-users', async (req, res, next) => {
+
+    await User.deleteMany({}, ()=>null)
+    res.status(200).json({ success: true, message: 'all users deleted'});
+
+});
+
+router.get('/delete-all-products', async (req, res, next) => {
+
+    await Product.deleteMany({}, ()=>null)
+    res.status(200).json({ success: true, message: 'all products deleted'});
+
+});
+
+router.get('/delete-all-images', async (req, res, next) => {
+
+    await Image.deleteMany({}, ()=>null)
+    res.status(200).json({ success: true, message: 'all images deleted'});
+
+});
+
+router.get('/delete-all-blogposts', async (req, res, next) => {
+
+    console.log('INCOMING')
+    await BlogPost.deleteMany({}, ()=>null)
+    res.status(200).json({ success: true, message: 'all blogposts deleted'});
 
 });
 

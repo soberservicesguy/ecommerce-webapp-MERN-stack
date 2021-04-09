@@ -16,46 +16,84 @@ const passport = require('passport');
 const { isAllowedSurfing } = require('../authMiddleware/isAllowedSurfing')
 const { isAllowedUploadingProducts } = require('../authMiddleware/isAllowedUploadingProducts')
 
+const {
+	get_image_to_display,
+	store_video_at_tmp_and_get_its_path,
+	delete_video_at_tmp,
+	// get_multer_storage_to_use,
+	get_multer_storage_to_use_alternate,
+	// get_multer_storage_to_use_for_bulk_files,
+	get_file_storage_venue,
+	get_file_path_to_use,
+	// get_file_path_to_use_for_bulk_files,
+	// get_snapshots_storage_path,
+	get_snapshots_fullname_and_path,
+
+	// gcp_bucket,
+	// save_file_to_gcp_storage,
+	save_file_to_gcp,
+	// save_file_to_gcp_for_bulk_files,
+	use_gcp_storage,
+	get_file_from_gcp,
+	
+	use_aws_s3_storage,
+	// save_file_to_s3,
+	get_file_from_aws,
+	save_file_to_aws_s3,
+	// save_file_to_aws_s3_for_bulk_files,
+
+	// checkFileTypeForImages,
+	checkFileTypeForImageAndVideo,
+	// checkFileTypeForImagesAndExcelSheet,
+} = require('../../config/storage/')
+
+let timestamp
+
 
 // Set The Storage Engine
-const product_image_storage = multer.diskStorage({
-	destination: path.join(__dirname , '../../assets/images/uploads/product_images'),
-	filename: function(req, file, cb){
-		// file name pattern fieldname-currentDate-fileformat
-		// filename_used_to_store_image_in_assets_without_format = file.fieldname + '-' + Date.now()
-		// filename_used_to_store_image_in_assets = filename_used_to_store_image_in_assets_without_format + path.extname(file.originalname)
+// const product_image_storage = multer.diskStorage({
+// 	destination: path.join(__dirname , '../../assets/images/uploads/product_images'),
+// 	filename: function(req, file, cb){
+// 		// file name pattern fieldname-currentDate-fileformat
+// 		// filename_used_to_store_image_in_assets_without_format = file.fieldname + '-' + Date.now()
+// 		// filename_used_to_store_image_in_assets = filename_used_to_store_image_in_assets_without_format + path.extname(file.originalname)
 
-		filename_used_to_store_image_in_assets = file.originalname
-		cb(null, file.originalname);
+// 		filename_used_to_store_image_in_assets = file.originalname
+// 		cb(null, file.originalname);
 
-	}
-});
+// 	}
+// });
+
 
 // Check File Type
-function checkFileTypeForProductImage(file, cb){
-	// Allowed ext
-	let filetypes = /jpeg|jpg|png|gif/;
-	// Check ext
-	let extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-	// Check mime
-	let mimetype = filetypes.test(file.mimetype);
+// function checkFileTypeForProductImage(file, cb){
+// 	// Allowed ext
+// 	let filetypes = /jpeg|jpg|png|gif/;
+// 	// Check ext
+// 	let extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+// 	// Check mime
+// 	let mimetype = filetypes.test(file.mimetype);
 
-	if(mimetype && extname){
-		return cb(null,true);
-	} else {
-		cb('Error: jpeg, jpg, png, gif Images Only!');
-	}
-}
+// 	if(mimetype && extname){
+// 		return cb(null,true);
+// 	} else {
+// 		cb('Error: jpeg, jpg, png, gif Images Only!');
+// 	}
+// }
 
 // Init Upload
-const upload_product_image = multer({
-	storage: product_image_storage,
-	limits:{fileSize: 20000000}, // 1 mb
-	fileFilter: function(req, file, cb){
-		checkFileTypeForProductImage(file, cb);
-	}
-}).single('product_image'); // this is the field that will be dealt
-// .array('product_images', 12)
+function upload_product_image(timestamp){
+
+	return multer({
+		storage: get_multer_storage_to_use(timestamp),
+		limits:{fileSize: 20000000}, // 1 mb
+		fileFilter: function(req, file, cb){
+			checkFileTypeForProductImage(file, cb);
+		}
+	}).single('product_image'); // this is the field that will be dealt
+	// .array('product_images', 12)
+
+}
 
 
 
@@ -67,86 +105,107 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 	// console.log('OUTER LOG')
 	// console.log(req.body)
 
-	upload_product_image(req, res, (err) => {
-		if(err){
+	timestamp = Date.now()
 
-			console.log(err)
+	upload_product_image(timestamp)(req, res, (err) => {
 
-		} else {
+		{(async () => {
 
-			if(req.file == undefined){
+			if(err){
 
-				res.status(404).json({ success: false, msg: 'File is undefined!',file: `uploads/${req.file.filename}`})
+				console.log(err)
 
 			} else {
-				// console.log('INNER LOG')
-				// console.log(req.body)
 
-			// image is uploaded , now saving image in db
-				const newProduct = new Product({
+				if(req.file == undefined){
 
-					_id: new mongoose.Types.ObjectId(),
-					image_thumbnail_filepath: `./assets/images/uploads/product_images/${filename_used_to_store_image_in_assets}`,
-					title: req.body.title,
-					category: req.body.category,
-					product_size: req.body.product_size,
-					product_color: req.body.product_color,
-					price: req.body.price,
-					// timestamp_of_uploading: String( Date.now() ),
-					// endpoint: req.body.endpoint, // this will be taken care in db model
+					res.status(404).json({ success: false, msg: 'File is undefined!',file: `uploads/${req.file.filename}`})
 
-				});
+				} else {
+					// console.log('INNER LOG')
+					// console.log(req.body)
 
-				newProduct.save(function (err, newProduct) {
+					if (use_gcp_storage){
 
-					if (err){
-						res.status(404).json({ success: false, msg: 'couldnt create Product database entry'})
-						return console.log(err)
+						await save_file_to_gcp(timestamp, req.file)
+
+					} else if (use_aws_s3_storage) {
+
+						console.log('SAVED AUTOMATICALLY TO AWS')
+
+					} else {
+
 					}
-					// assign user object then save
-					User.findOne({ phone_number: req.user.user_object.phone_number }) // using req.user from passport js middleware
-					.then((user) => {
-						if (user){
 
-							newProduct.user = user
-							newProduct.save()
+				// image is uploaded , now saving image in db
+					const newProduct = new Product({
 
-
-							// in response sending new image too with base64 encoding
-							let base64_encoded_image = base64_encode(newProduct.image_thumbnail_filepath)
-
-							let new_product = {
-
-								image_thumbnail_filepath: base64_encoded_image,								
-								title: newProduct.title,
-								category: newProduct.category,
-								product_size: newProduct.product_size,
-								product_color: newProduct.product_color,
-								price: newProduct.price,
-								endpoint: newProduct.endpoint,
-
-							}
-
-							res.status(200).json({ success: true, msg: 'new product saved', new_product: new_product});	
-
-						} else {
-
-							res.status(200).json({ success: false, msg: "user doesnt exists, try logging in again" });
-
-						}
-					})
-					.catch((err) => {
-
-						next(err);
+						_id: new mongoose.Types.ObjectId(),
+						image_thumbnail_filepath: get_file_path_to_use(req.file, 'product_images', timestamp),
+						// image_thumbnail_filepath: `./assets/images/uploads/product_images/${filename_used_to_store_image_in_assets}`,
+						title: req.body.title,
+						category: req.body.category,
+						product_size: req.body.product_size,
+						product_color: req.body.product_color,
+						price: req.body.price,
+						// timestamp_of_uploading: String( Date.now() ),
+						// endpoint: req.body.endpoint, // this will be taken care in db model
 
 					});
 
-				})
+					newProduct.save(async function (err, newProduct) {
 
-				// not needed, this is used only in multer
-				// res.status(200).json({ success: true, msg: 'File Uploaded!',file: `uploads/${req.file.filename}`})
+						if (err){
+							res.status(404).json({ success: false, msg: 'couldnt create Product database entry'})
+							return console.log(err)
+						}
+						// assign user object then save
+						User.findOne({ phone_number: req.user.user_object.phone_number }) // using req.user from passport js middleware
+						.then(async (user) => {
+							if (user){
+
+								newProduct.user = user
+								newProduct.save()
+
+
+								// in response sending new image too with base64 encoding
+								let base64_encoded_image = await get_image_to_display(newProduct.image_thumbnail_filepath, newProduct.object_files_hosted_at)
+
+								let new_product = {
+
+									image_thumbnail_filepath: base64_encoded_image,								
+									title: newProduct.title,
+									category: newProduct.category,
+									product_size: newProduct.product_size,
+									product_color: newProduct.product_color,
+									price: newProduct.price,
+									endpoint: newProduct.endpoint,
+
+								}
+
+								res.status(200).json({ success: true, msg: 'new product saved', new_product: new_product});	
+
+							} else {
+
+								res.status(200).json({ success: false, msg: "user doesnt exists, try logging in again" });
+
+							}
+						})
+						.catch((err) => {
+
+							next(err);
+
+						});
+
+					})
+
+					// not needed, this is used only in multer
+					// res.status(200).json({ success: true, msg: 'File Uploaded!',file: `uploads/${req.file.filename}`})
+				}
 			}
-		}
+
+		})()}
+
 	})
 })
 
@@ -154,21 +213,24 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 
 // USED
 // get products_list
-router.get('/products-list', function(req, res, next){
+router.get('/products-list', async function(req, res, next){
 
 	Product
 	.find()
 	// .distinct('title') // .distinct(fieldName, query)
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
-	.then((products) => {
+	.then(async (products) => {
 		console.log(products)
 		var products_list = []
-		products.map((product, index)=>{
+		products.map(async (product, index)=>{
+
+			let base64_encoded_image = await get_image_to_display(product.image_thumbnail_filepath, product.object_files_hosted_at)
 
 			products_list.push({
 				category: product.category,
-				image_thumbnail_filepath: base64_encode( product.image_thumbnail_filepath ),
+				image_thumbnail_filepath: base64_encoded_image,
+				// image_thumbnail_filepath: base64_encode( product.image_thumbnail_filepath ),
 				title: product.title,
 				product_size: product.product_size,
 				product_color: product.product_color,
@@ -273,12 +335,13 @@ router.get('/get-all-variations', function(req, res, next){
 
 // find product
 // USED 
-router.get('/find-product', function(req, res, next){
+router.get('/find-product', async function(req, res, next){
 
 	Product.findOne({ endpoint: req.body.endpoint })
-	.then((product) => {
+	.then(async (product) => {
 
-		product[ image_thumbnail_filepath ] = base64_encode( product[ 'image_thumbnail_filepath' ] )
+		let base64_encoded_image = await get_image_to_display(product.image_thumbnail_filepath, product.object_files_hosted_at)
+		product[ image_thumbnail_filepath ] = base64_encoded_image
 
 		if (!product) {
 
@@ -301,18 +364,20 @@ router.get('/find-product', function(req, res, next){
 
 
 // get products_list_with_children
-router.get('/products-list-with-children', function(req, res, next){
+router.get('/products-list-with-children', async function(req, res, next){
 
 	Product.
 	find().
 	limit(10).
-	then((products)=>{
+	then(async (products)=>{
 		var newProducts_list = []
-		products.map((product, index)=>{
+		products.map(async (product, index)=>{
 			var newProduct = {}
 
 			// newProduct.serial_number = product[ 'serial_number' ]
-			newProduct.image_thumbnail_filepath = base64_encode( product[ 'image_thumbnail_filepath' ] )
+			let base64_encoded_image = await get_image_to_display(product.image_thumbnail_filepath, product.object_files_hosted_at)
+
+			newProduct.image_thumbnail_filepath = base64_encoded_image
 			newProduct.title = product[ 'title' ]
 
 			newProducts_list.push({...newProduct})
@@ -347,19 +412,19 @@ router.get('/products-list-with-children', function(req, res, next){
 
 // get products_list_next_10_with_children
 
-router.get('/products-list-next-10-with-children', function(req, res, next){
+router.get('/products-list-next-10-with-children', async function(req, res, next){
 
 	Product.
 	find().
 	skip(10).
 	limit(10).
-	then((products)=>{
+	then(async (products)=>{
 		var newProducts_list = []
-		products.map((product, index)=>{
+		products.map(async (product, index)=>{
 			var newProduct = {}
-
+			let base64_encoded_image = await get_image_to_display(product.image_thumbnail, product.object_files_hosted_at)
 			newProduct.serial_number = product[ 'serial_number' ]
-			newProduct.image_thumbnail = base64_encode( product[ 'image_thumbnail' ] )
+			newProduct.image_thumbnail = base64_encoded_image
 			newProduct.title = product[ 'title' ]
 
 			newProducts_list.push({...newProduct})

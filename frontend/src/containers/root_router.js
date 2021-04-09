@@ -5,6 +5,7 @@ import {
 	Switch,
 	Route,
 	Link,
+	Redirect,
 } from "react-router-dom";
 
 import {
@@ -48,11 +49,18 @@ class RootRouterContainer extends Component {
 		return (
 			<Router>
 				<div>
-					<div style={{width:'95%', margin:'auto'}}>
-						<MyResponsiveNavigation/>
-					</div>
 
 					<Switch>
+
+
+						<Route exact path="/" render={() => (
+							(this.props.isSignedIn) ? (
+								<Redirect to="/home"/>
+							) : (
+								<Redirect to="/login"/>
+							)
+						)}/>
+
 
 						<Route exact path="/signup">
 							<ConnectedSignUpContainer/>
@@ -63,71 +71,227 @@ class RootRouterContainer extends Component {
 						</Route>
 
 
-						<Route exact path="/home">
-							<ConnectedHomeContainer/>
-						</Route>
+						<Route exact path="/home" render={() => (
+							// (this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedHomeContainer/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							// ) : (
+							// 	<Redirect to="/login"/>
+							// )
+						)}/>
+
+
+						<Route exact path="/blogposts" render={() => (
+							// (this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedBlogPostContainer/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							// ) : (
+							// 	<Redirect to="/login"/>
+							// )
+						)}/>
+
+						<Route exact path="/blogposts/:id" render={() => (
+							// (this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedIndividualBlogPost/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							// ) : (
+							// 	<Redirect to="/login"/>
+							// )
+						)}/>
+
+
+						<Route exact path="/products" render={() => (
+							// (this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedProductContainer/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							// ) : (
+							// 	<Redirect to="/login"/>
+							// )
+						)}/>
+
+						<Route exact path="/products/:id" render={() => (
+							// (this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedIndividualProduct/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							// ) : (
+							// 	<Redirect to="/login"/>
+							// )
+						)}/>
+
+
+						<Route exact path="/cart" render={() => (
+							(this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedCartContainer/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							) : (
+								<Redirect to="/login"/>
+							)
+						)}/>
+
+						<Route exact path="/order" render={() => (
+							(this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedOrderContainer/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							) : (
+								<Redirect to="/login"/>
+							)
+						)}/>
 
 
 
-						<Route exact path="/products">
-							<ConnectedProductContainer/>
-						</Route>
-
-						<Route path="/products/:id">
-							<ConnectedIndividualProduct/>
-						</Route>
-
-
-
-						<Route exact path="/blogposts">
-							<ConnectedBlogPostContainer/>
-						</Route>
-
-						<Route path="/blogposts/:id">
-							<ConnectedIndividualBlogPost/>
-						</Route>
-
-
-
-						<Route exact path="/cart">
-							<ConnectedCartContainer/>
-						</Route>
-
-						<Route exact path="/order">
-							<ConnectedOrderContainer/>
-						</Route>
-
-
-						<Route path="/orders/:endpoint-param">
+						{/*<Route path="/orders/:endpoint-param">
 							<ConnectedIndividualOrder/>
-						</Route>
+						</Route>*/}
 
 
+						<Route exact path="/order" render={() => (
+							(this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedOrderContainer/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							) : (
+								<Redirect to="/login"/>
+							)
+						)}/>
 
 
-						<Route exact path="/Bulk-Upload-Blogpost">
-							<ConnectedBulkBlogpostUpload/>
-						</Route>
+						<Route exact path="/Bulk-Upload-Carousel" render={() => (
+							(this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedBulkCarouselUpload/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							) : (
+								<Redirect to="/login"/>
+							)
+						)}/>
 
-						<Route exact path="/Bulk-Upload-Carousel">
-							<ConnectedBulkCarouselUpload/>
-						</Route>
+						<Route exact path="/Bulk-Upload-Blogpost" render={() => (
+							(this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedBulkBlogpostUpload/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							) : (
+								<Redirect to="/login"/>
+							)
+						)}/>
 
-						<Route exact path="/Bulk-Upload-Product">
-							<ConnectedBulkProductUpload/>
-						</Route>
+
+						<Route exact path="/Bulk-Upload-Product" render={() => (
+							(this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedBulkProductUpload/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							) : (
+								<Redirect to="/login"/>
+							)
+						)}/>
 
 
-					{/* in case no match made in route */}
+				{/* if no match was made with endpoint then redirect to sign up */}
 						<Route path="/*">
-							<ConnectedHomeContainer/>
+							(this.props.isSignedIn) ? (
+								<Redirect to="/home"/>
+							) : (
+								<Redirect to="/login"/>
+							)
 						</Route>
 
 					</Switch>
-
-					<div style={{backgroundColor: 'black'}}>
-						<ConnectedFooterContainer/>
-					</div>
 
 				</div>
 			</Router>

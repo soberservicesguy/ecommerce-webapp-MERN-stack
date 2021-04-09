@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -11,6 +10,7 @@ const UserSchema = new mongoose.Schema({
 	hash:String,
 	salt:String,
 	isLoggedIn: Boolean,
+	user_image:  { type: Schema.Types.ObjectId, ref: 'Image' },
 
 // other model links
 	orders:[{ type: Schema.Types.ObjectId, ref: 'Order'  }],
@@ -19,7 +19,6 @@ const UserSchema = new mongoose.Schema({
 
 })
 
-mongoose.model('User', UserSchema);
 	
 UserSchema.pre('save', function(next) {
 	this.total_orders = this.orders.length
@@ -27,3 +26,12 @@ UserSchema.pre('save', function(next) {
     next();
 
 });
+
+UserSchema.post('save', function() {
+
+	// console.log('SAVED CONDITION')
+    // console.log(this)
+
+});
+
+mongoose.model('User', UserSchema);

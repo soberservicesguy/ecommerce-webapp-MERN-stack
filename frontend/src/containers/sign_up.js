@@ -342,7 +342,7 @@ class SignUpContainer extends Component {
 						<div style={{...styles.formAndRounButtonContainer, marginRight:50, backgroundColor: '#3B5998'}}>
 							<button 
 								style={styles.roundButton}
-								onClick={ () => {}}
+								onClick={ () => this.setState(prev => ({...prev, redirectToRoute: true})) }
 							>
 								Already have an account ?
 							</button>

@@ -7,9 +7,11 @@ const ProductSchema = new mongoose.Schema({
 
 	_id: Schema.Types.ObjectId,
 
+	object_files_hosted_at: {type:String, enum:['gcp_storage', 'aws_s3', 'disk_storage',]},
+
 	// serial_number:Number,
 	category:String,
-	image_thumbnail_filepath:String,
+	image_thumbnail_filepath: { type: Schema.Types.ObjectId, ref: 'Image' },
 	title:String,
 
 	initial_quantity:Number,

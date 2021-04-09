@@ -17,45 +17,83 @@ const Image = mongoose.model('Image');
 const multer = require('multer');
 const path = require('path')
 
+const {
+	// get_image_to_display,
+	store_video_at_tmp_and_get_its_path,
+	delete_video_at_tmp,
+	// get_multer_storage_to_use,
+	get_multer_storage_to_use_alternate,
+	// get_multer_storage_to_use_for_bulk_files,
+	get_file_storage_venue,
+	get_file_path_to_use,
+	// get_file_path_to_use_for_bulk_files,
+	// get_snapshots_storage_path,
+	get_snapshots_fullname_and_path,
+
+	// gcp_bucket,
+	// save_file_to_gcp_storage,
+	save_file_to_gcp,
+	// save_file_to_gcp_for_bulk_files,
+	use_gcp_storage,
+	get_file_from_gcp,
+	
+	use_aws_s3_storage,
+	// save_file_to_s3,
+	get_file_from_aws,
+	save_file_to_aws_s3,
+	// save_file_to_aws_s3_for_bulk_files,
+
+	// checkFileTypeForImages,
+	checkFileTypeForImageAndVideo,
+	// checkFileTypeForImagesAndExcelSheet,
+} = require('../../config/storage/')
+
+let timestamp
+
 // Set The Storage Engine
-const carousel_image_storage = multer.diskStorage({
-	destination: path.join(__dirname , '../../assets/images/uploads/carousel_images'),
-	filename: function(req, file, cb){
-		// file name pattern fieldname-currentDate-fileformat
-		// filename_used_to_store_image_in_assets_without_format = file.fieldname + '-' + Date.now()
-		// filename_used_to_store_image_in_assets = filename_used_to_store_image_in_assets_without_format + path.extname(file.originalname)
+// const carousel_image_storage = multer.diskStorage({
+// 	destination: path.join(__dirname , '../../assets/images/uploads/carousel_images'),
+// 	filename: function(req, file, cb){
+// 		// file name pattern fieldname-currentDate-fileformat
+// 		// filename_used_to_store_image_in_assets_without_format = file.fieldname + '-' + Date.now()
+// 		// filename_used_to_store_image_in_assets = filename_used_to_store_image_in_assets_without_format + path.extname(file.originalname)
 
-		filename_used_to_store_image_in_assets = file.originalname
-		cb(null, file.originalname);
+// 		filename_used_to_store_image_in_assets = file.originalname
+// 		cb(null, file.originalname);
 
-	}
-});
+// 	}
+// });
 
 // Check File Type
-function checkFileTypeForCarouselImage(file, cb){
-	// Allowed ext
-	let filetypes = /jpeg|jpg|png|gif/;
-	// Check ext
-	let extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-	// Check mime
-	let mimetype = filetypes.test(file.mimetype);
+// function checkFileTypeForCarouselImage(file, cb){
+// 	// Allowed ext
+// 	let filetypes = /jpeg|jpg|png|gif/;
+// 	// Check ext
+// 	let extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+// 	// Check mime
+// 	let mimetype = filetypes.test(file.mimetype);
 
-	if(mimetype && extname){
-		return cb(null,true);
-	} else {
-		cb('Error: jpeg, jpg, png, gif Images Only!');
-	}
-}
+// 	if(mimetype && extname){
+// 		return cb(null,true);
+// 	} else {
+// 		cb('Error: jpeg, jpg, png, gif Images Only!');
+// 	}
+// }
+
 
 // Init Upload
-const upload_carousel_image = multer({
-	storage: carousel_image_storage,
-	limits:{fileSize: 20000000}, // 1 mb
-	fileFilter: function(req, file, cb){
-		checkFileTypeForCarouselImage(file, cb);
-	}
-}).single('carousel_image'); // this is the field that will be dealt
-// .array('blogpost_image_main', 12)
+function upload_carousel_image(timestamp){
+
+	return multer({
+		storage: get_multer_storage_to_use(timestamp),
+		limits:{fileSize: 20000000}, // 1 mb
+		fileFilter: function(req, file, cb){
+			checkFileTypeForImages(file, cb);
+		}
+	}).single('carousel_image'); // this is the field that will be dealt
+	// .array('blogpost_image_main', 12)
+
+} 
 
 
 
@@ -67,92 +105,117 @@ router.post('/create-carousel-with-user', passport.authenticate('jwt', { session
 	// console.log('OUTER LOG')
 	// console.log(req.body)
 
-	upload_carousel_image(req, res, (err) => {
-		if(err){
+	timestamp = Date.now()
 
-			console.log(err)
+	upload_carousel_image(timestamp)(req, res, (err) => {
 
-		} else {
+		{(async () => {
 
-			if(req.file == undefined){
+			if(err){
 
-				res.status(404).json({ success: false, msg: 'File is undefined!',file: `uploads/${req.file.filename}`})
+				console.log(err)
 
 			} else {
-				// console.log('INNER LOG')
-				// console.log(req.body)
 
-			// image is uploaded , now saving image in db
-				const newCarousel = new Carousel({
+				if(req.file == undefined){
 
-					_id: new mongoose.Types.ObjectId(),
-					image_filepath: `./assets/images/uploads/carousel_images/${filename_used_to_store_image_in_assets}`,
-					title: req.body.title,
-					// endpoint: req.body.endpoint, // this will be taken care in db model
+					res.status(404).json({ success: false, msg: 'File is undefined!',file: `uploads/${req.file.filename}`})
 
-				});
+				} else {
+					// console.log('INNER LOG')
+					// console.log(req.body)
 
-				newCarousel.save(function (err, newCarousel) {
+					if (use_gcp_storage){
 
-					if (err){
-						res.status(404).json({ success: false, msg: 'couldnt create blogpost database entry'})
-						return console.log(err)
+						await save_file_to_gcp(timestamp, req.file)
+
+					} else if (use_aws_s3_storage) {
+
+						console.log('SAVED AUTOMATICALLY TO AWS')
+
+					} else {
+
 					}
-					// assign user object then save
-					User.findOne({ phone_number: req.user.user_object.phone_number }) // using req.user from passport js middleware
-					.then((user) => {
-						if (user){
-
-							newCarousel.user = user
-							newCarousel.save()
 
 
-							// in response sending new image too with base64 encoding
-							let base64_encoded_image = base64_encode(newCarousel.image_filepath)
 
-							let new_carousel_slide = {
-								title: newCarousel.title,
-								image_filepath: base64_encoded_image,
-							}
+				// image is uploaded , now saving image in db
+					const newCarousel = new Carousel({
 
-							res.status(200).json({ success: true, msg: 'new user saved', new_carousel: new_carousel_slide});	
-
-						} else {
-
-							res.status(200).json({ success: false, msg: "user doesnt exists, try logging in again" });
-
-						}
-					})
-					.catch((err) => {
-
-						next(err);
+						_id: new mongoose.Types.ObjectId(),
+						image_filepath: get_file_path_to_use(req.file, 'carousel_images', timestamp),
+						// image_filepath: `./assets/images/uploads/carousel_images/${filename_used_to_store_image_in_assets}`,
+						title: req.body.title,
+						// endpoint: req.body.endpoint, // this will be taken care in db model
 
 					});
 
-				})
+					newCarousel.save(async function (err, newCarousel) {
 
-				// not needed, this is used only in multer
-				// res.status(200).json({ success: true, msg: 'File Uploaded!',file: `uploads/${req.file.filename}`})
+						if (err){
+							res.status(404).json({ success: false, msg: 'couldnt create blogpost database entry'})
+							return console.log(err)
+						}
+						// assign user object then save
+						User.findOne({ phone_number: req.user.user_object.phone_number }) // using req.user from passport js middleware
+						.then(async (user) => {
+							if (user){
+
+								newCarousel.user = user
+								newCarousel.save()
+
+
+								// in response sending new image too with base64 encoding
+								let base64_encoded_image = await get_image_to_display(newCarousel.image_filepath, newCarousel.object_files_hosted_at)
+
+								let new_carousel_slide = {
+									title: newCarousel.title,
+									image_filepath: base64_encoded_image,
+								}
+
+								res.status(200).json({ success: true, msg: 'new user saved', new_carousel: new_carousel_slide});	
+
+							} else {
+
+								res.status(200).json({ success: false, msg: "user doesnt exists, try logging in again" });
+
+							}
+						})
+						.catch((err) => {
+
+							next(err);
+
+						});
+
+					})
+
+					// not needed, this is used only in multer
+					// res.status(200).json({ success: true, msg: 'File Uploaded!',file: `uploads/${req.file.filename}`})
+				}
 			}
-		}
+
+		})()}
+
 	})
 })
 
 
 // get blogposts_list_with_children
 // USED
-router.get('/carousels-list-with-children', function(req, res, next){
+router.get('/carousels-list-with-children', async function(req, res, next){
 	console.log('called')
 
 	Carousel.
 	find().
 	limit(10).
-	then((carousels)=>{
+	then(async (carousels)=>{
 		var newCarousels_list = []
-		carousels.map((carousel, index)=>{
+		carousels.map(async (carousel, index)=>{
 			var newCarousel = {}
+			
+			let base64_encoded_image = await get_image_to_display(carousel.image_filepath, carousel.object_files_hosted_at)
 
-			newCarousel.image_filepath = base64_encode( carousel[ 'image_filepath' ] )
+			newCarousel.image_filepath = base64_encoded_image
 			newCarousel.title = carousel[ 'title' ]
 
 			newCarousels_list.push({...newCarousel})
