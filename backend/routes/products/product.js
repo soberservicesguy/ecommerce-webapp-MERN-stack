@@ -247,7 +247,13 @@ router.get('/products-list', async function(req, res, next){
 
 
 			let image_object = await Image.findOne({_id:product.image_thumbnail_filepath})
+			console.log('product.image_thumbnail_filepath')
+			console.log(product.image_thumbnail_filepath)
+			console.log('image_object')
+			console.log(image_object)
 			let base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
+
+		// base64_encoded_image = await get_image_to_display(product_image.image_filepath, product_image.object_files_hosted_at)
 
 			products_list.push({
 				category: product.category,
@@ -298,19 +304,20 @@ router.get('/products-categories', async function(req, res, next){
 	// let product_categories = await Image.find({category:'product_category'}).distinct('product_category_name')
 	let product_images = await Image.find({category:'product_category'})
 
-	console.log('product_images')
-	console.log(product_images)
+	// console.log('product_images')
+	// console.log(product_images)
 
 	let base64_encoded_image
 	let all_product_images = await Promise.all(product_images.map(async (product_image) => {
 
-		console.log('product_image')
-		console.log(product_image)
+		// console.log('product_image')
+		// console.log(product_image)
 
 		base64_encoded_image = await get_image_to_display(product_image.image_filepath, product_image.object_files_hosted_at)
 
+
 		all_product_categories.push({
-			product_category_name: product_images.product_category_name,
+			product_category_name: product_image.product_category_name,
 			image_filepath:base64_encoded_image,
 		})
 

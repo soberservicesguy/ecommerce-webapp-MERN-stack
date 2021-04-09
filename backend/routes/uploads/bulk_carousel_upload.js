@@ -210,7 +210,8 @@ router.post('/bulk-upload-carousels', passport.authenticate('jwt', { session: fa
 					let newImage = new Image({
 						_id: new mongoose.Types.ObjectId(),
 						category: 'product_image',
-						image_filepath: `${get_filepath_to_save_with_bulk_uploading('bulk_carousels', `${currentDate}_${currentTime}`)}${image_file.originalname}`,
+						image_filepath: get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_carousels', image_file.originalname),
+						// image_filepath: `${get_filepath_to_save_with_bulk_uploading('bulk_carousels', `${currentDate}_${currentTime}`)}${image_file.originalname}`,
 						object_files_hosted_at: get_file_storage_venue(),
 					});
 					// there is no title or name attribute in image db, therefore adding a field in its object so that it can be filtered in sheet_to_class

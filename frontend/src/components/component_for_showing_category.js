@@ -38,8 +38,8 @@ class ComponentForShowingCategory extends Component {
 		const styles = {
 
 			imageContainer:{
-				// backgroundImage: `url("${base64Image}")`,
-				backgroundImage: `url("${utils.image}")`,
+				backgroundImage: `url("${base64Image}")`,
+				// backgroundImage: `url("${utils.image}")`,
 				backgroundColor: '#cccccc',
 				backgroundPosition: 'center',
 				backgroundRepeat: 'no-repeat',
@@ -83,11 +83,22 @@ class ComponentForShowingCategory extends Component {
 
 				<div style={(this.state.hovered) ? styles.innerContentContainer : styles.innerContentHiddenContainer}>
 					<div style={{height:70,}}>
+						{/*<img 
+							src={base64Image}
+							// src={utils.image} 
+							alt="" 
+							style={{
+								width:'100%', 
+								height:400, 
+								resizeMode: "stretch"
+							}}
+						/>*/}
+
 						<p style={styles.titleText}>
-							Title { data.title }
+							{ data.product_category_name }
 						</p>						
 						<p style={styles.categoryText}>
-							Category { data.category }
+							Collection
 						</p>
 					</div>
 

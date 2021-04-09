@@ -231,8 +231,8 @@ class HomeContainer extends Component {
 								style={{height:'90vh'}} 
 							>
 							  <img 
-							  	// src={item.imageSource}
-							  	src={utils.image}
+							  	src={item.image_thumbnail_filepath}
+							  	// src={utils.image}
 							  	style={{width:'100%', height:'90vh', resizeMode:'stretch'}} 
 							  />
 							</div>
@@ -258,11 +258,13 @@ class HomeContainer extends Component {
 					>
 						{(this.props.product_categories || []).map((category_item, index) => {
 						// {all_cotegories.map((category_item, index) => {
+							let base64_category_image =  "data:image/jpeg;base64," + category_item.image_filepath
+
 							if (index !== [1,2,3,4].length -1){
 								return(
 									<TextBoxWithBackgroundImage
-										backgroundImage={utils.image} 
-										text={'this is it this is it'}
+										backgroundImage={base64_category_image} 
+										text={category_item.product_category_name}
 										newLineText={'Collection'}
 										verticalDisplacement={-(grid_item_height - 90 -20)} // height - self_height_of_component - horizontal_displacement
 										horizontalDisplacement={20}
@@ -272,8 +274,8 @@ class HomeContainer extends Component {
 								return(
 
 									<TextBoxWithBackgroundImage
-										backgroundImage={utils.image} 
-										text={'this is it this is it'}
+										backgroundImage={base64_category_image} 
+										text={category_item.product_category_name}
 										newLineText={'Collection'}
 										verticalDisplacement={-(grid_end_item_height + 4*2 - 90 -20)} // height - self_height_of_component- horizontal_displacement
 										horizontalDisplacement={20}
