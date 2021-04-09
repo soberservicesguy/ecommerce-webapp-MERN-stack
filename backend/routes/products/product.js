@@ -295,22 +295,46 @@ router.get('/products-list', async function(req, res, next){
 router.get('/products-categories', async function(req, res, next){
 
 	let all_product_categories = []
-	let product_categories = await Product.find().distinct('category')
-	let category_image
-	let all_categories = await Promise.all(product_categories.map(async (product_category) => {
+	// let product_categories = await Image.find({category:'product_category'}).distinct('product_category_name')
+	let product_images = await Image.find({category:'product_category'})
 
-		category_image = await Image.findOne({ category: 'product_category', product_category_name:product_category }) // using req.user from passport js middleware
-		if (category_image){
+	console.log('product_images')
+	console.log(product_images)
 
-			let base64_encoded_image = await get_image_to_display(category_image.image_filepath, category_image.object_files_hosted_at)
-			all_product_categories.push({category:product_category, category_image:base64_encoded_image})
+	let base64_encoded_image
+	let all_product_images = await Promise.all(product_images.map(async (product_image) => {
 
-		} else {
-		}
+		console.log('product_image')
+		console.log(product_image)
+
+		base64_encoded_image = await get_image_to_display(product_image.image_filepath, product_image.object_files_hosted_at)
+
+		all_product_categories.push({
+			product_category_name: product_images.product_category_name,
+			image_filepath:base64_encoded_image,
+		})
 
 	}))
 
-	if (product_categories.length > 0){
+	// console.log('product_categories')
+	// console.log(product_categories)
+	// let category_image
+	// let all_categories = await Promise.all(product_categories.map(async (product_category) => {
+
+	// 	category_image = await Image.findOne({ category: 'product_category', product_category_name:product_category }) // using req.user from passport js middleware
+	// 	console.log('category_image')
+	// 	console.log(category_image)
+	// 	if (category_image){
+
+	// 		let base64_encoded_image = await get_image_to_display(category_image.image_filepath, category_image.object_files_hosted_at)
+	// 		all_product_categories.push({category:product_category, category_image:base64_encoded_image})
+
+	// 	} else {
+	// 	}
+
+	// }))
+
+	if (all_product_categories.length > 0){
 
 		res.status(200).json({success: true, categories: all_product_categories})	    
 

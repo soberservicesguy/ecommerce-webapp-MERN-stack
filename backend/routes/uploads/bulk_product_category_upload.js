@@ -210,13 +210,17 @@ router.post('/bulk-upload-product-categories', passport.authenticate('jwt', { se
 
 					// creating image db objects
 					Promise.all(images.map(async (image_file) => {
-		
+	
+						console.log('image_filepath')
+						console.log(`${get_filepath_to_save_with_bulk_uploading('bulk_product_categories', `${currentDate}_${currentTime}`)}${image_file.originalname}`)		
+
 						filename_without_format = path.basename( image_file.originalname, path.extname( image_file.originalname ) )
 						let newImage = new Image({
 							_id: new mongoose.Types.ObjectId(),
 							category: 'product_category',
 							product_category_name: filename_without_format,
-							image_filepath: `${get_filepath_to_save_with_bulk_uploading('bulk_product_categories', `${currentDate}_${currentTime}`)}${image_file.originalname}`,
+							image_filepath: get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_product_categories', image_file.originalname),
+							// image_filepath: `${get_filepath_to_save_with_bulk_uploading('bulk_product_categories', `${currentDate}_${currentTime}`)}${image_file.originalname}`,
 							object_files_hosted_at: get_file_storage_venue(),
 						});
 						// there is no title or name attribute in image db, therefore adding a field in its object so that it can be filtered in sheet_to_class

@@ -175,6 +175,26 @@ class LoginContainer extends Component {
 	}
 
 
+	delete_all_carousels(){
+		axios.get(utils.baseUrl + '/users/delete-all-carousels',)
+		.then(function (response) {
+			if (response.data.success === true){
+
+				console.log(response.data.message)
+				
+			} else {
+				console.log('couldnt carousels all users')
+			}
+
+		})
+		.catch(function (error) {
+			// console.log(error);
+		});	
+
+	}
+
+
+
 	delete_all_blogpost(){
 		axios.get(utils.baseUrl + '/users/delete-all-blogposts',)
 		.then(function (response) {
@@ -440,6 +460,15 @@ class LoginContainer extends Component {
 								onClick={ () => this.delete_all_users() }
 							>
 								Delete All Users
+							</button>
+						</div>
+
+						<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
+							<button 
+								style={{...styles.roundButton, }}
+								onClick={ () => this.delete_all_carousels() }
+							>
+								Delete All Carousels
 							</button>
 						</div>
 

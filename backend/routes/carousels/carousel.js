@@ -18,7 +18,7 @@ const multer = require('multer');
 const path = require('path')
 
 const {
-	// get_image_to_display,
+	get_image_to_display,
 	store_video_at_tmp_and_get_its_path,
 	delete_video_at_tmp,
 	// get_multer_storage_to_use,
@@ -209,30 +209,41 @@ router.get('/get-carousel', async function(req, res, next){
 	find().
 	limit(10).
 	then(async (carousels)=>{
-		var newCarousels_list = []
-		carousels.map(async (carousel, index)=>{
+		var carousels_list = []
+		let all_carousels = await Promise.all(carousels.map(async (carousel, index) => {
 			var newCarousel = {}
 			
-			let base64_encoded_image = await get_image_to_display(carousel.image_filepath, carousel.object_files_hosted_at)
+			let image_object = await Image.findOne({_id:carousel.image_thumbnail_filepath})
 
-			newCarousel.image_filepath = base64_encoded_image
-			newCarousel.title = carousel[ 'title' ]
+			if (image_object){
 
-			newCarousels_list.push({...newCarousel})
-			newCarousel = {}
-		});
+				let base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
 
-		return newCarousels_list
+				newCarousel.image_thumbnail_filepath = base64_encoded_image
+				newCarousel.title = carousel[ 'title' ]
+
+				carousels_list.push({...newCarousel})
+				newCarousel = {}
+
+			} else {
+
+				res.status(200).json({ success: false, msg: "could not find Carousels_list" });
+				return
+			}
+
+		}))
+
+		return carousels_list
 	})
-	.then((newCarousels_list) => {
+	.then((carousels_list) => {
 
-		if (!newCarousels_list) {
+		if (!carousels_list) {
 
 			res.status(401).json({ success: false, msg: "could not find Carousels_list" });
 
 		} else {
 
-			res.status(200).json(newCarousels_list);
+			res.status(200).json(carousels_list);
 
 		}
 

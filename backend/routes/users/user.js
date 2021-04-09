@@ -6,6 +6,7 @@
 require('../../models/blogpost');
 require('../../models/image');
 require('../../models/product');
+require('../../models/carousel');
 
 const mongoose = require('mongoose');
 const router = require('express').Router();   
@@ -13,6 +14,8 @@ const User = mongoose.model('User');
 const Product = mongoose.model('Product');
 const BlogPost = mongoose.model('BlogPost');
 const Image = mongoose.model('Image');
+const Carousel = mongoose.model('Carousel');
+
 const utils = require('../../lib/utils');
 const passport = require('passport');
 const { isAllowedSurfing } = require('../authMiddleware/isAllowedSurfing')
@@ -125,6 +128,14 @@ router.get('/delete-all-users', async (req, res, next) => {
 
 });
 
+router.get('/delete-all-carousels', async (req, res, next) => {
+
+    await Carousel.deleteMany({}, ()=>null)
+    res.status(200).json({ success: true, message: 'all carousels deleted'});
+
+});
+
+
 router.get('/delete-all-products', async (req, res, next) => {
 
     await Product.deleteMany({}, ()=>null)
@@ -146,6 +157,7 @@ router.get('/delete-all-blogposts', async (req, res, next) => {
     res.status(200).json({ success: true, message: 'all blogposts deleted'});
 
 });
+
 
 
 // DEPRECATED
