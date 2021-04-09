@@ -49,20 +49,101 @@ class HomeContainer extends Component {
 		}	
 	}
 
-// COMPONENT DID MOUNT
 	componentDidMount() {
 
-// FETCHING DATA FOR COMPONENT
-		axios.get(utils.baseUrl + '/products/products-list',)
+		this.get_carousel()
+		this.get_blogposts()
+		this.get_products()
+		this.get_product_categories()
+
+	}
+
+	get_blogposts(){
+
+		axios.get(utils.baseUrl + '/blogpostings/blogposts-list',)
 		.then((response) => {
-			this.props.set_fetched_products(response.data)
+
+			if (response.data.success){
+
+				console.log('BLOGPOSTS LIST FETCHED')
+				console.log(response.data)
+				this.props.set_fetched_blogposts(response.data.blogposts_list)
+
+			} else {
+
+				console.log('COULDNT FETCH BLOGPOSTS LIST')
+				this.props.set_fetched_blogposts([])
+			}
 		})
 		.catch((error) => {
 			console.log(error);
 		})
 
+	}
+
+	get_products(){
+
+		axios.get(utils.baseUrl + '/products/products-list',)
+		.then((response) => {
+			if (response.data.success){
+
+				console.log('PRODUCT LIST FETCHED')
+				console.log(response.data)
+				this.props.set_fetched_products(response.data.products_list)
+
+			} else {
+				console.log('COULDNT FETCH PRODUCTS')
+				this.props.set_fetched_products([])
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+		})
 
 	}
+
+	get_product_categories(){
+		axios.get(utils.baseUrl + '/products/products-categories',)
+		.then((response) => {
+			if (response.data.success){
+
+				console.log('PRODUCT CATEGORIES FETCHED')
+				console.log(response.data)
+				this.props.set_product_categories(response.data.categories)
+
+			} else {
+				console.log('COULDNT FETCH CATEGORIES')
+				this.props.set_product_categories([])
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+		})		
+	}
+
+
+	get_carousel(){
+
+		axios.get(utils.baseUrl + '/carousels/get-carousel',)
+		.then((response) => {
+			if (response.data.success){
+
+				console.log('CAROUSEL FETCHED')
+				console.log(response.data)
+				this.props.set_fetched_carousels(response.data)
+
+			} else {
+				console.log('COULDNT FETCH CAROUSEL')	
+				this.props.set_fetched_carousels([])
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+		})
+
+	}
+
+
 	get_10_more_items() {
 		axios.get(utils.baseUrl + `/products/products-list-next-10-with-children`)
 		.then((response) => {
@@ -113,8 +194,8 @@ class HomeContainer extends Component {
 	  	let grid_item_height = 400
 	  	let grid_end_item_height = 800
 
-		let total_children = [1,2,3,4,5,6,7,8].map((item, index) => {
-		// {[...total_categories, 1, 2].map((item, index) => {
+		let total_children = (this.props.product_categories || []).map((item, index) => {
+		// let total_children = [1,2,3,4,5,6,7,8].map((item, index) => {
 			return(
 				<div>
 					<ComponentForShowingCategory
@@ -175,7 +256,7 @@ class HomeContainer extends Component {
 							{grids:12, height:grid_end_item_height + 4*2 ,} // heights of both rows + gap 
 						]}
 					>
-						{[1,2,3,4].map((category_item, index) => {
+						{(this.props.product_categories || []).map((category_item, index) => {
 						// {all_cotegories.map((category_item, index) => {
 							if (index !== [1,2,3,4].length -1){
 								return(
@@ -295,7 +376,7 @@ class HomeContainer extends Component {
 					marginTop:100,
 				}}>
 					<Grid container orientation = "row">
-						{[1,2,3,4].map((item, index) => {
+						{this.props.total_products.map((item, index) => {
 						// {four_products.map((product_item, index) => {
 							return(
 								<Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
@@ -322,7 +403,7 @@ class HomeContainer extends Component {
 						containerBGcolor = {'none'}
 						containerWidth = {'90%'}
 					>
-			  			{[1,2,3,4,5,6,7,8].map((item, index) => {
+			  			{(this.props.product_categories || []).map((item, index) => {
 			  			// {[...total_categories, 1, 2].map((item, index) => {
 			  				return(
 			  					<div>
@@ -397,7 +478,7 @@ class HomeContainer extends Component {
 					marginTop:100,
 				}}>
 					<Grid container orientation = "row">
-						{[1,2,3,].map((item, index) => {
+						{this.props.total_blogposts.map((item, index) => {
 						// {three_blogposts.map((product_item, index) => {
 							return(
 								<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>

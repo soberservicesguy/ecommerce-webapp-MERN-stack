@@ -20,7 +20,7 @@ const {
 	get_image_to_display,
 	store_video_at_tmp_and_get_its_path,
 	delete_video_at_tmp,
-	// get_multer_storage_to_use,
+	get_multer_storage_to_use,
 	get_multer_storage_to_use_alternate,
 	// get_multer_storage_to_use_for_bulk_files,
 	get_file_storage_venue,
@@ -42,8 +42,8 @@ const {
 	save_file_to_aws_s3,
 	// save_file_to_aws_s3_for_bulk_files,
 
-	// checkFileTypeForImages,
-	checkFileTypeForImageAndVideo,
+	checkFileTypeForImages,
+	// checkFileTypeForImageAndVideo,
 	// checkFileTypeForImagesAndExcelSheet,
 } = require('../../config/storage/')
 
@@ -88,7 +88,7 @@ function upload_product_image(timestamp){
 		storage: get_multer_storage_to_use(timestamp),
 		limits:{fileSize: 20000000}, // 1 mb
 		fileFilter: function(req, file, cb){
-			checkFileTypeForProductImage(file, cb);
+			checkFileTypeForImages(file, cb);
 		}
 	}).single('product_image'); // this is the field that will be dealt
 	// .array('product_images', 12)
@@ -104,6 +104,7 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 	
 	// console.log('OUTER LOG')
 	// console.log(req.body)
+	console.log('CALLED')
 
 	timestamp = Date.now()
 
@@ -137,11 +138,23 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 
 					}
 
+					const newProductImage = new Image({
+
+						_id: new mongoose.Types.ObjectId(),
+						category: 'product_image',
+						image_filepath: get_file_path_to_use(req.file, 'product_images', timestamp),
+						object_files_hosted_at: get_file_storage_venue(),
+					});
+
+					await newProductImage.save()
+
+
 				// image is uploaded , now saving image in db
 					const newProduct = new Product({
 
 						_id: new mongoose.Types.ObjectId(),
-						image_thumbnail_filepath: get_file_path_to_use(req.file, 'product_images', timestamp),
+						image_thumbnail_filepath: newProductImage._id,
+						// image_thumbnail_filepath: get_file_path_to_use(req.file, 'product_images', timestamp),
 						// image_thumbnail_filepath: `./assets/images/uploads/product_images/${filename_used_to_store_image_in_assets}`,
 						title: req.body.title,
 						category: req.body.category,
@@ -166,10 +179,13 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 
 								newProduct.user = user
 								newProduct.save()
+								user.save()
 
+
+								let image_object = await Image.findOne({_id:newProduct.image_thumbnail_filepath})
 
 								// in response sending new image too with base64 encoding
-								let base64_encoded_image = await get_image_to_display(newProduct.image_thumbnail_filepath, newProduct.object_files_hosted_at)
+								let base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
 
 								let new_product = {
 
@@ -183,10 +199,12 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 
 								}
 
+								console.log('PRODUCT CREATED')
 								res.status(200).json({ success: true, msg: 'new product saved', new_product: new_product});	
 
 							} else {
 
+								console.log('PRODUCT NOT CREATED')
 								res.status(200).json({ success: false, msg: "user doesnt exists, try logging in again" });
 
 							}
@@ -221,11 +239,15 @@ router.get('/products-list', async function(req, res, next){
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
 	.then(async (products) => {
+
 		console.log(products)
 		var products_list = []
-		products.map(async (product, index)=>{
 
-			let base64_encoded_image = await get_image_to_display(product.image_thumbnail_filepath, product.object_files_hosted_at)
+		let all_products = await Promise.all(products.map(async (product, index)=>{
+
+
+			let image_object = await Image.findOne({_id:product.image_thumbnail_filepath})
+			let base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
 
 			products_list.push({
 				category: product.category,
@@ -238,7 +260,7 @@ router.get('/products-list', async function(req, res, next){
 				endpoint: product.endpoint,
 			})
 
-		});
+		}))
 
 		return products_list
 
@@ -247,14 +269,14 @@ router.get('/products-list', async function(req, res, next){
 
 		if (products_list.length > 0){
 
-			console.log('PRODUCTS SENT')
-			console.log(products_list)
-			res.status(200).json(products_list);
+			// console.log('PRODUCTS SENT')
+			// console.log(products_list)
+			res.status(200).json({success: true, products_list:products_list});
 	
 		} else {
 
 			console.log('NO PRODUCTS SENT')
-			res.status(200).json([]);
+			res.status(200).json({success: false});
 
 		}
 
@@ -266,6 +288,56 @@ router.get('/products-list', async function(req, res, next){
 	});
 });
 
+
+
+
+
+router.get('/products-categories', async function(req, res, next){
+
+	let all_product_categories = []
+	let product_categories = await Product.find().distinct('category')
+	let category_image
+	let all_categories = await Promise.all(product_categories.map(async (product_category) => {
+
+		category_image = await Image.findOne({ category: 'product_category', product_category_name:product_category }) // using req.user from passport js middleware
+		if (category_image){
+
+			let base64_encoded_image = await get_image_to_display(category_image.image_filepath, category_image.object_files_hosted_at)
+			all_product_categories.push({category:product_category, category_image:base64_encoded_image})
+
+		} else {
+		}
+
+	}))
+
+	if (product_categories.length > 0){
+
+		res.status(200).json({success: true, categories: all_product_categories})	    
+
+	} else {
+
+		res.status(200).json({ success: false, msg: "could not get categories" });
+
+	}
+
+	// Product
+	// .find()
+	// .distinct('category', function(error, categories){
+	// 	console.log('categories')
+	// 	console.log(categories)
+	//     // categories is an array of all categories
+	// 	if (categories.length > 0){
+
+	// 		res.status(200).json({success: true, categories: categories})	    
+
+	// 	} else {
+
+	// 		res.status(200).json({ success: false, msg: "could not get categories" });
+
+	// 	}
+	// });
+
+})
 
 // USED
 // find variations available based on single input

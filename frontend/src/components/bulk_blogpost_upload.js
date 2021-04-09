@@ -186,7 +186,7 @@ class BulkBlogpostUpload extends Component {
 								<input
 									id="myExcelFileInput"
 									style={{display:'none'}}
-									name="excel_sheet_for_blogpost" // name of input field or fieldName simply
+									name="excel_sheet" // name of input field or fieldName simply
 									// multiple="multiple" // for selecting multiple files
 									enctype="multipart/form-data"
 									type="file"
@@ -230,7 +230,7 @@ class BulkBlogpostUpload extends Component {
 										formData.append('blogpost_image_main', file, file.name)
 									})
 									if(this.state.excel_sheet !== ''){
-										formData.append('excel_sheet_for_blogpost', this.state.excel_sheet, this.state.excel_sheet.name)
+										formData.append('excel_sheet', this.state.excel_sheet, this.state.excel_sheet.name)
 									}
 
 									axios.post(utils.baseUrl + '/uploads/bulk-upload-blogposts', formData)

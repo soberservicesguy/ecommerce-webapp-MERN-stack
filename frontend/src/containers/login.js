@@ -175,8 +175,8 @@ class LoginContainer extends Component {
 	}
 
 
-	delete_all_blogposts(){
-		axios.get(utils.baseUrl + '/users/delete-all-blosposts',)
+	delete_all_blogpost(){
+		axios.get(utils.baseUrl + '/users/delete-all-blogposts',)
 		.then(function (response) {
 			if (response.data.success === true){
 
@@ -446,7 +446,7 @@ class LoginContainer extends Component {
 						<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
 							<button 
 								style={{...styles.roundButton, }}
-								onClick={ () => this.delete_all_blogposts() }
+								onClick={ () => this.delete_all_blogpost() }
 							>
 								Delete All Blogposts
 							</button>

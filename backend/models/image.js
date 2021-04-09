@@ -6,6 +6,7 @@ const ImageSchema = new mongoose.Schema({
 	_id: Schema.Types.ObjectId,
 
 	object_files_hosted_at: {type:String, enum:['gcp_storage', 'aws_s3', 'disk_storage',]},
+	product_category_name: String,
 
 	image_filepath:String,
 // other model links

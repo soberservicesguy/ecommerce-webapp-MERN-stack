@@ -24,7 +24,7 @@ import {
 
 export const rootReducer = combineReducers({
 	carousels: reducerForCarousel,
-	products: reducerForProduct,
+	productsReducer: reducerForProduct,
 	orders: reducerForOrder,
 	usersReducer: reducerForUser,
 	blogposts: reducerForBlogPost,
@@ -43,8 +43,11 @@ export const mapStateToProps = state => {
 	total_carousels: state.carousels.totalCarousel,
 	current_carousel: state.carousels.currentCarousel,
 
-	total_products: state.products.totalProduct,
-	current_product: state.products.currentProduct,
+	product_categories: state.productsReducer.all_product_categories,
+	current_product_category: state.productsReducer.current_product_category,
+
+	total_products: state.productsReducer.totalProduct,
+	current_product: state.productsReducer.currentProduct,
 
 	total_orders: state.orders.totalOrder,
 	current_order: state.orders.currentOrder,
@@ -56,6 +59,7 @@ export const mapStateToProps = state => {
 	hash: state.usersReducer.hash,
 	salt: state.usersReducer.salt,
 	isloggedin: state.usersReducer.isloggedin,
+
 	total_blogposts: state.blogposts.totalBlogPost,
 	current_blogpost: state.blogposts.currentBlogPost,
 
@@ -63,9 +67,9 @@ export const mapStateToProps = state => {
 	complete_cart: state.cart_content.entireCart,
 	current_cart_item: state.cart_content.currentCartItem,
 
-	// cart: state.products.cart,
+	// cart: state.productsReducercart,
 
-	// current_cart_item: state.products.current_cart_item,
+	// current_cart_item: state.productsReducercurrent_cart_item,
 
 	// cart: state.orders.cart,
 
@@ -96,6 +100,10 @@ export const mapDispatchToProps = dispatch => {
 		remove_phone_number: () => dispatch( { type: "REMOVE_PHONE_NUMBER" } ),
 		set_isloggedin: (isloggedin) => dispatch( { type: "SET_ISLOGGEDIN", isloggedin: isloggedin} ),
 		remove_isloggedin: () => dispatch( { type: "REMOVE_ISLOGGEDIN" } ),
+
+		set_product_categories: (product_category_list) => dispatch( { type: "SET_FETCHED_PRODUCT_CATEGORIES", product_category_list: product_category_list } ),
+		set_current_product_category: (current_product_category) => dispatch( { type: "SET_CURRENT_PRODUCT_CATEGORY", current_product_category:current_product_category } ),
+
 
 		set_current_carousel: (current_carousel) => dispatch( { type: "SET_CURRENT_CAROUSEL", current_carousel:current_carousel } ),
 		set_fetched_carousels: (carousel_list) => dispatch( { type: "SET_FETCHED_CAROUSEL", carousel_list: carousel_list } ),

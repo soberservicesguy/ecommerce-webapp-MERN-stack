@@ -191,7 +191,7 @@ class FooterContainer extends Component {
 									</Link>
 								</div>
 
-								{(this.props.isAllowedProductsControl) ? (
+								{(this.props.products_control) ? (
 
 									<div style={{marginTop:10,}}>
 										<Link to="/Bulk-Upload-Product">

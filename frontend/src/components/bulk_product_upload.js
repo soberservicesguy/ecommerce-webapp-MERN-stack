@@ -187,7 +187,7 @@ class BulkProductUpload extends Component {
 								<input
 									id="myExcelFileInput"
 									style={{display:'none'}}
-									name="excel_sheet_for_products" // name of input field or fieldName simply
+									name="excel_sheet" // name of input field or fieldName simply
 									// multiple="multiple" // for selecting multiple files
 									enctype="multipart/form-data"
 									type="file"
@@ -229,7 +229,7 @@ class BulkProductUpload extends Component {
 										formData.append('product_images_upload', file, file.name)
 									})
 									if(this.state.excel_sheet !== ''){
-										formData.append('excel_sheet_for_products', this.state.excel_sheet, this.state.excel_sheet.name)
+										formData.append('excel_sheet', this.state.excel_sheet, this.state.excel_sheet.name)
 									}
 
 									axios.post(utils.baseUrl + '/uploads/bulk-upload-products', formData)

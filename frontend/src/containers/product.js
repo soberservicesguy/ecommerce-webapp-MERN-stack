@@ -30,16 +30,26 @@ class ProductContainer extends Component {
 	componentDidMount() {
 
 // // FETCHING DATA FOR COMPONENT
-// 		axios.get(utils.baseUrl + '/products/products-list',)
-// 		.then((response) => {
-// 			this.props.set_fetched_products(response.data)
-// 		})
-// 		.catch((error) => {
-// 			console.log(error);
-// 		})
+		axios.get(utils.baseUrl + '/products/products-list',)
+		.then((response) => {
+			if (response.data.success){
+
+				console.log('PRODUCT LIST FETCHED')
+				console.log(response.data)
+				this.props.set_fetched_products(response.data.products_list)
+
+			} else {
+				console.log('COULDNT FETCH PRODUCTS')
+				this.props.set_fetched_products([])
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+		})
 
 
 	}
+
 	get_10_more_items() {
 		axios.get(utils.baseUrl + `/products/products-list-next-10-with-children`)
 		.then((response) => {

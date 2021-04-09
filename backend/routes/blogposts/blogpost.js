@@ -20,7 +20,7 @@ const {
 	get_image_to_display,
 	store_video_at_tmp_and_get_its_path,
 	delete_video_at_tmp,
-	// get_multer_storage_to_use,
+	get_multer_storage_to_use,
 	get_multer_storage_to_use_alternate,
 	// get_multer_storage_to_use_for_bulk_files,
 	get_file_storage_venue,
@@ -42,8 +42,8 @@ const {
 	save_file_to_aws_s3,
 	// save_file_to_aws_s3_for_bulk_files,
 
-	// checkFileTypeForImages,
-	checkFileTypeForImageAndVideo,
+	checkFileTypeForImages,
+	// checkFileTypeForImageAndVideo,
 	// checkFileTypeForImagesAndExcelSheet,
 } = require('../../config/storage/')
 
@@ -135,12 +135,24 @@ router.post('/create-blogpost-with-user', passport.authenticate('jwt', { session
 
 					}
 
+					const newBlogpostImage = new Image({
+
+						_id: new mongoose.Types.ObjectId(),
+						category: 'blogpost_image',
+						image_filepath: get_file_path_to_use(req.file, 'blogpost_image_mains', timestamp),
+						object_files_hosted_at: get_file_storage_venue(),
+					});
+
+					await newBlogpostImage.save()
+
+
 
 				// image is uploaded , now saving image in db
 					const newBlogPost = new BlogPost({
 
 						_id: new mongoose.Types.ObjectId(), 
-						image_thumbnail_filepath: get_file_path_to_use(req.file, 'blogpost_image_mains', timestamp),
+						image_thumbnail_filepath: newBlogpostImage._id,
+						// image_thumbnail_filepath: get_file_path_to_use(req.file, 'blogpost_image_mains', timestamp),
 						// image_thumbnail_filepath: `./assets/images/uploads/blogpost_image_main/${filename_used_to_store_image_in_assets}`,
 						object_files_hosted_at: get_file_storage_venue(),
 						title: req.body.title,
@@ -168,10 +180,12 @@ router.post('/create-blogpost-with-user', passport.authenticate('jwt', { session
 
 								newBlogPost.user = user
 								newBlogPost.save()
+								user.save()
 
 
-								// in response sending new image too with base64 encoding
-								let base64_encoded_image = await get_image_to_display(newBlogPost.image_thumbnail_filepath, newBlogPost.object_files_hosted_at)
+								let image_object = await Image.findOne({_id:newBlogPost.image_thumbnail_filepath})
+
+								let base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
 
 								let new_blogpost = {
 									endpoint: newBlogPost.endpoint, 
@@ -185,10 +199,12 @@ router.post('/create-blogpost-with-user', passport.authenticate('jwt', { session
 									all_tags: newBlogPost.all_tags,
 								}
 
+								console.log('BLOGPOST CREATED')
 								res.status(200).json({ success: true, msg: 'new user saved', new_blogpost: new_blogpost});	
 
 							} else {
 
+								console.log('BLOGPOST NOT CREATED')
 								res.status(200).json({ success: false, msg: "user doesnt exists, try logging in again" });
 
 							}
@@ -214,19 +230,22 @@ router.post('/create-blogpost-with-user', passport.authenticate('jwt', { session
 
 // get blogposts_list_with_children
 // USED
-router.get('/blogposts-list-with-children', function(req, res, next){
+router.get('/blogposts-list', function(req, res, next){
 	console.log('called')
 
 	BlogPost.
 	find().
 	limit(10).
-	then((blogposts)=>{
+	then(async (blogposts)=>{
 		console.log(blogposts)
-		var newBlogPosts_list = []
-		blogposts.map(async (blogpost, index)=>{
+		var blogposts_list = []
+		let all_blogposts = await Promise.all(blogposts.map(async (blogpost, index)=>{
+
 			var newBlogPost = {}
 
-			newBlogPost.image_thumbnail_filepath = await get_image_to_display(blogpost.image_thumbnail_filepath, blogpost.object_files_hosted_at)
+			let image_object = await Image.findOne({_id:blogpost.image_thumbnail_filepath})
+
+			newBlogPost.image_thumbnail_filepath = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
 			// newBlogPost.image_thumbnail_filepath = base64_encode( blogpost[ 'image_thumbnail_filepath' ] )
 			newBlogPost.title = blogpost[ 'title' ]
 			newBlogPost.timestamp_of_uploading = blogpost[ 'timestamp_of_uploading' ]
@@ -234,22 +253,22 @@ router.get('/blogposts-list-with-children', function(req, res, next){
 			newBlogPost.endpoint = blogpost[ 'endpoint' ]
 			newBlogPost.first_para = blogpost[ 'first_para' ]
 
-			newBlogPosts_list.push({...newBlogPost})
+			blogposts_list.push({...newBlogPost})
 			newBlogPost = {}
-		});
+		}))
 
-		return newBlogPosts_list
+		return blogposts_list
 	})
-	.then((newBlogPosts_list) => {
+	.then((blogposts_list) => {
 
-		if (!newBlogPosts_list) {
+		if (blogposts_list.length > 0) {
 
-			res.status(200).json({ success: false, msg: "could not find BlogPosts_list" });
+			res.status(200).json({success:true, blogposts_list:blogposts_list})
 
 		} else {
 
-			// console.log(newBlogPosts_list)
-			res.status(200).json(newBlogPosts_list);
+			// console.log(blogposts_list)
+			res.status(401).json({ success: false, msg: "could not find BlogPosts_list" });
 
 		}
 

@@ -36,11 +36,61 @@ const sheet_to_class_mapper = (sheet_name, db_object) => {
 }
 
 
-const save_parent_and_children_in_db = (parent_children_rows_dict, sheet_to_class_dict) =>{
+const save_parent_and_children_in_db = async (parent_children_rows_dict, sheet_to_class_dict, user_id, attributes_with_paths, folder_name, timestamp, all_images_db_objects) =>{
 
 	const parent_header = parent_children_rows_dict.parent_header
 	const parent_sheet = parent_children_rows_dict.parent_sheet_name
 	const row_details_list = parent_children_rows_dict.row_details
+
+// finding the user 
+	let user_object = await User.findOne({ _id: user_id }) // using req.user from passport js middleware
+
+	let index_of_path_attribute
+	let indices_of_path_attribute = []
+	attributes_with_paths.map((path_attribute) => {
+
+		index_of_path_attribute = parent_children_rows_dict.parent_header.indexOf( path_attribute )
+		// path_attribute = get_filepath_to_save_with_bulk_uploading(folder_name, timestamp)
+		indices_of_path_attribute.push(index_of_path_attribute)
+	
+	})
+
+	let path_attribute_value
+	let attribute_name
+	let corresponding_image_db_objects
+	let corresponding_image_db_object
+	let dict_of_path_attributes = {}
+
+	console.log('indices_of_path_attribute')
+	console.log(indices_of_path_attribute)
+
+	// assigning proper filepath at filepath attributes
+
+	indices_of_path_attribute.map((path_index) => {
+
+		parent_children_rows_dict.row_details.map((row, index) => {
+
+			index_of_path_attribute = path_index // working
+
+			attribute_name = parent_children_rows_dict.parent_header[index_of_path_attribute] // working
+
+	 		path_attribute_value = row.parent_row[index_of_path_attribute]
+
+			corresponding_image_db_objects = all_images_db_objects.filter(
+				function(item){
+					return item['title'] === path_attribute_value
+				}
+			)
+			
+			corresponding_image_db_object = corresponding_image_db_objects[0] // sinces its a list
+
+			dict_of_path_attributes[attribute_name] = corresponding_image_db_object._id
+
+		})
+
+	})
+
+
 
 	for (let i = 0; i < row_details_list.length; i++) {
 
@@ -53,7 +103,11 @@ const save_parent_and_children_in_db = (parent_children_rows_dict, sheet_to_clas
 
 		} 
 
-		const product = sheet_to_class_mapper(parent_sheet, {...parent_db_object_dict, _id: new mongoose.Types.ObjectId()})
+		const product = sheet_to_class_mapper(parent_sheet, {
+			_id: new mongoose.Types.ObjectId(),
+			...parent_db_object_dict,
+			...dict_of_path_attributes,
+		})
 
 		product.save(function (err, product) {
 

@@ -30,9 +30,20 @@ class BlogPostContainer extends Component {
 	componentDidMount() {
 
 // FETCHING DATA FOR COMPONENT
-		axios.get(utils.baseUrl + '/blogpostings/blogposts-list-with-children',)
+		axios.get(utils.baseUrl + '/blogpostings/blogposts-list',)
 		.then((response) => {
-			this.props.set_fetched_blogposts(response.data)
+
+			if (response.data.success){
+
+				console.log('BLOGPOSTS LIST FETCHED')
+				console.log(response.data)
+				this.props.set_fetched_blogposts(response.data.blogposts_list)
+
+			} else {
+
+				console.log('COULDNT FETCH BLOGPOSTS LIST')
+				this.props.set_fetched_blogposts([])
+			}
 		})
 		.catch((error) => {
 			console.log(error);
@@ -40,6 +51,7 @@ class BlogPostContainer extends Component {
 
 
 	}
+
 	get_10_more_items() {
 		axios.get(utils.baseUrl + `/blogpostings/blogposts-list-next-10-with-children`)
 		.then((response) => {
