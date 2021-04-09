@@ -47,7 +47,12 @@ const save_parent_and_children_in_db = async (parent_children_rows_dict, sheet_t
 
 	let index_of_path_attribute
 	let indices_of_path_attribute = []
+
 	attributes_with_paths.map((path_attribute) => {
+
+
+		console.log('parent_children_rows_dict.parent_header')
+		console.log(parent_children_rows_dict.parent_header)
 
 		index_of_path_attribute = parent_children_rows_dict.parent_header.indexOf( path_attribute )
 		// path_attribute = get_filepath_to_save_with_bulk_uploading(folder_name, timestamp)
@@ -61,6 +66,9 @@ const save_parent_and_children_in_db = async (parent_children_rows_dict, sheet_t
 	let corresponding_image_db_object
 	let dict_of_path_attributes = {}
 
+	console.log('attributes_with_paths')
+	console.log(attributes_with_paths)
+
 	console.log('indices_of_path_attribute')
 	console.log(indices_of_path_attribute)
 
@@ -70,9 +78,21 @@ const save_parent_and_children_in_db = async (parent_children_rows_dict, sheet_t
 
 		parent_children_rows_dict.row_details.map((row, index) => {
 
+			console.log('parent_children_rows_dict.row_details')
+			console.log(parent_children_rows_dict.row_details)
+
 			index_of_path_attribute = path_index // working
 
+			console.log('index_of_path_attribute')
+			console.log(index_of_path_attribute)
+
 			attribute_name = parent_children_rows_dict.parent_header[index_of_path_attribute] // working
+
+			console.log('attribute_name')
+			console.log(attribute_name)
+
+			console.log('path_attribute_value')
+			console.log(path_attribute_value)
 
 	 		path_attribute_value = row.parent_row[index_of_path_attribute]
 
@@ -82,9 +102,12 @@ const save_parent_and_children_in_db = async (parent_children_rows_dict, sheet_t
 				}
 			)
 			
+			console.log('corresponding_image_db_object')
+			console.log(corresponding_image_db_object)
+
 			corresponding_image_db_object = corresponding_image_db_objects[0] // sinces its a list
 
-			dict_of_path_attributes[attribute_name] = corresponding_image_db_object._id
+			dict_of_path_attributes[attribute_name] = corresponding_image_db_object._doc._id // using _doc as well since we destructured and added a new field in it
 
 		})
 
@@ -175,7 +198,7 @@ const save_parent_and_children_in_db = async (parent_children_rows_dict, sheet_t
 
 
 
-const parent_children_detailed = (file_name, old_parent_child_relationship_data ,  parent_completely_detailed, sheet_to_class_dict) =>{
+const parent_children_detailed = (file_name, old_parent_child_relationship_data ,  parent_completely_detailed, sheet_to_class_dict, user_id, attributes_with_paths, folder_name, timestamp, all_images_db_objects) =>{
 
 	/**
 	 * -------------- CODE BLOCK 1 START ----------------
@@ -301,7 +324,7 @@ const parent_children_detailed = (file_name, old_parent_child_relationship_data 
 						.then( (ans_for_above) => {
 							if ( !all_results2.includes(ans_for_above) && ans_for_above !== undefined  ){
 								all_results2.push(ans_for_above);
-								save_parent_and_children_in_db(ans_for_above, sheet_to_class_dict); 
+								save_parent_and_children_in_db(ans_for_above, sheet_to_class_dict, user_id, attributes_with_paths, folder_name, timestamp, all_images_db_objects); 
 							}
 						})
 						// .then( ()=> console.log(parent_completely_detailed.row_details[0].children[0].child_rows) )
@@ -336,7 +359,7 @@ const parent_children_detailed = (file_name, old_parent_child_relationship_data 
 
 
 
-const generate_parent_completely_detailed = (file_name, parent_child_relationship_data, sheet_to_class_dict) => {
+const generate_parent_completely_detailed = (file_name, parent_child_relationship_data, sheet_to_class_dict, user_id, attributes_with_paths, folder_name, timestamp, all_images_db_objects) => {
 // NOTE : TEST THIS TO WORK FOR MULTIPLE PARENTS AND THEIR CHILDREN, OR ONLY USE IT FOR SINGLE PARENT AND ITS CHILDREN
 
 	/**
@@ -407,7 +430,7 @@ const generate_parent_completely_detailed = (file_name, parent_child_relationshi
 					  return parent_complete_details
 					}) // from .then block
 					// .then( res => console.log(res) )
-					.then( parent_detailed => parent_children_detailed(file_name, parent_child_relationship_data, parent_detailed, sheet_to_class_dict) )
+					.then( parent_detailed => parent_children_detailed(file_name, parent_child_relationship_data, parent_detailed, sheet_to_class_dict, user_id, attributes_with_paths, folder_name, timestamp, all_images_db_objects) )
 
 
 			}) // from parent_child_relationship_data.map block
@@ -426,7 +449,7 @@ const generate_parent_completely_detailed = (file_name, parent_child_relationshi
 
 
 
-const pull_parent_child_data_from_excel = (file_name, sheet_to_class_dict) => {
+const pull_parent_child_data_from_excel = (file_name, sheet_to_class_dict, user_id, attributes_with_paths, folder_name, timestamp, all_images_db_objects) => {
 	var all_collection = [];
 
 	var parent_child_details = {};
@@ -488,18 +511,22 @@ const pull_parent_child_data_from_excel = (file_name, sheet_to_class_dict) => {
 		return all_collection
 
 	})
-	.then( result => generate_parent_completely_detailed(file_name, result, sheet_to_class_dict) )
+	.then( result => generate_parent_completely_detailed(file_name, result, sheet_to_class_dict, user_id, attributes_with_paths, folder_name, timestamp, all_images_db_objects) )
 	// .catch( (err) => console.log('ERROR IS ', err) )
 }
 
 
 
-const sheet_to_class = (file_name) => {
+const sheet_to_class = (file_name, user_id, folder_name, timestamp, attributes_with_paths, all_images_db_objects) => {
 	const sheet_to_class_dict = {};
+
+	console.log('ENTERED IN SHEET TO CLASS')
 
 	readXlsxFile( String(file_name), { sheet: String('sheets_classes') })
 	.then(
 		(rows) => {
+
+			console.log('OPENEDE FILE')
 			const key_row = rows[0];
 			const value_row = rows[1]
 			// for loop
@@ -511,7 +538,7 @@ const sheet_to_class = (file_name) => {
 
 		})
 		// .then( (ans) => console.log(ans) )
-		.then ( (sheet_to_class_dict) => pull_parent_child_data_from_excel(file_name, sheet_to_class_dict) )
+		.then ( (sheet_to_class_dict) => pull_parent_child_data_from_excel(file_name, sheet_to_class_dict, user_id, attributes_with_paths, folder_name, timestamp, all_images_db_objects) )
 		.catch( err => console.log(err) )	
 }
 

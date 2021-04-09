@@ -80,6 +80,14 @@ function get_multer_disk_storage(timestamp){
 }
 
 // USED FOR BULK UPLOADS
+function get_multer_disk_storage_for_bulk_files_path_only(timestamp, folder_name, file){
+
+	let file_path = path.join(__dirname , `${path_for_saving_files}/${folder_name}/${timestamp}`)
+	return `${file_path}/${file.originalname}`
+
+}
+
+
 function get_multer_disk_storage_for_bulk_files(timestamp, folder_name){
 
 	return multer.diskStorage({
@@ -173,4 +181,5 @@ function get_multer_disk_storage_for_bulk_files(timestamp, folder_name){
 module.exports = {
 	get_multer_disk_storage,
 	get_multer_disk_storage_for_bulk_files,
+	get_multer_disk_storage_for_bulk_files_path_only,
 }
