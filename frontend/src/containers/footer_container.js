@@ -206,6 +206,22 @@ class FooterContainer extends Component {
 									)
 								}
 
+								{(this.props.products_control) ? (
+
+									<div style={{marginTop:10,}}>
+										<Link to="/Bulk-Upload-Product-Category">
+											<p style={styles.secondColumnLinkText}>
+												UPLOAD BULK PRODUCT CATEGORIES
+											</p>
+										</Link>
+									</div>
+
+									) : (
+										null
+									)
+								}
+
+
 								{(this.props.isAllowedCarouselsControl) ? (
 
 									<div style={{marginTop:10,}}>

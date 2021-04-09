@@ -59,7 +59,13 @@ import {
 	BulkBlogpostUpload,
 	BulkCarouselUpload,
 	BulkProductUpload,
+	BulkProductCategoryUpload,
 } from "../components/"
+
+export const ConnectedBulkProductCategoryUpload = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(BulkProductCategoryUpload);
 
 export const ConnectedFooterContainer = connect(
 	mapStateToProps,

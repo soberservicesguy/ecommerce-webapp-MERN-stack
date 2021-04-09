@@ -251,33 +251,18 @@ router.post('/bulk-upload-products', passport.authenticate('jwt', { session: fal
 
 						user_id = user._id
 						sheet_to_class( excel_filepath, user_id, 'bulk_products',  `${currentDate}_${currentTime}`, ['image_thumbnail_filepath'], all_images_db_objects)
-						// res.status(200).json({ success: true, msg: 'new products created'});	
+						res.status(200).json({ success: true, msg: 'new products created'});	
 
 					} else {
-						// res.status(200).json({ success: false, msg: "new products NOT created, try again" });
+						res.status(200).json({ success: false, msg: "new products NOT created, try again" });
 					}
 				})
 				.catch((error) => {
-					// res.status(200).json({ success: false, msg: "new products NOT created, try again" });
+					res.status(200).json({ success: false, msg: "new products NOT created, try again" });
 				})
 
 			})()}
 
-// OLD
-			// // give excel file name and run bulk import function
-			// // req.files['excel_sheet_for_blogpost'][0] // pull data from it and create blogposts
-			// try {
-			// 	// console.log( req.files['excel_sheet_for_blogpost'][0] )
-			// 	// give path
-			// 	let uploaded_excel_sheet = path.join(__dirname , `../../assets/images/uploads/bulk_products/${currentDate}_${currentTime}/${req.files['excel_sheet_for_products'][0].filename}`) 
-			// 	sheet_to_class( uploaded_excel_sheet )
-			// 	res.status(200).json({ success: true, msg: 'new products created'});	
-
-			// } catch (error){
-
-			// 	res.status(200).json({ success: false, msg: "new products NOT created, try again" });
-
-			// }
 
 		}
 	})

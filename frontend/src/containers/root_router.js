@@ -28,6 +28,7 @@ import {
 	ConnectedBulkBlogpostUpload,
 	ConnectedBulkCarouselUpload,
 	ConnectedBulkProductUpload,
+	ConnectedBulkProductCategoryUpload,
 
 	ConnectedHomeContainer,
 	ConnectedFooterContainer,
@@ -271,6 +272,25 @@ class RootRouterContainer extends Component {
 									</div>
 				
 									<ConnectedBulkProductUpload/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							) : (
+								<Redirect to="/login"/>
+							)
+						)}/>
+
+
+						<Route exact path="/Bulk-Upload-Product-Category" render={() => (
+							(this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedBulkProductCategoryUpload/>
 				
 									<div style={{backgroundColor: 'black'}}>
 										<ConnectedFooterContainer/>

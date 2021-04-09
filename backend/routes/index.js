@@ -14,6 +14,7 @@ router.use('/stripe', require('./orders/order_with_stripe'));
 router.use('/uploads', require('./uploads/bulk_blogpost_upload'));
 router.use('/uploads', require('./uploads/bulk_product_upload'));
 router.use('/uploads', require('./uploads/bulk_carousel_upload'));
+router.use('/uploads', require('./uploads/bulk_product_category_upload'));
 
 
 // router.use('/testing', require('./tests'))

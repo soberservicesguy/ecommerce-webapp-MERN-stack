@@ -10,7 +10,7 @@ const CarouselSchema = new mongoose.Schema({
 	object_files_hosted_at: {type:String, enum:['gcp_storage', 'aws_s3', 'disk_storage',]},
 
 	endpoint:String,
-	image_filepath: { type: Schema.Types.ObjectId, ref: 'Image' },
+	image_thumbnail_filepath: { type: Schema.Types.ObjectId, ref: 'Image' },
 	title:String,
 
 // other model links
@@ -31,7 +31,7 @@ CarouselSchema.pre('save', function(next) {
 CarouselSchema.post('save', function() {
 
 	// console.log('SAVED CONDITION')
-    // console.log(this)
+    console.log(this)
 
 });
 
