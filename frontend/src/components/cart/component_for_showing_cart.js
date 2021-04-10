@@ -60,8 +60,8 @@ class ComponentForShowingCart extends Component {
 		axios.get(utils.baseUrl + '/products/get-all-variations', 
 			{
 				params:{
-					product_size: this.state.product_size,
-					product_color: this.state.product_color,
+					product_size: this.props.dataPayloadFromParent.product_size,
+					product_color: this.props.dataPayloadFromParent.product_color,
 					title: this.props.dataPayloadFromParent.title,
 				}
 			}
@@ -88,21 +88,18 @@ class ComponentForShowingCart extends Component {
 		axios.get(utils.baseUrl + '/products/get-price', 
 			{
 				params:{
-					product_size: this.state.product_size,
-					product_color: this.state.product_color,
+					product_size: this.props.dataPayloadFromParent.product_size,
+					product_color: this.props.dataPayloadFromParent.product_color,
 					title: this.props.dataPayloadFromParent.title,
 				}
 			}
 		)
 		.then((response) => {
-			this.setState(
-				prev => (
-					{
-						...prev,
-						price: response.data.price,
-					}
-				)
-			)
+			if (Number(response.data.price) > 0){
+
+				this.setState(prev => ({...prev, price: response.data.price,}))
+
+			}
 		})
 		.catch(function (error) {
 			console.log(error);
@@ -180,7 +177,7 @@ class ComponentForShowingCart extends Component {
 
 				<div style={{flexBasis:200, textAlign:'center'}}>
 					<p>
-						TItle{ data.title }
+						{ data.title }
 					</p>
 				</div>
 
@@ -240,7 +237,7 @@ class ComponentForShowingCart extends Component {
 
 				<div style={{flex:1, fontSize:20, paddingTop:10, textAlign:'center'}}>
 					<p>
-						${ this.state.price }
+						${ Number(this.state.price) }
 					</p>
 				</div>
 
@@ -287,7 +284,7 @@ class ComponentForShowingCart extends Component {
 
 				<div style={{flex:1, fontSize:20, fontWeight:'bold', paddingTop:10, textAlign:'center', paddingRight:40,}}>
 					<p>
-						${ this.state.price * data.initial_quantity }
+						${Number(this.state.price) * Number((data.initial_quantity) ? data.initial_quantity : 1) }
 					</p>
 				</div>
 

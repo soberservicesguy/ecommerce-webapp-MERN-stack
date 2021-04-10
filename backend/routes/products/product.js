@@ -370,6 +370,44 @@ router.get('/products-categories', async function(req, res, next){
 
 })
 
+
+
+router.get('/get-price', function(req, res, next){
+
+	console.log('PRICE REQUEST')
+
+	console.log({ product_size: req.query.product_size,  product_color:req.query.product_color, title: req.query.title})
+
+	Product.findOne({ product_size: req.query.product_size,  product_color:req.query.product_color, title: req.query.title})
+	.then(async (product) => {
+
+		if (product){
+
+			console.log('SENDING PRICE')
+			// let base64_encoded_image = await get_image_to_display(product.image_thumbnail_filepath, product.object_files_hosted_at)
+			// product[ image_thumbnail_filepath ] = base64_encoded_image
+			let price = product.price
+			console.log('price')
+			console.log(price)
+			res.status(200).json({price: price});
+		
+		} else {
+
+			console.log('NO MATCHING PRODUCT FOUND')
+			res.status(401).json({ success: false, msg: "could not find product" });
+
+		}
+
+	})
+	.catch((err) => {
+
+		next(err);
+
+	});
+
+
+})
+
 // USED
 // find variations available based on single input
 // takes req.query.title and searches products having same title and extracts variations from it

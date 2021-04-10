@@ -161,7 +161,7 @@ class CartContainer extends Component {
 					<Grid container direction="column">
 
 						{ cart.map((item, index) => (
-							<Grid item xs={12}>
+							<Grid item xs={12} key={item.id}>
 								<ConnectedComponentForShowingCart
 									dataPayloadFromParent = { item }
 								// not needed, since its redux

@@ -56,6 +56,9 @@ const reducerForCart = (state = initialState, action) => {
 				}
 			)
 
+			console.log('filtered_products')
+			console.log(filtered_products)
+
 			var product_index = currentEntireCart.indexOf(filtered_products[0])
 			if (product_index !== -1){
 				currentEntireCart.splice(product_index, 1)
