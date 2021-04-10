@@ -164,8 +164,8 @@ class ComponentForShowingCart extends Component {
 
 				<div style={{flex:1, textAlign:'center'}}>
 					<img 
-						// src={base64Image} 
-						src={utils.image}
+						src={base64Image}
+						// src={utils.image}
 						alt="" 
 						style={{
 							// width:'100%', 

@@ -29,6 +29,7 @@ import {
 	ConnectedBulkCarouselUpload,
 	ConnectedBulkProductUpload,
 	ConnectedBulkProductCategoryUpload,
+	// ConnectedStripeCheckout,
 
 	ConnectedHomeContainer,
 	ConnectedFooterContainer,
@@ -282,6 +283,26 @@ class RootRouterContainer extends Component {
 							)
 						)}/>
 
+
+
+{/*						<Route exact path="/Stripe-Checkout" render={() => (
+							(this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedStripeCheckout/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							) : (
+								<Redirect to="/login"/>
+							)
+						)}/>
+*/}
 
 						<Route exact path="/Bulk-Upload-Product-Category" render={() => (
 							(this.props.isSignedIn) ? (

@@ -36,6 +36,8 @@ router.get("/product-details", (req, res) => {
 
 router.post('/create-order-with-stripe', passport.authenticate('jwt', { session: false }), async function(req, res, next){
 	
+	console.log('INCOMING')
+
 	let products_in_order = req.body.products
 	let {order_amount, product_objects, final_order_content} = await get_all_product_objects_and_order_amount_for_stripe(req.body.products)
 	// let order_amount = 0
@@ -123,13 +125,16 @@ router.post('/create-order-with-stripe', passport.authenticate('jwt', { session:
 
 				} catch (err) {
 
+					console.log('FROM HERE 1')
+					console.log(err)
 					res.json(err);
 
 				}
 			}
 		})
 		.catch((err) => {
-
+			console.log('FROM HERE 2')
+			console.log(err)
 			next(err);
 
 		});

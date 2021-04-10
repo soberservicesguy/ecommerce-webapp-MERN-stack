@@ -20,6 +20,7 @@ import {
 
 	HomeContainer,
 	FooterContainer,
+	// StripeCheckout,
 
 } from "../containers";
 
@@ -61,6 +62,11 @@ import {
 	BulkProductUpload,
 	BulkProductCategoryUpload,
 } from "../components/"
+
+// export const ConnectedStripeCheckout = connect(
+// 	mapStateToProps,
+// 	mapDispatchToProps
+// )(StripeCheckout);
 
 export const ConnectedBulkProductCategoryUpload = connect(
 	mapStateToProps,

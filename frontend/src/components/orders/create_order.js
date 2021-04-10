@@ -32,6 +32,7 @@ class CreateOrder extends Component {
 		this.state = {
 			expanded:false,
 			redirectToRoute: false,
+			redirectToStripeScreen: false,
 
 			order_phone_number_field: '',
 			order_delivery_address_field: '',
@@ -112,6 +113,15 @@ class CreateOrder extends Component {
 
 			// redirecting
 			return <Redirect to = {{ pathname: "/Individual-Order" }} />
+
+		} else if ( this.state.redirectToStripeScreen !== false ){
+
+			// switching it back to false
+			this.setState(prev => ({...prev, redirectToStripeScreen: (prev.redirectToStripeScreen === false) ? true : false }))
+
+			// redirecting
+			return <Redirect to = {{ pathname: "/Stripe-Checkout" }} />
+
 
 		} else {
 
@@ -210,6 +220,8 @@ class CreateOrder extends Component {
 					{/*Stripe payment*/}
 						<button style={styles.buttonWithoutBG}
 							onClick={ () => {
+								// going to stripe screen
+								{/*this.setState(prev => ({...prev, redirectToStripeScreen: true }))*/}
 
 								let setResponseInCurrentOrder = (arg) => this.props.set_current_order(arg)
 								let redirectToNewOrder = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
@@ -223,7 +235,7 @@ class CreateOrder extends Component {
 									return product
 								})
 
-								axios.post(utils.baseUrl + '/paypal/create-order-with-stripe', 
+								axios.post(utils.baseUrl + '/stripe-payments/create-order-with-stripe', 
 									{
 										products: final_products_paylaod,
 										phone_number: this.state.order_phone_number_field,

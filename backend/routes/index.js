@@ -8,7 +8,7 @@ router.use('/users', require('./users/user'));
 router.use('/users', require('./users/sign_up'));
 
 router.use('/paypal', require('./orders/order_with_paypal'));
-router.use('/stripe', require('./orders/order_with_stripe'));
+router.use('/stripe-payments', require('./orders/order_with_stripe'));
 
 
 router.use('/uploads', require('./uploads/bulk_blogpost_upload'));

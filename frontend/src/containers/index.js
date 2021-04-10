@@ -20,3 +20,6 @@ export {default as TwoSidedCustomMasonryContainer} from "./two_sided_masonry_con
 export {default as VerticalMasonriesContainer} from "./vertical_masonries"
 
 export {default as MyResponsiveNavigation} from "./my_responsive_navigation"
+
+// export {default as StripeCheckout} from "./stripe_checkout"
+
