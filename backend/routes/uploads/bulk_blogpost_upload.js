@@ -205,10 +205,24 @@ router.post('/bulk-upload-blogposts', passport.authenticate('jwt', { session: fa
 				// creating image db objects
 				let all_images_db_objects = []
 				Promise.all(images.map(async (image_file) => {
+
+					let image_filepath_value
+
+					if (use_gcp_storage || use_aws_s3_storage){
+
+						image_filepath_value = `bulk_blogposts/${currentDate}_${currentTime}/${image_file.originalname}`
+
+					} else {
+
+						image_filepath_value = get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_blogposts', image_file.originalname)
+
+					}
+
 					let newImage = new Image({
 						_id: new mongoose.Types.ObjectId(),
 						category: 'product_image',
-						image_filepath: get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_blogposts', image_file.originalname),
+						image_filepath: image_filepath_value,
+						// image_filepath: get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_blogposts', image_file.originalname),
 						// image_filepath: `${get_filepath_to_save_with_bulk_uploading('bulk_blogposts', `${currentDate}_${currentTime}`)}${image_file.originalname}`,
 						object_files_hosted_at: get_file_storage_venue(),
 					});
