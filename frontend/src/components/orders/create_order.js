@@ -220,8 +220,6 @@ class CreateOrder extends Component {
 					{/*Stripe payment*/}
 						<button style={styles.buttonWithoutBG}
 							onClick={ () => {
-								// going to stripe screen
-								{/*this.setState(prev => ({...prev, redirectToStripeScreen: true }))*/}
 
 								let setResponseInCurrentOrder = (arg) => this.props.set_current_order(arg)
 								let redirectToNewOrder = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	

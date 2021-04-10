@@ -24,17 +24,17 @@ const reducerForCart = (state = initialState, action) => {
 
 				if ( !Number.isInteger(last_id) ){
 
-					new_product = {id: 0, ...action.product_object}
+					new_product = {id: 0, ...action.product_object, initial_quantity:1}
 
 				} else {
 
-					new_product = {id: last_id + 1, ...action.product_object}
+					new_product = {id: last_id + 1, ...action.product_object, initial_quantity:1}
 
 				}
 
 			} else {
 
-				new_product = {id: 0, ...action.product_object}
+				new_product = {id: 0, ...action.product_object, initial_quantity:1}
 			
 			}
 

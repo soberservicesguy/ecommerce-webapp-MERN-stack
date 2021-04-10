@@ -39,6 +39,9 @@ router.post('/create-order-with-stripe', passport.authenticate('jwt', { session:
 	console.log('INCOMING')
 
 	let products_in_order = req.body.products
+	console.log('products_in_order')
+	console.log(products_in_order)
+
 	let {order_amount, product_objects, final_order_content} = await get_all_product_objects_and_order_amount_for_stripe(req.body.products)
 	// let order_amount = 0
 	// let product_objects = []
