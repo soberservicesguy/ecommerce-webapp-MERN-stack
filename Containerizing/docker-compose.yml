@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  # Proxies requests to internal services
+  reverse-proxy: # this is service name
+    image: nginx # pulling this image from registry
+    # image: nginx:1.17.10 # pulling this image from registry
+    container_name: nginx-reverse-proxy # giving name to this container
+    depends_on: # services it will be able to talk to
+        - frontend-service 
+        - timetable-service
+    volumes:
+      - ./nginx_reverse_proxy/nginx.conf:/etc/nginx/nginx.conf
+    ports: # port of local machine mapped to port of exposed port of container
+      - 80:80
+
+  frontend-service: # this is service name
+    image: frontend-image # name given to the image
+    container_name: frontend-container # giving name to this container
+    build:
+      context: ../frontend/ # building from docker file in this directory
+    depends_on:
+        - timetable-service
+    ports: # port of local machine mapped to port of exposed port of container
+      - 8080:80
+    restart: on-failure
+
+  timetable-service:
+    image: timetable-service-image # name given to the image
+    container_name: timetable-service-container # giving name to this container
+    build:
+      context: ./image_sources/timetable_container # building from docker file in this directory
+    ports: # port of local machine mapped to port of exposed port of container
+      - 8002:3002
+    restart: on-failure
