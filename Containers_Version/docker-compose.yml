@@ -1,0 +1,119 @@
+version: '3'
+
+services:
+
+  # Proxies requests to internal services
+  reverse-proxy: # this is service name
+    image: nginx # pulling this image from registry
+    # image: nginx:1.17.10 # pulling this image from registry
+    container_name: nginx-reverse-proxy # giving name to this container
+    depends_on: # services it will be able to talk to
+        - frontend-service 
+        - blogpost-service 
+        - bulk-upload-service 
+        - product-service 
+        - users-module-service 
+        - order-service 
+        - carousel-service 
+    volumes:
+      - ./image_sources/nginx_proxy/nginx.conf:/etc/nginx/nginx.conf
+    ports: # port of local machine mapped to port of exposed port of container
+      - 80:80
+
+  frontend-service: # this is service name
+    image: frontend-service # name given to the image
+    container_name: frontend_service # giving name to this container
+    build:
+      context: ./image_sources/frontend_service/ # building from docker file in this directory
+    depends_on:
+        - blogpost-service 
+        - bulk-upload-service 
+        - product-service 
+        - users-module-service 
+        - order-service 
+        - carousel-service 
+    ports: # port of local machine mapped to port of exposed port of container
+      - 8080:80
+    restart: on-failure
+
+  blogpost-service:
+    image: blogpost-service # name given to the image
+    container_name: blogpost_service # giving name to this container
+    build:
+      context: ./image_sources/blogposts # building from docker file in this directory
+    ports: # port of local machine mapped to port of exposed port of container
+      - 5001:5001
+    restart: on-failure
+    # links:
+    #   - mongodb-service  # means this service can use mongo service (which is another) OR CALL THIS SERVICE
+
+  bulk-upload-service:
+    image: bulk-upload-service # name given to the image
+    container_name: bulk_upload_service # giving name to this container
+    build:
+      context: ./image_sources/bulk_uploads # building from docker file in this directory
+    ports: # port of local machine mapped to port of exposed port of container
+      - 5002:5002
+    restart: on-failure
+    # links:
+    #   - mongodb-service  # means this service can use mongo service (which is another) OR CALL THIS SERVICE
+
+  product-service:
+    image: product-service # name given to the image
+    container_name: product_service # giving name to this container
+    build:
+      context: ./image_sources/products # building from docker file in this directory
+    ports: # port of local machine mapped to port of exposed port of container
+      - 5003:5003
+    restart: on-failure
+    # links:
+    #   - mongodb-service  # means this service can use mongo service (which is another) OR CALL THIS SERVICE
+
+
+  users-module-service:
+    image: users-module-service # name given to the image
+    container_name: users_module_service # giving name to this container
+    build:
+      context: ./image_sources/user_module # building from docker file in this directory
+    ports: # port of local machine mapped to port of exposed port of container
+      - 5004:5004
+    restart: on-failure
+    # links:
+    #   - mongodb-service  # means this service can use mongo service (which is another) OR CALL THIS SERVICE
+
+  order-service:
+    image: order-service # name given to the image
+    container_name: order_service # giving name to this container
+    build:
+      context: ./image_sources/orders # building from docker file in this directory
+    ports: # port of local machine mapped to port of exposed port of container
+      - 5005:5005
+    restart: on-failure
+    # links:
+    #   - mongodb-service  # means this service can use mongo service (which is another) OR CALL THIS SERVICE
+
+  carousel-service:
+    image: carousel-service # name given to the image
+    container_name: carousel_service # giving name to this container
+    build:
+      context: ./image_sources/carousels # building from docker file in this directory
+    ports: # port of local machine mapped to port of exposed port of container
+      - 5006:5006
+    restart: on-failure
+    # links:
+    #   - mongodb-service  # means this service can use mongo service (which is another) OR CALL THIS SERVICE
+
+
+
+  mongodb:
+    container_name: mongodb # name being given to its container 
+    image: mongo # image pulled from docker hub instead of building your own from docker file
+    ports:
+      - '27018:27017' # port of local machine
+    volumes:
+      - mongo-data:/data/db
+
+
+volumes:
+  mongo-data:
+    driver: local
