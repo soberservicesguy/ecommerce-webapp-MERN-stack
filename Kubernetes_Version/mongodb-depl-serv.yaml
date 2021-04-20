@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appointment-mongodb
+  labels:
+    app: appointment-mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appointment-mongodb
+  template:
+    metadata:
+      labels:
+        app: appointment-mongodb
+    spec:
+      containers:
+      - name: appointment-mongodb
+        image: mongo
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: appointment-mongodb-secret
+              key: MONGO_ROOT_USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: appointment-mongodb-secret
+              key: MONGO_ROOT_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appointment-mongodb-service
+spec:
+  selector:
+    app: appointment-mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

@@ -1,0 +1,77 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+  annotations:
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+    # nginx.ingress.kubernetes.io/rewrite-target: /$1
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: hello-world.info
+    # - host: localhost
+      http:
+        paths:
+          - path: /blogpostings/
+            pathType: Prefix
+            backend:
+              service:
+                name: blogpost-service
+                port:
+                  number: 5001
+
+          - path: /uploads/
+            pathType: Prefix
+            backend:
+              service:
+                name: bulk-upload-service
+                port:
+                  number: 5002
+
+          - path: /products/
+            pathType: Prefix
+            backend:
+              service:
+                name: products-service
+                port:
+                  number: 5003
+
+          - path: /users/
+            pathType: Prefix
+            backend:
+              service:
+                name: user-module-service
+                port:
+                  number: 5004
+
+          - path: /paypal/
+            pathType: Prefix
+            backend:
+              service:
+                name: orders-service
+                port:
+                  number: 5005
+
+          - path: /stripe-payments/
+            pathType: Prefix
+            backend:
+              service:
+                name: orders-service
+                port:
+                  number: 5005
+
+          - path: /carousels/
+            pathType: Prefix
+            backend:
+              service:
+                name: carousels-service
+                port:
+                  number: 5006
+
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: content-frontend-service
+                port:
+                  number: 80

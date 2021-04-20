@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-module
+  labels:
+    app: user-module
+spec:
+  replicas: 2
+  # strategy:
+  #   type: RollingUpdate
+  #   rollingUpdate:
+  #     maxSurge: 2        # how many pods we can add at a time
+  #     maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: user-module
+  template:
+    metadata:
+      labels:
+        app: user-module
+    spec:
+      containers:
+      - name: user-module
+        image: soberservicesguy/portfolio-images:ecommerce_user_module
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "300Mi"
+        ports:
+        - containerPort: 5004
+        env:
+        - name: MONGODB_USER
+          valueFrom:
+            secretKeyRef:
+              name: appointment-mongodb-secret
+              key: MONGO_ROOT_USERNAME
+        - name: MONGODB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: appointment-mongodb-secret
+              key: MONGO_ROOT_PASSWORD
+        - name: MONGODB_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: appointment-mongodb-configmap
+              key: MONGO_SERVER
+      imagePullSecrets:
+      - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-module-service
+spec:
+  type: NodePort
+  # type: ClusterIP
+  selector:
+    app: user-module
+  ports:
+    - protocol: TCP
+      targetPort: 5004
+      port: 5004

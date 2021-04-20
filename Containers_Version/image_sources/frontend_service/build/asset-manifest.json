@@ -1,35 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/static/js/main.d431609d.chunk.js",
-    "main.js.map": "/static/js/main.d431609d.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.c8a21426.js",
-    "runtime-main.js.map": "/static/js/runtime-main.c8a21426.js.map",
-    "static/css/2.dc6a29ab.chunk.css": "/static/css/2.dc6a29ab.chunk.css",
-    "static/js/2.9746f06e.chunk.js": "/static/js/2.9746f06e.chunk.js",
-    "static/js/2.9746f06e.chunk.js.map": "/static/js/2.9746f06e.chunk.js.map",
+    "main.css": "/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/static/js/main.043c4a31.chunk.js",
+    "main.js.map": "/static/js/main.043c4a31.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c60b7f5c.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c60b7f5c.js.map",
+    "static/css/2.704b27e1.chunk.css": "/static/css/2.704b27e1.chunk.css",
+    "static/js/2.2125cb4f.chunk.js": "/static/js/2.2125cb4f.chunk.js",
+    "static/js/2.2125cb4f.chunk.js.map": "/static/js/2.2125cb4f.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.77971e8bf4b4ab36a1abc74b4e1439be.js": "/precache-manifest.77971e8bf4b4ab36a1abc74b4e1439be.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.dc6a29ab.chunk.css.map": "/static/css/2.dc6a29ab.chunk.css.map",
-    "static/css/main.5ecd60fb.chunk.css.map": "/static/css/main.5ecd60fb.chunk.css.map",
-    "static/js/2.9746f06e.chunk.js.LICENSE.txt": "/static/js/2.9746f06e.chunk.js.LICENSE.txt",
-    "static/media/Diet and Nutirion.jpeg": "/static/media/Diet and Nutirion.92013715.jpeg",
-    "static/media/Getting_Surgery.jpeg": "/static/media/Getting_Surgery.a239340d.jpeg",
-    "static/media/Ophthalmology.jpeg": "/static/media/Ophthalmology.bb3acf92.jpeg",
-    "static/media/doctors_first_trip.jpeg": "/static/media/doctors_first_trip.b241a180.jpeg",
-    "static/media/dr_rodney.jpeg": "/static/media/dr_rodney.d76c2e6d.jpeg",
-    "static/media/gynaecology.jpeg": "/static/media/gynaecology.d0c4c141.jpeg",
-    "static/media/health.jpeg": "/static/media/health.9a39716e.jpeg",
-    "static/media/hospital.jpeg": "/static/media/hospital.f66fe59c.jpeg",
-    "static/media/samosa.jpeg": "/static/media/samosa.3a706996.jpeg",
-    "static/media/staying_fit.jpeg": "/static/media/staying_fit.a8529a9f.jpeg"
+    "static/css/2.704b27e1.chunk.css.map": "/static/css/2.704b27e1.chunk.css.map",
+    "static/css/main.6dea0f05.chunk.css.map": "/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.2125cb4f.chunk.js.LICENSE.txt": "/static/js/2.2125cb4f.chunk.js.LICENSE.txt",
+    "static/media/samosa.jpeg": "/static/media/samosa.44942a41.jpeg"
   },
   "entrypoints": [
-    "static/js/runtime-main.c8a21426.js",
-    "static/css/2.dc6a29ab.chunk.css",
-    "static/js/2.9746f06e.chunk.js",
-    "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.d431609d.chunk.js"
+    "static/js/runtime-main.c60b7f5c.js",
+    "static/css/2.704b27e1.chunk.css",
+    "static/js/2.2125cb4f.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.043c4a31.chunk.js"
   ]
 }

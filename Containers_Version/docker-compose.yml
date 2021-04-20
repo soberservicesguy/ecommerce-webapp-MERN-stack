@@ -74,7 +74,7 @@ services:
     image: users-module-service # name given to the image
     container_name: users_module_service # giving name to this container
     build:
-      context: ./image_sources/user_module # building from docker file in this directory
+      context: ./image_sources/users_module # building from docker file in this directory
     ports: # port of local machine mapped to port of exposed port of container
       - 5004:5004
     restart: on-failure
