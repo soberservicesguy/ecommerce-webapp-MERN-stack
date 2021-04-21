@@ -1,3 +1,4 @@
+require('../models/user')
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt; // extracts jwt from header
 const fs = require('fs');
