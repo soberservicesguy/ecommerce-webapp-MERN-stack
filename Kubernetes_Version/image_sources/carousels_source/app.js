@@ -24,9 +24,9 @@ app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// app.use(require('./routes'));
+app.use(require('./routes'));
 
-app.use(require('./routes/carousels/carousel'));
+// app.use(require('./routes/carousels/carousel'));
 
 const env = require("dotenv").config({ path: "./.env" });
 

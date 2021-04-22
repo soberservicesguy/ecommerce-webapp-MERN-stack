@@ -29,9 +29,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 
-// app.use(require('./routes'));
+app.use(require('./routes'));
 
-app.use(require('./routes/blogposts/blogpost'));
+// app.use(require('./routes/blogposts/blogpost'));
 
 const env = require("dotenv").config({ path: "./.env" });
 

@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: bulk-upload
-        image: soberservicesguy/portfolio-images:ecommerce_bulk_upload
+        image: soberservicesguy/portfolio-images:ecommerce_bulk_upload_1
         resources:
           limits:
             cpu: "200m"
@@ -32,17 +32,17 @@ spec:
         - name: MONGODB_USER
           valueFrom:
             secretKeyRef:
-              name: appointment-mongodb-secret
+              name: ecommerce-mongodb-secret
               key: MONGO_ROOT_USERNAME
         - name: MONGODB_PASS
           valueFrom:
             secretKeyRef:
-              name: appointment-mongodb-secret
+              name: ecommerce-mongodb-secret
               key: MONGO_ROOT_PASSWORD
         - name: MONGODB_SERVER
           valueFrom:
             configMapKeyRef:
-              name: appointment-mongodb-configmap
+              name: ecommerce-mongodb-configmap
               key: MONGO_SERVER
       imagePullSecrets:
       - name: regcred

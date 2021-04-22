@@ -24,10 +24,10 @@ app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// app.use(require('./routes'));
+app.use(require('./routes'));
 
-app.use(require('./routes/paypal_payments/paypal_payments'));
-app.use(require('./routes/stripe_payments/stripe_payments'));
+// app.use(require('./routes/paypal_payments/paypal_payments'));
+// app.use(require('./routes/stripe_payments/stripe_payments'));
 
 
 

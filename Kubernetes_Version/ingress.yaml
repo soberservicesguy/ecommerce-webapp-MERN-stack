@@ -32,7 +32,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: products-service
+                name: product-service
                 port:
                   number: 5003
 
@@ -40,7 +40,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: user-module-service
+                name: users-module-service
                 port:
                   number: 5004
 
@@ -48,7 +48,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: orders-service
+                name: order-service
                 port:
                   number: 5005
 
@@ -56,7 +56,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: orders-service
+                name: order-service
                 port:
                   number: 5005
 
@@ -64,7 +64,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: carousels-service
+                name: carousel-service
                 port:
                   number: 5006
 
@@ -72,6 +72,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: content-frontend-service
+                name: ecommerce-frontend-service
                 port:
                   number: 80

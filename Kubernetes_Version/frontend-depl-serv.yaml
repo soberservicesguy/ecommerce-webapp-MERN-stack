@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: content-frontend
+  name: ecommerce-frontend
   labels:
-    app: content-frontend
+    app: ecommerce-frontend
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: content-frontend
+        app: ecommerce-frontend
     spec:
       containers:
-      - name: content-frontend
-        image: soberservicesguy/portfolio-images:content_frontend
+      - name: ecommerce-frontend
+        image: soberservicesguy/portfolio-images:ecommerce_frontend_3
         ports:
           - containerPort: 80
             name: http-port
@@ -28,16 +28,16 @@ spec:
       - name: regcred
   selector:
     matchLabels:
-      app: content-frontend
+      app: ecommerce-frontend
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: content-frontend-service
+  name: ecommerce-frontend-service
 spec:
   type: NodePort
   selector:
-    app: content-frontend
+    app: ecommerce-frontend
   ports:
     - protocol: TCP
       port: 80

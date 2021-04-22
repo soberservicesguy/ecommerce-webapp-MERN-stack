@@ -25,12 +25,12 @@ app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// app.use(require('./routes'));
+app.use(require('./routes'));
 
-app.use(require('./routes/uploads/bulk_blogpost_upload'));
-app.use(require('./routes/uploads/bulk_product_upload'));
-app.use(require('./routes/uploads/bulk_carousel_upload'));
-app.use(require('./routes/uploads/bulk_product_category_upload'));
+// app.use(require('./routes/uploads/bulk_blogpost_upload'));
+// app.use(require('./routes/uploads/bulk_product_upload'));
+// app.use(require('./routes/uploads/bulk_carousel_upload'));
+// app.use(require('./routes/uploads/bulk_product_category_upload'));
 
 const env = require("dotenv").config({ path: "./.env" });
 

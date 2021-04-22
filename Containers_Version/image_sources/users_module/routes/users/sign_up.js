@@ -159,6 +159,7 @@ router.post('/signup-and-get-privileges',async  (req, res, next) => {
 
 						console.log('couldnt create image database entry')
 						res.status(404).json({ success: false, msg: 'couldnt create image database entry'})
+						return
 					}
 
 				// creating user, which needs image object
@@ -255,6 +256,7 @@ router.post('/signup-and-get-privileges',async  (req, res, next) => {
 					await newImage.save()
 					await newUser.save()
 					res.status(200).json({ success: true, msg: 'new user saved' });
+					return
 
 				}
 			}

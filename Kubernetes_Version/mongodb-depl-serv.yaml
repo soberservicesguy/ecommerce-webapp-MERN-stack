@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: appointment-mongodb
+  name: ecommerce-mongodb
   labels:
-    app: appointment-mongodb
+    app: ecommerce-mongodb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: appointment-mongodb
+      app: ecommerce-mongodb
   template:
     metadata:
       labels:
-        app: appointment-mongodb
+        app: ecommerce-mongodb
     spec:
       containers:
-      - name: appointment-mongodb
+      - name: ecommerce-mongodb
         image: mongo
         resources:
           limits:
@@ -27,21 +27,21 @@ spec:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
             secretKeyRef:
-              name: appointment-mongodb-secret
+              name: ecommerce-mongodb-secret
               key: MONGO_ROOT_USERNAME
         - name: MONGO_INITDB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: appointment-mongodb-secret
+              name: ecommerce-mongodb-secret
               key: MONGO_ROOT_PASSWORD
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: appointment-mongodb-service
+  name: ecommerce-mongodb-service
 spec:
   selector:
-    app: appointment-mongodb
+    app: ecommerce-mongodb
   ports:
     - protocol: TCP
       port: 27017
