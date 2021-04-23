@@ -1,37 +1,38 @@
 # ecommerce_webapp_MERN_stack
 
-FOLDER DETAILS:
+**Project Detials:**
 
 'App' refers to the development version having Node backend with Express and MongoDB, along with  React frontend.
 'Containers_Version' refers to the app in containers network form based on Docker Compose
 'Kubernetes_Version' refers to app in the pods network form based on deployments, services and Ingress
 
 
-APP FEATURES:
+**App Features:**
 
-Products, Blogposts Display:
+**Products, Blogposts Display:**
 The App displays content, as well as lets users to upload content including bulk content upload if privileged.
 Images are shown in masonry, as well as blogposts.
 
-Products, Blogposts Upload:
+**Products, Blogposts Upload:**
 The App lets a user to register with certain privileges, along with user avatar. The user if privileged to do so, could upload images / videos / blogposts, also he could upload those in bulk. The video gets uploaded and 4-5 screenshots are taken and everytime video card is shown, some new snapshot is selected to show.
 
-Cart:
+**Cart:**
 User can place products in cart, each product comes with  variations and can be set quantity. The price changes with the variation selected. The cart is then used to make the orders where the products along with its variations are checked in the backend and total price is calculated
 
-Payment Gateway:
+**Payment Gateway:**
 Paypal and Stripe is incorporated, however stripe wasnt set up due to lack of business account
 
-Bulk Products Upload:
+**Bulk Products Upload:**
 User can upload excel file with data, and images or videos to create images /  blogposts / videos in bulk at once. Excel files for filling data can be found at App/backend/excel_to_databases 
 
-Database:
+**Database:**
 Anyone from MongoDB Atlas and Local MongoDB service can be used. Simply adjust the .env file with path App/backend/.env 
 
-Storage:
+**Storage:**
 Anyone from Local storage, AWS S3 or Google Cloud storage can be used. Simply adjust the .env file with path App/backend/.env 
 
-USAGE:
+
+**Usage:**
 
 /login allows user to login
 /signup allows user to sign up, select privileges and upload avatar
