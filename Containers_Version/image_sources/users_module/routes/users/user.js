@@ -92,7 +92,7 @@ router.post('/login', async function(req, res, next){
             // console.log(user)
 
             let user_image = await Image.findOne({ _id: user.user_image })
-            let user_avatar_image_to_use = await get_image_to_display(user_image.image_filepath, user.object_files_hosted_at)
+            let user_avatar_image_to_use = await get_image_to_display(user_image.image_filepath, user_image.object_files_hosted_at)
 
             let user_details = {
                 // user_cover_image: user_cover_image_to_use,

@@ -68,15 +68,22 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), isAll
 // Validate an existing user and issue a JWT
 router.post('/login', async function(req, res, next){
 
+    console.log('INCOMING LOGIN')
+
     User.findOneAndUpdate({ phone_number: req.body.phone_number }, { $set:{ isLoggedIn:true } }, { new: true }, async (err, user) => {
         if (err) {
 
-            res.status(401).json({ success: false, msg: "could not find user" });
+            res.status(200).json({ success: false, msg: "could not find user" });
+            console.log({ success: false, msg: "could not find user" })
+            return
 
         }
 
         if (!user) {
-            res.status(401).json({ success: false, msg: "could not find user" });
+            res.status(200).json({ success: false, msg: "could not find user" });
+            console.log({ success: false, msg: "could not find user" })
+            return
+
         }
 
     // Function defined at bottom of app.js
@@ -92,7 +99,7 @@ router.post('/login', async function(req, res, next){
             // console.log(user)
 
             let user_image = await Image.findOne({ _id: user.user_image })
-            let user_avatar_image_to_use = await get_image_to_display(user_image.image_filepath, user.object_files_hosted_at)
+            let user_avatar_image_to_use = await get_image_to_display(user_image.image_filepath, user_image.object_files_hosted_at)
 
             let user_details = {
                 // user_cover_image: user_cover_image_to_use,
@@ -103,11 +110,15 @@ router.post('/login', async function(req, res, next){
 
 
             res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, privileges: privileges_list, user_details: user_details })
+            console.log({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, privileges: privileges_list, user_details: user_details })
+            return
 
 
         } else {
 
-            res.status(401).json({ success: false, msg: "you entered the wrong password" });
+            res.status(200).json({ success: false, msg: "you entered the wrong password" });
+            console.log({ success: false, msg: "you entered the wrong password" })
+            return
 
         }
         // console.log(user);

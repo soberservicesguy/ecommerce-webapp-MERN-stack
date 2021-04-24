@@ -149,6 +149,7 @@ router.post('/signup-and-get-privileges',async  (req, res, next) => {
 
 							_id: new mongoose.Types.ObjectId(),
 							image_filepath: get_file_path_to_use(req.file, 'avatar_images', timestamp),
+							object_files_hosted_at: get_file_storage_venue(),
 							// image_filepath: `./assets/images/uploads/avatar_image/${filename_used_to_store_image_in_assets}`,
 
 						});
