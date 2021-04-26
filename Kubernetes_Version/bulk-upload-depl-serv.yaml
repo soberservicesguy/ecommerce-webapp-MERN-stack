@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: bulk-upload
-        image: soberservicesguy/portfolio-images:ecommerce_bulk_upload_1
+        image: soberservicesguy/portfolio-images:ecommerce_bulk_upload_3
         resources:
           limits:
             cpu: "200m"

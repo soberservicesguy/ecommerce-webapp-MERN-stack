@@ -1,11 +1,13 @@
+const env = require("dotenv").config({ path: "../../.env" });
+
 const path = require('path')
 const { Storage } = require("@google-cloud/storage");
 const gcp_storage = new Storage({
-	keyFilename: path.join(__dirname, "../../keys/android-app-backend-307507-d8ea1fdf8d98.json"),
-	projectId: "android-app-backend-307507",
+	keyFilename: env.gcp_keyFilename,
+	projectId: evn.gcp_projectId,
 })
 
-let gcp_bucket = 'portfolio_social_app'
+let gcp_bucket = env.gcp_bucket
 
 function get_file_from_gcp(complete_file_name){
 
