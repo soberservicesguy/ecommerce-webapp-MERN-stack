@@ -1,5 +1,10 @@
 # ecommerce_webapp_MERN_stack
 
+**Live App:**
+
+https://ecommerce-app-dot-portfolio-apps-311617.uc.r.appspot.com
+
+
 **Project Detials:**
 
 'App' refers to the development version having Node backend with Express and MongoDB, along with  React frontend.
