@@ -4,7 +4,7 @@ const path = require('path')
 const { Storage } = require("@google-cloud/storage");
 const gcp_storage = new Storage({
 	keyFilename: env.gcp_keyFilename,
-	projectId: evn.gcp_projectId,
+	projectId: env.gcp_projectId,
 })
 
 let gcp_bucket = env.gcp_bucket

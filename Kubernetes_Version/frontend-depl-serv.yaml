@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: ecommerce-frontend
-        image: soberservicesguy/portfolio-images:ecommerce_frontend_5
+        image: soberservicesguy/portfolio-images:ecommerce_frontend_6
         ports:
           - containerPort: 80
             name: http-port

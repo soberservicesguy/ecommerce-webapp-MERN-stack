@@ -78,22 +78,22 @@ app.get('/*', function(req, res){
 
 // --------------------------PUSH NOTIFICATIONS start here-------------------------------
 
-const webpush = require("web-push");
-app.use(express.static(path.join(__dirname, "push_notifications")));
+// const webpush = require("web-push");
+// app.use(express.static(path.join(__dirname, "push_notifications")));
 
-// app.use(bodyParser.json()); // commented out since we using express own alternative for it
+// // app.use(bodyParser.json()); // commented out since we using express own alternative for it
 
-// public and private keys are generated using some command on terminal
-const publicVapidKey =
-	"BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo";
-const privateVapidKey = "3KzvKasA2SoCxsp0iIG_o9B0Ozvl1XDwI63JRKNIWBM";
+// // public and private keys are generated using some command on terminal
+// const publicVapidKey =
+// 	"";
+// const privateVapidKey = "";
 
-// SEARCH ABOUT BOTTOM ???
-webpush.setVapidDetails(
-	"mailto:test@test.com",
-	publicVapidKey,
-	privateVapidKey
-);
+
+// webpush.setVapidDetails(
+// 	"mailto:test@test.com",
+// 	publicVapidKey,
+// 	privateVapidKey
+// );
 
 // --------------------------PUSH NOTIFICATIONS ends here-------------------------------
 
@@ -107,8 +107,8 @@ const paypal = require('paypal-rest-sdk');
 
 paypal.configure({
 	'mode': 'sandbox', //sandbox or live
-	'client_id': 'AQye1v_Efj97EIvqKjfKKYG8JL2vKbtwVda0-gThF-f5wnxhPmn9DfBQaA3JRVkyjnRwjrb-5osgVNtG',
-	'client_secret': 'EC18QpJ154o-o1y2lsLtM4IXsxOhXzRHdubgvbgJf2fsVzYZGQdVqhnf7oE8cn4vW_APN3sHnHUs_htS'
+	'client_id': '',
+	'client_secret': ''
 });
 
 // --------------------------PAYPAL ends here-------------------------------
