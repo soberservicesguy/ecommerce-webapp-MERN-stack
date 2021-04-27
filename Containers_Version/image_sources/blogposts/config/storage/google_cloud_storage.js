@@ -1,13 +1,13 @@
-const env = require("dotenv").config({ path: "../../.env" });
+require('dotenv').config({ path: "../../.env" })
 
 const path = require('path')
 const { Storage } = require("@google-cloud/storage");
 const gcp_storage = new Storage({
-	keyFilename: env.gcp_keyFilename,
-	projectId: env.gcp_projectId,
+	keyFilename: path.join(__dirname, `../../keys/${process.env.gcp_keyFilename}`),
+	projectId: process.env.gcp_projectId,
 })
 
-let gcp_bucket = env.gcp_bucket
+let gcp_bucket = process.env.gcp_bucket
 
 
 function get_file_from_gcp(complete_file_name){
