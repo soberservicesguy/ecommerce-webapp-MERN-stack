@@ -55,78 +55,6 @@ let timestamp
 let currentDate
 let currentTime
 
-// Set The Storage Engine
-// const bulk_product_image_storage = multer.diskStorage({
-// 	// destination: path.join(__dirname , '../../assets/bulk_product_categories/'),
-// 	destination:function(req, file, cb){
-// 		// let file_path = `./uploads/${type}`;
-// 		currentDate = new Date().toLocaleDateString("en-US").split("/").join(" | ");
-// 		currentTime = new Date().toLocaleTimeString("en-US").split("/").join(" | ");
-
-// 		if (file.fieldname === "product_category_images_upload") {
-
-// 			let file_path = path.join(__dirname , '../../assets/images/uploads/bulk_product_categories/images')
-// 			cb(null, file_path)	
-
-// 		} else {
-
-// 			fs.mkdir( path.join(__dirname , `../../assets/images/uploads/bulk_product_categories/${currentDate}_${currentTime}`), { recursive: true }, (err) => {
-// 				if (err) throw err;
-// 			})
-			
-// 			let file_path = path.join(__dirname , `../../assets/images/uploads/bulk_product_categories/${currentDate}_${currentTime}`)
-// 			cb(null, file_path)	
-
-// 		}
-
-// 	},
-// 	filename: function(req, file, cb){
-// 		// file name pattern fieldname-currentDate-fileformat
-// 		// filename_used_to_store_image_in_assets_without_format = file.fieldname + '-' + Date.now()
-// 		// filename_used_to_store_image_in_assets = filename_used_to_store_image_in_assets_without_format + path.extname(file.originalname)
-
-// 		filename_used_to_store_image_in_assets = file.originalname
-// 		cb(null, file.originalname);
-
-// 	}
-// });
-
-
-// Check File Type
-// function checkFileTypeForImageAndExcelSheet(file, cb){
-
-// 	// Allowed ext
-// 	let filetypes_for_image = /jpeg|jpg|png|gif/
-// 	// let filetypes_for_excelsheet = /xlsx|xls/
-// 	let filetypes_for_excelsheet = /[A-Za-z]+/
-
-// 	// Check ext
-// 	let extname_for_image = filetypes_for_image.test( path.extname(file.originalname).toLowerCase() );
-// 	let extname_for_excelsheet = filetypes_for_excelsheet.test( path.extname(file.originalname).toLowerCase() );
-
-// 	// Check mime
-// 	let mimetype_for_image = filetypes_for_image.test( file.mimetype );
-// 	let mimetype_for_excelsheet = filetypes_for_excelsheet.test( file.mimetype );
-
-// 	if (file.fieldname === "product_category_images_upload") { // if uploading resume
-		
-// 		if (mimetype_for_image && extname_for_image) {
-// 			cb(null, true);
-// 		} else {
-// 			cb('Error: jpeg, jpg, png, gif Images Only!');
-// 		}
-
-// 	} else { // else uploading images
-
-// 		if (mimetype_for_excelsheet && extname_for_excelsheet) {
-// 			cb(null, true);
-// 		} else {
-// 			cb('Error: only .xlsx, .xls for excel files');
-// 		}
-
-// 	}
-
-// }
 
 
 
@@ -174,7 +102,7 @@ router.post('/bulk-upload-product-categories', passport.authenticate('jwt', { se
 
 				if (use_gcp_storage){
 
-					await save_file_to_gcp_for_bulk_files( `${currentDate}_${currentTime}`, 'bulk_product_categories', req.files['excel_sheet'][0] )
+					// await save_file_to_gcp_for_bulk_files( `${currentDate}_${currentTime}`, 'bulk_product_categories', req.files['excel_sheet'][0] )
 					
 
 					images = req.files['product_category_images_upload']
@@ -182,15 +110,15 @@ router.post('/bulk-upload-product-categories', passport.authenticate('jwt', { se
 						await save_file_to_gcp_for_bulk_files( `${currentDate}_${currentTime}`, 'bulk_product_categories', image_file )
 					}))
 
-					await save_file_to_gcp_for_bulk_files( `${currentDate}_${currentTime}`, 'bulk_product_categories', excel_file )
+					// await save_file_to_gcp_for_bulk_files( `${currentDate}_${currentTime}`, 'bulk_product_categories', excel_file )
 
 					console.log('SAVED TO GCP')
 
 				} else if (use_aws_s3_storage) {
 
-					await save_file_to_aws_s3_for_bulk_files( `${currentDate}_${currentTime}`, 'bulk_product_categories', req.files['excel_sheet'][0])
+					// await save_file_to_aws_s3_for_bulk_files( `${currentDate}_${currentTime}`, 'bulk_product_categories', req.files['excel_sheet'][0])
 
-					await save_file_to_aws_s3_for_bulk_files( `${currentDate}_${currentTime}`, 'bulk_product_categories', excel_file )					
+					// await save_file_to_aws_s3_for_bulk_files( `${currentDate}_${currentTime}`, 'bulk_product_categories', excel_file )					
 					
 					images = req.files['product_category_images_upload']
 					Promise.all(images.map(async (image_file) => {
@@ -210,19 +138,16 @@ router.post('/bulk-upload-product-categories', passport.authenticate('jwt', { se
 
 					// creating image db objects
 					Promise.all(images.map(async (image_file) => {
-	
-						console.log('image_filepath')
-						console.log(`${get_filepath_to_save_with_bulk_uploading('bulk_product_categories', `${currentDate}_${currentTime}`)}${image_file.originalname}`)		
 
 						let image_filepath_value
 
 						if (use_gcp_storage || use_aws_s3_storage){
 
-							image_filepath_value = `bulk_blogposts/${currentDate}_${currentTime}/${image_file.originalname}`
+							image_filepath_value = `bulk_product_categories/${currentDate}_${currentTime}/${image_file.originalname}`
 
 						} else {
 
-							image_filepath_value = get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_blogposts', image_file.originalname)
+							image_filepath_value = get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_product_categories', image_file.originalname)
 
 						}
 
@@ -243,11 +168,9 @@ router.post('/bulk-upload-product-categories', passport.authenticate('jwt', { se
 
 					}))
 
-					console.log('CREATED PRODUCT CATEGORIES')
 					res.status(200).json({ success: true, msg: 'new product categories created'});	
 
 				} catch (err){
-					console.log('NOT CREATED PRODUCT CATEGORIES')
 					console.log(err)
 					res.status(200).json({ success: false, msg: "new products NOT created, try again" });
 				}
@@ -259,6 +182,7 @@ router.post('/bulk-upload-product-categories', passport.authenticate('jwt', { se
 		}
 	})
 })
+
 
 
 

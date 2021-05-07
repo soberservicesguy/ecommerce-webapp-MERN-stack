@@ -245,14 +245,6 @@ router.post('/bulk-upload-carousels', passport.authenticate('jwt', { session: fa
 				// saving file to /tmp as well since readXlsxFile in sheet_to_class needs filepath
 				let excel_filepath = await store_excel_file_at_tmp_and_get_its_path(excel_file, filepath_in_case_of_disk_storage)
 
-				console.log('filepath_in_case_of_disk_storage')
-				console.log(filepath_in_case_of_disk_storage)
-
-				console.log('filepath_in_case_of_disk_storage.destination')
-				console.log(filepath_in_case_of_disk_storage.getDestination)
-
-				console.log('excel_filepath')
-				console.log(excel_filepath)
 
 
 				let user_id = ''
@@ -275,21 +267,6 @@ router.post('/bulk-upload-carousels', passport.authenticate('jwt', { session: fa
 
 			})()}
 
-
-			// // give excel file name and run bulk import function
-			// // req.files['excel_sheet_for_carousel'][0] // pull data from it and create carousels
-			// try {
-			// 	// console.log( req.files['excel_sheet_for_carousel'][0] )
-			// 	// give path
-			// 	let uploaded_excel_sheet = path.join(__dirname , `../../assets/images/uploads/bulk_carousels/${currentDate}_${currentTime}/${req.files['excel_sheet_for_carousel'][0].filename}`) 
-			// 	sheet_to_class( uploaded_excel_sheet )
-			// 	res.status(200).json({ success: true, msg: 'new carousels created'});	
-
-			// } catch (error){
-
-			// 	res.status(200).json({ success: false, msg: "new carousels NOT created, try again" });
-
-			// }
 
 		}
 	})

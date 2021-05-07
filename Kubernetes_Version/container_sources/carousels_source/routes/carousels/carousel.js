@@ -203,8 +203,7 @@ router.post('/create-carousel-with-user', passport.authenticate('jwt', { session
 // get blogposts_list_with_children
 // USED
 router.get('/get-carousel', async function(req, res, next){
-	console.log('called')
-
+	
 	Carousel.
 	find().
 	limit(10).

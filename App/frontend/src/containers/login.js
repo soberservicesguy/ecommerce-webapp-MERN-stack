@@ -48,10 +48,10 @@ class LoginContainer extends Component {
 		.then(function (response) {
 			if (response.data.success === true){
 
-				console.log(response.data)
+				// console.log(response.data)
 
 			} else {
-				console.log(response.data)
+				// console.log(response.data)
 				console.log('not authorized')
 			}
 
@@ -161,7 +161,7 @@ class LoginContainer extends Component {
 		.then(function (response) {
 			if (response.data.success === true){
 
-				console.log(response.data.message)
+				// console.log(response.data.message)
 				
 			} else {
 				console.log('couldnt delete all users')
@@ -180,7 +180,7 @@ class LoginContainer extends Component {
 		.then(function (response) {
 			if (response.data.success === true){
 
-				console.log(response.data.message)
+				// console.log(response.data.message)
 				
 			} else {
 				console.log('couldnt carousels all users')
@@ -200,7 +200,7 @@ class LoginContainer extends Component {
 		.then(function (response) {
 			if (response.data.success === true){
 
-				console.log(response.data.message)
+				// console.log(response.data.message)
 				
 			} else {
 				console.log('couldnt delete all blogposts')
@@ -218,7 +218,7 @@ class LoginContainer extends Component {
 		.then(function (response) {
 			if (response.data.success === true){
 
-				console.log(response.data.message)
+				// console.log(response.data.message)
 				
 			} else {
 				console.log('couldnt delete all products')
@@ -236,7 +236,7 @@ class LoginContainer extends Component {
 		.then(function (response) {
 			if (response.data.success === true){
 
-				console.log(response.data.message)
+				// console.log(response.data.message)
 				
 			} else {
 				console.log('couldnt delete all images')

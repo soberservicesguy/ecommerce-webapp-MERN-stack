@@ -54,13 +54,7 @@ const {
 
 
 router.get('/protected', passport.authenticate('jwt', { session: false }), isAllowedSurfing, (req, res, next) => {
-    // // payload recieved from passport.authenticate jwt middleware
-    // console.log(req.user.msg)
-    // console.log(req.user.user_object)
-
-    // // payload recieved from last middleware
-    // console.log(req.local)
-
+ 
     res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!", privileges: req.user.privileges});
 });
 
@@ -68,20 +62,17 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), isAll
 // Validate an existing user and issue a JWT
 router.post('/login', async function(req, res, next){
 
-    console.log('INCOMING LOGIN')
 
     User.findOneAndUpdate({ phone_number: req.body.phone_number }, { $set:{ isLoggedIn:true } }, { new: true }, async (err, user) => {
         if (err) {
 
             res.status(200).json({ success: false, msg: "could not find user" });
-            console.log({ success: false, msg: "could not find user" })
             return
 
         }
 
         if (!user) {
             res.status(200).json({ success: false, msg: "could not find user" });
-            console.log({ success: false, msg: "could not find user" })
             return
 
         }
@@ -110,14 +101,12 @@ router.post('/login', async function(req, res, next){
 
 
             res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, privileges: privileges_list, user_details: user_details })
-            console.log({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, privileges: privileges_list, user_details: user_details })
             return
 
 
         } else {
 
             res.status(200).json({ success: false, msg: "you entered the wrong password" });
-            console.log({ success: false, msg: "you entered the wrong password" })
             return
 
         }
@@ -154,6 +143,19 @@ router.get('/delete-all-products', async (req, res, next) => {
 
 });
 
+
+
+router.get('/delete-all-product-categories', async (req, res, next) => {
+
+    await Product.deleteMany({}, ()=>null)
+    await Image.deleteMany({}, ()=>null)
+
+    res.status(200).json({ success: true, message: 'all products deleted'});
+
+});
+
+
+
 router.get('/delete-all-images', async (req, res, next) => {
 
     await Image.deleteMany({}, ()=>null)
@@ -163,7 +165,6 @@ router.get('/delete-all-images', async (req, res, next) => {
 
 router.get('/delete-all-blogposts', async (req, res, next) => {
 
-    console.log('INCOMING')
     await BlogPost.deleteMany({}, ()=>null)
     res.status(200).json({ success: true, message: 'all blogposts deleted'});
 
@@ -171,35 +172,6 @@ router.get('/delete-all-blogposts', async (req, res, next) => {
 
 
 
-// DEPRECATED
-//  User.findOne({ phone_number: req.body.phone_number })
-//  .then((user) => {
-
-//      console.log(user)
-
-//      if (!user) {
-//          res.status(401).json({ success: false, msg: "could not find user" });
-//      }
-
-//      // Function defined at bottom of app.js
-//      const isValid = utils.validPassword(req.body.password, user.hash, user.salt);
-
-//      if (isValid) {
-
-//          const tokenObject = utils.issueJWT(user);
-//          res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires });
-
-//      } else {
-
-//          res.status(401).json({ success: false, msg: "you entered the wrong password" });
-
-//      }
-
-//  })
-//  .catch((err) => {
-//      next(err);
-//  });
-// });
 
 // Register a new user
 router.post('/register', function(req, res, next){

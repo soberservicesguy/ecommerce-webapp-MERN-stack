@@ -142,7 +142,7 @@ class BulkProductCategoryUpload extends Component {
 									type="file"
 									onChange={(event) => {
 										// console logging selected file from menu
-										console.log( event.target.files ) // gives all files
+										// console.log( event.target.files ) // gives all files
 										// setState method with event.target.files[0] as argument
 										this.setState(prev => ({...prev, image_main: event.target.files}))
 									}}
@@ -182,7 +182,7 @@ class BulkProductCategoryUpload extends Component {
 
 									axios.post(utils.baseUrl + '/uploads/bulk-upload-product-categories', formData)
 									.then(function (response) {
-										console.log(response.data) // current blogpost screen data
+										// console.log(response.data) // current blogpost screen data
 										
 										// set to current parent object
 										// setResponseInFetchedBlogPosts(response.data.new_blogpost)
@@ -205,7 +205,7 @@ class BulkProductCategoryUpload extends Component {
 							<button 
 								style={styles.roundButton}
 								onClick={ () => {
-									axios.get(utils.baseUrl + '/uploads/bulk-delete-products')
+									axios.get(utils.baseUrl + '/users/delete-all-product-categories')
 									.then(function (response) {
 										console.log(response.data)
 									})

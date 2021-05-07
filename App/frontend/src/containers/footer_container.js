@@ -429,8 +429,8 @@ class FooterContainer extends Component {
 							src={this.props.twitterLogo}
 							style={{
 								objectFit:'fill', 
-								width: 30, 
-								height:30,
+								width: 40, 
+								height:40,
 								paddingRight:this.props.imagePaddingRight,
 								marginBottom:50,
 								marginLeft:15,
@@ -471,10 +471,10 @@ FooterContainer.defaultProps = {
   thirdColumnFontColor:'grey',
   fourthColumnFontSize:13,
   fourthColumnFontColor:'grey',
-  companyLogo:utils.image,
-  facebookLogo:require('../images/samosa.jpeg'),
-  twitterLogo:require('../images/samosa.jpeg'),
-  linkedinLogo:require('../images/samosa.jpeg'),
+  companyLogo:utils.ecommerce_logo,
+  facebookLogo:utils.facebook_logo,
+  twitterLogo:utils.twitter_logo,
+  linkedinLogo:utils.linkedin_logo,
 };
 
 export default withResponsiveness(withRouter(FooterContainer));

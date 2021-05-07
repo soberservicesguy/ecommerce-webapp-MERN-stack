@@ -7,16 +7,16 @@ const initialState = {
 		},
 
 	totalOrder: [
-			{ endpoint:'dummy1', timestamp_of_order:'dummy1', order_amount:'dummy1',},
-			{ endpoint:'dummy2', timestamp_of_order:'dummy2', order_amount:'dummy2',},
-			{ endpoint:'dummy3', timestamp_of_order:'dummy3', order_amount:'dummy3',},
-			{ endpoint:'dummy4', timestamp_of_order:'dummy4', order_amount:'dummy4',},
-			{ endpoint:'dummy5', timestamp_of_order:'dummy5', order_amount:'dummy5',},
-			{ endpoint:'dummy6', timestamp_of_order:'dummy6', order_amount:'dummy6',},
-			{ endpoint:'dummy7', timestamp_of_order:'dummy7', order_amount:'dummy7',},
-			{ endpoint:'dummy8', timestamp_of_order:'dummy8', order_amount:'dummy8',},
-			{ endpoint:'dummy9', timestamp_of_order:'dummy9', order_amount:'dummy9',},
-			{ endpoint:'dummy10', timestamp_of_order:'dummy10', order_amount:'dummy10',},
+			// { endpoint:'dummy1', timestamp_of_order:'dummy1', order_amount:'dummy1',},
+			// { endpoint:'dummy2', timestamp_of_order:'dummy2', order_amount:'dummy2',},
+			// { endpoint:'dummy3', timestamp_of_order:'dummy3', order_amount:'dummy3',},
+			// { endpoint:'dummy4', timestamp_of_order:'dummy4', order_amount:'dummy4',},
+			// { endpoint:'dummy5', timestamp_of_order:'dummy5', order_amount:'dummy5',},
+			// { endpoint:'dummy6', timestamp_of_order:'dummy6', order_amount:'dummy6',},
+			// { endpoint:'dummy7', timestamp_of_order:'dummy7', order_amount:'dummy7',},
+			// { endpoint:'dummy8', timestamp_of_order:'dummy8', order_amount:'dummy8',},
+			// { endpoint:'dummy9', timestamp_of_order:'dummy9', order_amount:'dummy9',},
+			// { endpoint:'dummy10', timestamp_of_order:'dummy10', order_amount:'dummy10',},
 		],
 	}
 

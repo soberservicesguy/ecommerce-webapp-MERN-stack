@@ -65,7 +65,7 @@ class MyResponsiveNavigation extends Component {
 							margin:(_xs || _sm) ? 'auto' : 0,
 							marginBottom:(_xs || _sm) ? 20 : 0,
 						}}>
-							<img src={utils.image} alt="" 
+							<img src={utils.ecommerce_logo} alt="" 
 								style={{
 									width:70, 
 									height:70, 

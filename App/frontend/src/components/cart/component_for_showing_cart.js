@@ -49,7 +49,7 @@ class ComponentForShowingCart extends Component {
 
 // COMPONENT DID MOUNT
 	componentDidMount() {
-		console.log(this.props.dataPayloadFromParent.title)
+		// console.log(this.props.dataPayloadFromParent.title)
 		this.get_variations()
 		// console.log('COMPONENT')
 		// console.log(this.props.dataPayloadFromParent)

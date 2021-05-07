@@ -77,7 +77,7 @@ class CreateCarousel extends Component {
 								type="file"
 								onChange={(event) => {
 									// console logging selected file from menu
-									console.log( event.target.files[0] ) // gives first file
+									// console.log( event.target.files[0] ) // gives first file
 									// setState method with event.target.files[0] as argument
 									this.setState(prev => ({...prev, image_filepath: event.target.files[0]}))
 								}}
@@ -107,22 +107,28 @@ class CreateCarousel extends Component {
 
 							const formData = new FormData()
 							formData.append('title', this.state.title)
-							formData.append('carousel_image', this.state.image_filepath, this.state.image_filepath.name)
-						
-							axios.post(utils.baseUrl + '/carousels/create-carousel-with-user', formData)
-							.then(function (response) {
-								console.log(response.data) // current carousel screen data
-								
-								// set to current parent object
-								setResponseInCurrentCarousel(response.data.new_carousel)
+					
+							if (this.state.image_filepath !== ''){
 
-								// change route to current_carousel
-								redirectToNewCarousel()
+								formData.append('carousel_image', this.state.image_filepath, this.state.image_filepath.name)
 
-							})
-							.catch(function (error) {
-								console.log(error)
-							});						
+								axios.post(utils.baseUrl + '/carousels/create-carousel-with-user', formData)
+								.then(function (response) {
+									// console.log(response.data) // current carousel screen data
+									
+									// set to current parent object
+									setResponseInCurrentCarousel(response.data.new_carousel)
+
+									// change route to current_carousel
+									redirectToNewCarousel()
+
+								})
+								.catch(function (error) {
+									console.log(error)
+								});						
+
+							}
+
 
 						}}
 					>

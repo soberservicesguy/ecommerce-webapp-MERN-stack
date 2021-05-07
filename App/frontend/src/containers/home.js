@@ -65,8 +65,8 @@ class HomeContainer extends Component {
 
 			if (response.data.success){
 
-				console.log('BLOGPOSTS LIST FETCHED')
-				console.log(response.data)
+				// console.log('BLOGPOSTS LIST FETCHED')
+				// console.log(response.data)
 				this.props.set_fetched_blogposts(response.data.blogposts_list)
 
 			} else {
@@ -87,8 +87,8 @@ class HomeContainer extends Component {
 		.then((response) => {
 			if (response.data.success){
 
-				console.log('PRODUCT LIST FETCHED')
-				console.log(response.data)
+				// console.log('PRODUCT LIST FETCHED')
+				// console.log(response.data)
 				this.props.set_fetched_products(response.data.products_list)
 
 			} else {
@@ -107,8 +107,8 @@ class HomeContainer extends Component {
 		.then((response) => {
 			if (response.data.success){
 
-				console.log('PRODUCT CATEGORIES FETCHED')
-				console.log(response.data)
+				// console.log('PRODUCT CATEGORIES FETCHED')
+				// console.log(response.data)
 				this.props.set_product_categories(response.data.categories)
 
 			} else {
@@ -128,8 +128,8 @@ class HomeContainer extends Component {
 		.then((response) => {
 			if (response.data.success){
 
-				console.log('CAROUSEL FETCHED')
-				console.log(response.data)
+				// console.log('CAROUSEL FETCHED')
+				// console.log(response.data)
 				this.props.set_fetched_carousels(response.data)
 
 			} else {
@@ -317,7 +317,7 @@ class HomeContainer extends Component {
 						<Grid item xs={12} sm={12} md={3} lg={3}>
 							<div style={{textAlign:'center'}}>
 								<img 
-									src={utils.image}
+									src={utils.products_logo}
 									style={{
 										objectFit:'fill', 
 										width: '50%', 

@@ -158,7 +158,6 @@ router.post('/bulk-upload-products', passport.authenticate('jwt', { session: fal
 	// console.log('OUTER LOG')
 	// console.log(req.body)
 
-	console.log('called')
 	timestamp = new Date()
 	currentDate = timestamp.toLocaleDateString("en-US").split("/").join(" | ");
 	currentTime = timestamp.toLocaleTimeString("en-US").split("/").join(" | ");
@@ -216,11 +215,11 @@ router.post('/bulk-upload-products', passport.authenticate('jwt', { session: fal
 
 					if (use_gcp_storage || use_aws_s3_storage){
 
-						image_filepath_value = `bulk_blogposts/${currentDate}_${currentTime}/${image_file.originalname}`
+						image_filepath_value = `bulk_products/${currentDate}_${currentTime}/${image_file.originalname}`
 
 					} else {
 
-						image_filepath_value = get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_blogposts', image_file.originalname)
+						image_filepath_value = get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_products', image_file.originalname)
 
 					}
 
@@ -249,14 +248,6 @@ router.post('/bulk-upload-products', passport.authenticate('jwt', { session: fal
 				// saving file to /tmp as well since readXlsxFile in sheet_to_class needs filepath
 				let excel_filepath = await store_excel_file_at_tmp_and_get_its_path(excel_file, filepath_in_case_of_disk_storage)
 
-				console.log('filepath_in_case_of_disk_storage')
-				console.log(filepath_in_case_of_disk_storage)
-
-				console.log('filepath_in_case_of_disk_storage.destination')
-				console.log(filepath_in_case_of_disk_storage.getDestination)
-
-				console.log('excel_filepath')
-				console.log(excel_filepath)
 
 
 				let user_id = ''

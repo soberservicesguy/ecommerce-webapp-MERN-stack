@@ -231,13 +231,13 @@ router.post('/create-blogpost-with-user', passport.authenticate('jwt', { session
 // get blogposts_list_with_children
 // USED
 router.get('/blogposts-list', function(req, res, next){
-	console.log('called')
+	// console.log('called')
 
 	BlogPost.
 	find().
 	limit(10).
 	then(async (blogposts)=>{
-		console.log(blogposts)
+		// console.log(blogposts)
 		var blogposts_list = []
 		let all_blogposts = await Promise.all(blogposts.map(async (blogpost, index)=>{
 

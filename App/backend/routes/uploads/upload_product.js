@@ -60,8 +60,6 @@ function checkFileTypeForProductImage(file, cb){
 
 router.post('/protected-image-upload', passport.authenticate('jwt', { session: false }), (req, res, next) => {
 
-	console.log('OUTER LOG')
-	console.log(req.body)
 
 	product_image_upload(req, res, (err) => {
 		if(err){

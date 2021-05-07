@@ -21,48 +21,6 @@ router.post('/create-order-with-paypal', passport.authenticate('jwt', { session:
 
 	let products_in_order = req.body.products
 	let {order_amount, product_objects, final_order_content} = await get_all_product_objects_and_order_amount_for_paypal(req.body.products)
-	// let order_amount = 0
-	// let product_objects = []
-	// let final_order_content = []
-	// DRYed OUT
-	// let loop_result = await Promise.all(products_in_order.map(async (ordered_product) => {
-	// 	let quantity = ordered_product.initial_quantity
-	// 	// console.log(`ORDERED QUANTITY IS ${quantity}`)
-
-	// 	delete ordered_product.price
-	// 	delete ordered_product.initial_quantity
-
-	// 	await Product.findOne(ordered_product)
-	// 	.then((product_found) => {
-
-	// 		// console.log('FOUND PRODUCT')
-	// 		// console.log(product_found)
-
-	// 		product_objects.push(product_found)
-
-	// 		final_order_content.push({
-	// 			// paypal fields
-	// 			name: product_found.title,
-	// 			sku: product_found.endpoint,
-	// 			price: product_found.price,
-	// 			quantity: quantity,
-	// 			currency: currency,
-	// 		// NO additional fields, PAYPAL GIVES ERRORS
-	// 			// product_size: ordered_product.product_size,
-	// 			// product_color: ordered_product.product_color,
-	// 		})
-	// 		// console.log('1')
-	// 		// console.log('PRODUCT RESULTS')
-	// 		// console.log(Number(product_found.price) * Number(quantity))
-	// 		order_amount += Number(product_found.price) * Number(quantity)
-
-	// 	})
-
-	// }))
-
-	// console.log('2')
-	console.log('order_amount')
-	console.log(order_amount)
 
 	const newOrder = new Order({
 
@@ -188,48 +146,6 @@ router.get('/cancel', (req, res) => {
 
 
 
-// get blogposts_list_with_children
-// USED
-router.get('/carousels-list-with-children', function(req, res, next){
-	console.log('called')
-
-	Carousel.
-	find().
-	limit(10).
-	then((carousels)=>{
-		var newOrders_list = []
-		carousels.map((carousel, index)=>{
-			var newOrder = {}
-
-			newOrder.image_filepath = base64_encode( carousel[ 'image_filepath' ] )
-			newOrder.title = carousel[ 'title' ]
-
-			newOrder.push({...newOrder})
-			newOrder = {}
-		});
-
-		return newOrders_list
-	})
-	.then((newOrders_list) => {
-
-		if (!newOrders_list) {
-
-			res.status(401).json({ success: false, msg: "could not find Carousels_list" });
-
-		} else {
-
-			res.status(200).json(newOrders_list);
-
-		}
-
-	})
-	.catch((err) => {
-
-		console.log(err)
-		next(err);
-
-	});
-});
 
 
 

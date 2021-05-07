@@ -220,7 +220,7 @@ class CreateProduct extends Component {
 								name="product_image" // name of input field or fieldName simply
 								onChange={(event) => {
 									// console logging selected file from menu
-									console.log( event.target.files[0] ) // gives first file
+									// console.log( event.target.files[0] ) // gives first file
 									// setState method with event.target.files[0] as argument
 									this.setState(prev => ({...prev, image_thumbnail_filepath: event.target.files[0]}))
 								}}
@@ -233,10 +233,8 @@ class CreateProduct extends Component {
 								let setResponseInCurrentProduct = (arg) => this.props.set_current_product(arg)
 								let redirectToNewProduct = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
 								let setIDForNewProductInState = (response) => {
-										console.log(response.data.new_product.endpoint)
-										console.log(response.data.new_product)
-										this.setState(prev => ({ ...prev, id_of_new_product: response.data.new_product.endpoint }))
-									}
+									this.setState(prev => ({ ...prev, id_of_new_product: response.data.new_product.endpoint }))
+								}
 
 								const formData = new FormData()
 								formData.append('title', this.state.title)
@@ -246,25 +244,26 @@ class CreateProduct extends Component {
 								formData.append('product_color', this.state.product_color)
 								if(this.state.image_thumbnail_filepath !== ''){
 									formData.append('product_image', this.state.image_thumbnail_filepath, this.state.image_thumbnail_filepath.name)
+
+									axios.post(utils.baseUrl + '/products/create-product-with-user', formData)
+									.then(function (response) {
+										// console.log(response.data) // current product screen data
+										
+										// setting id / endpoint of new product created in state
+										setIDForNewProductInState(response)
+
+										// set to current parent object
+										setResponseInCurrentProduct(response.data.new_product)
+
+										// change route to current_product
+										redirectToNewProduct()
+
+									})
+									.catch(function (error) {
+										console.log(error)
+									});						
+
 								}
-
-								axios.post(utils.baseUrl + '/products/create-product-with-user', formData)
-								.then(function (response) {
-									console.log(response.data) // current product screen data
-									
-									// setting id / endpoint of new product created in state
-									setIDForNewProductInState(response)
-
-									// set to current parent object
-									setResponseInCurrentProduct(response.data.new_product)
-
-									// change route to current_product
-									redirectToNewProduct()
-
-								})
-								.catch(function (error) {
-									console.log(error)
-								});						
 
 							}}
 						>

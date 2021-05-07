@@ -248,7 +248,7 @@ class CreateBlogPost extends Component {
 								name="blogpost_image_main" // name of input field or fieldName simply
 								onChange={(event) => {
 									// console logging selected file from menu
-									console.log( event.target.files[0] ) // gives first file
+									// console.log( event.target.files[0] ) // gives first file
 									// setState method with event.target.files[0] as argument
 									this.setState(prev => ({...prev, image_thumbnail_filepath: event.target.files[0]}))
 								}}
@@ -270,26 +270,28 @@ class CreateBlogPost extends Component {
 								formData.append('third_para', this.state.third_para)
 								formData.append('fourth_para', this.state.fourth_para)
 								formData.append('all_tags', this.state.all_tags)
+
 								if(this.state.image_thumbnail_filepath !== ''){
 									formData.append('blogpost_image_main', this.state.image_thumbnail_filepath, this.state.image_thumbnail_filepath.name)
+
+									axios.post(utils.baseUrl + '/blogpostings/create-blogpost-with-user', formData)
+									.then(function (response) {
+										// console.log(response.data) // current blogpost screen data
+										
+										setNewBlogpostIDAtState(response)
+										// set to current parent object
+
+										setResponseInCurrentBlogPost(response.data.new_blogpost)
+
+										// change route to current_blogpost
+										redirectToNewBlogPost()
+
+									})
+									.catch(function (error) {
+										console.log(error)
+									});						
+
 								}
-
-								axios.post(utils.baseUrl + '/blogpostings/create-blogpost-with-user', formData)
-								.then(function (response) {
-									console.log(response.data) // current blogpost screen data
-									
-									setNewBlogpostIDAtState(response)
-									// set to current parent object
-
-									setResponseInCurrentBlogPost(response.data.new_blogpost)
-
-									// change route to current_blogpost
-									redirectToNewBlogPost()
-
-								})
-								.catch(function (error) {
-									console.log(error)
-								});						
 
 							}}
 						>

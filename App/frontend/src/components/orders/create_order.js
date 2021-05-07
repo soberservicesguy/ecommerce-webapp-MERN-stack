@@ -197,8 +197,8 @@ class CreateOrder extends Component {
 								
 									if (res.status === 200) {
 
-										console.log('GOING TO PAYPAL URL FOR PAYMENT VERIFICATION')
-										console.log(res.data)
+										// console.log('GOING TO PAYPAL URL FOR PAYMENT VERIFICATION')
+										// console.log(res.data)
 										window.location = res.data.forwardLink
 
 									} else {
@@ -249,26 +249,6 @@ class CreateOrder extends Component {
 										sessionId: session.id,
 								    });
 
-								// OLD STRIPE WORKFLOW
-									// const clientSecret = res.data['client_secret'];
-									// const result = await stripe.confirmCardPayment(clientSecret, {
-									// 	payment_method: {
-									// 		card: elements.getElement(CardElement),
-									// 		billing_details: {
-									// 			email: email,
-									// 		},
-									// 	},
-									// });
-								// PAYPAL WORKFLOW
-									// if (res.status === 200) {
-
-									// 	console.log('GOING TO PAYPAL URL FOR PAYMENT VERIFICATION')
-									// 	console.log(res.data)
-									// 	window.location = res.data.forwardLink
-
-									// } else {
-									// 	console.log('SOMETHING IS WRONG')
-									// }
 								})
 								.catch(function (error) {
 									console.log(error)

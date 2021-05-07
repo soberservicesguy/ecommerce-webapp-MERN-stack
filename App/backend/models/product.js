@@ -42,8 +42,8 @@ ProductSchema.pre('save', function(next) {
 
 ProductSchema.post('save', function() {
 
-	console.log('SAVED CONDITION')
-    console.log(this)
+	// console.log('SAVED CONDITION')
+    // console.log(this)
 
 });
 

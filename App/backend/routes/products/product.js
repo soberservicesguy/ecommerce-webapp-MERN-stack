@@ -102,9 +102,6 @@ function upload_product_image(timestamp){
 // USED IN CREATING BLOGPOST
 router.post('/create-product-with-user', passport.authenticate('jwt', { session: false }), isAllowedUploadingProducts, function(req, res, next){
 	
-	// console.log('OUTER LOG')
-	// console.log(req.body)
-	console.log('CALLED')
 
 	timestamp = Date.now()
 
@@ -233,6 +230,8 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 // get products_list
 router.get('/products-list', async function(req, res, next){
 
+	console.log('CALLED')
+
 	Product
 	.find()
 	// .distinct('title') // .distinct(fieldName, query)
@@ -240,18 +239,15 @@ router.get('/products-list', async function(req, res, next){
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
 	.then(async (products) => {
 
-		console.log(products)
 		var products_list = []
+		let image_object
+		let base64_encoded_image
 
 		let all_products = await Promise.all(products.map(async (product, index)=>{
 
 
-			let image_object = await Image.findOne({_id:product.image_thumbnail_filepath})
-			console.log('product.image_thumbnail_filepath')
-			console.log(product.image_thumbnail_filepath)
-			console.log('image_object')
-			console.log(image_object)
-			let base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
+			image_object = await Image.findOne({_id:product.image_thumbnail_filepath})
+			base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
 
 		// base64_encoded_image = await get_image_to_display(product_image.image_filepath, product_image.object_files_hosted_at)
 
@@ -323,23 +319,6 @@ router.get('/products-categories', async function(req, res, next){
 
 	}))
 
-	// console.log('product_categories')
-	// console.log(product_categories)
-	// let category_image
-	// let all_categories = await Promise.all(product_categories.map(async (product_category) => {
-
-	// 	category_image = await Image.findOne({ category: 'product_category', product_category_name:product_category }) // using req.user from passport js middleware
-	// 	console.log('category_image')
-	// 	console.log(category_image)
-	// 	if (category_image){
-
-	// 		let base64_encoded_image = await get_image_to_display(category_image.image_filepath, category_image.object_files_hosted_at)
-	// 		all_product_categories.push({category:product_category, category_image:base64_encoded_image})
-
-	// 	} else {
-	// 	}
-
-	// }))
 
 	if (all_product_categories.length > 0){
 
@@ -351,44 +330,19 @@ router.get('/products-categories', async function(req, res, next){
 
 	}
 
-	// Product
-	// .find()
-	// .distinct('category', function(error, categories){
-	// 	console.log('categories')
-	// 	console.log(categories)
-	//     // categories is an array of all categories
-	// 	if (categories.length > 0){
-
-	// 		res.status(200).json({success: true, categories: categories})	    
-
-	// 	} else {
-
-	// 		res.status(200).json({ success: false, msg: "could not get categories" });
-
-	// 	}
-	// });
-
 })
 
 
 
 router.get('/get-price', function(req, res, next){
 
-	console.log('PRICE REQUEST')
-
-	console.log({ product_size: req.query.product_size,  product_color:req.query.product_color, title: req.query.title})
 
 	Product.findOne({ product_size: req.query.product_size,  product_color:req.query.product_color, title: req.query.title})
 	.then(async (product) => {
 
 		if (product){
 
-			console.log('SENDING PRICE')
-			// let base64_encoded_image = await get_image_to_display(product.image_thumbnail_filepath, product.object_files_hosted_at)
-			// product[ image_thumbnail_filepath ] = base64_encoded_image
 			let price = product.price
-			console.log('price')
-			console.log(price)
 			res.status(200).json({price: price});
 		
 		} else {
@@ -420,7 +374,6 @@ router.get('/get-all-variations', function(req, res, next){
 	let product_payload = req.query
 	Object.keys(product_payload).map((key) => {
 		if ( product_payload[key] === null || product_payload[key] === undefined || product_payload[key] === '' ){
-			console.log('found match')
 			delete product_payload[key]
 		}
 	})
@@ -451,13 +404,10 @@ router.get('/get-all-variations', function(req, res, next){
 
 		if (all_variations['product_color'].length > 0 || all_variations['product_size'].length > 0){
 
-			console.log('VARIATIONS SENT')
-			console.log(all_variations)
 			res.status(200).json(all_variations);
 	
 		} else {
 
-			console.log('COULDNT FIND VARUATION')
 			res.status(401).json({ success: false, msg: "could not find variations" });
 
 		}
