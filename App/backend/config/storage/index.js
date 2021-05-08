@@ -5,8 +5,8 @@ const path = require('path')
 const env = require("dotenv").config({ path: "../../.env" });
 const use_gcp_storage = ( process.env.GOOGLE_CLOUD_STORAGE_ENABLED === 'true' ) ? true : false
 const use_aws_s3_storage = ( process.env.AWS_S3_STORAGE_ENABLED === 'true' ) ? true : false
-const { gcp_storage, save_file_to_gcp, gcp_bucket, save_file_to_gcp_for_bulk_files, get_file_from_gcp, save_file_to_gcp_storage} = require('./google_cloud_storage')
-const { get_multers3_storage, s3_bucket, save_file_to_aws_s3, save_file_to_aws_s3_for_bulk_files, get_file_from_aws, save_file_to_s3 } = require('./aws_s3_storage')
+const { gcp_storage, save_file_to_gcp, gcp_bucket, save_file_to_gcp_for_bulk_files, get_file_from_gcp, save_file_to_gcp_storage, get_image_from_gcp_as_stream} = require('./google_cloud_storage')
+const { get_multers3_storage, s3_bucket, save_file_to_aws_s3, save_file_to_aws_s3_for_bulk_files, get_file_from_aws, save_file_to_s3, get_image_from_aws_as_stream } = require('./aws_s3_storage')
 const { get_multer_disk_storage, get_multer_disk_storage_for_bulk_files, get_multer_disk_storage_for_bulk_files_path_only } = require('./disk_storage')
 const { checkFileTypeForImages, checkFileTypeForImageAndVideo, checkFileTypeForImagesAndExcelSheet, checkFileTypeForVideos, checkFileTypeForVideosAndExcelSheet} = require('./file_filters')
 const base64_encode = require('../../lib/image_to_base64')
@@ -32,6 +32,7 @@ function get_filepath_to_save_with_bulk_uploading(folder_name, timestamp){
 
 	return filepath
 }
+
 
 
 async function get_image_to_display(image_path_field, image_host_field){
@@ -338,6 +339,40 @@ function get_snapshots_fullname_and_path(folder_name, filename_without_format, t
 	}
 }
 
+function get_image_as_stream(complete_file_name, image_host_field, res){
+
+	if (image_host_field === 'gcp_storage'){
+
+		get_image_from_gcp_as_stream(complete_file_name, res)
+
+	} else if (image_host_field === 'aws_s3'){
+
+		get_image_from_aws_as_stream(complete_file_name, res)
+
+	} else {
+
+		var stream = fs.createReadStream(complete_file_name);		
+
+		res.writeHead(200, {'Content-Type': 'image/jpg' });
+
+		stream.on('error', function(err) {
+			console.log(err)
+			return
+		})
+
+		stream.on('data', function(data) {
+			res.write(data);
+		})
+
+		stream.on('end', function() {
+			res.end();
+		});
+
+	}	
+
+}
+
+
 module.exports = {
 	get_filepath_to_save_with_bulk_uploading,
 	store_excel_file_at_tmp_and_get_its_path,
@@ -354,6 +389,7 @@ module.exports = {
 	get_file_path_to_use_for_bulk_files,
 	get_snapshots_storage_path,
 	get_snapshots_fullname_and_path,
+	get_image_as_stream,
 
 	gcp_bucket,
 	save_file_to_gcp_storage,
@@ -361,7 +397,7 @@ module.exports = {
 	save_file_to_gcp_for_bulk_files,
 	use_gcp_storage,
 	get_file_from_gcp,
-	
+
 	s3_bucket,
 	use_aws_s3_storage,
 	save_file_to_s3,

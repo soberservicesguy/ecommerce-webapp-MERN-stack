@@ -181,6 +181,29 @@ async function save_file_to_gcp_storage(file, filename_to_set, path_to_upload){
 
 
 
+function get_image_from_gcp_as_stream(complete_file_name, res){
+
+	let the_bucket = gcp_storage.bucket(gcp_bucket)
+	let the_file = the_bucket.file(complete_file_name)
+	let stream = the_file.createReadStream()
+
+	res.writeHead(200, {'Content-Type': 'image/jpg' });
+
+	stream.on('error', function(err) {
+		console.log(err)
+		return
+	})
+	stream.on('data', function(data) {
+		res.write(data);
+	})
+	stream.on('end', function() {
+		res.end();
+	});
+
+}
+
+
+
 
 module.exports = {
 	save_file_to_gcp_storage,
@@ -189,4 +212,5 @@ module.exports = {
 	get_file_from_gcp,
 	save_file_to_gcp,
 	save_file_to_gcp_for_bulk_files,
+	get_image_from_gcp_as_stream,
 }

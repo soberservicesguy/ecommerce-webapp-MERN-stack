@@ -113,6 +113,8 @@ export const mapDispatchToProps = dispatch => {
 		set_fetched_products: (product_list) => dispatch( { type: "SET_FETCHED_PRODUCT", product_list: product_list } ),
 		set_fetched_10_more_product: (product_list) => dispatch( { type: "SET_FETCHED_10_MORE_PRODUCT", product_list: product_list } ),
 
+		append_fetched_product: (product_object) => dispatch( { type: "APPEND_FETCHED_PRODUCT", product_object: product_object } ),
+
 		set_current_order: (current_order) => dispatch( { type: "SET_CURRENT_ORDER", current_order:current_order } ),
 		set_fetched_orders: (order_list) => dispatch( { type: "SET_FETCHED_ORDER", order_list: order_list } ),
 		set_fetched_10_more_order: (order_list) => dispatch( { type: "SET_FETCHED_10_MORE_ORDER", order_list: order_list } ),

@@ -16,7 +16,8 @@ class ComponentForShowingProduct extends Component {
 		super(props);
 // STATE	
 		this.state = {
-
+			// image_thumbnail_filepath:''
+			image_src: null
 		}
 
 	}
@@ -24,6 +25,28 @@ class ComponentForShowingProduct extends Component {
 // COMPONENT DID MOUNT
 	componentDidMount() {
 
+		let image_object_id = this.props.dataPayloadFromParent.image_thumbnail_filepath
+		
+		fetch(`${utils.baseUrl}/products/get-image-stream?image_object_id=${image_object_id}`, {
+		  method: 'GET',
+		  headers: {
+		    Accept: 'application/json',
+		    'Content-Type': 'application/json'
+		  },
+		})
+	    .then(response => this.validateResponse(response))
+	    .then(response => response.blob())
+	    .then(blob => {
+	    	this.setState({ image_src: URL.createObjectURL(blob) })
+	    })
+
+	}
+
+	validateResponse(response) {
+	    if (!response.ok) {
+	        throw Error(response.statusText);
+	    }
+	    return response;
 	}
 
 	render() {
@@ -33,7 +56,8 @@ class ComponentForShowingProduct extends Component {
 		}
 
 		const data = this.props.dataPayloadFromParent // data being plugged from parent flatlist
-		var base64Image = "data:image/jpeg;base64," + data.image_thumbnail_filepath
+		// var base64Image = "data:image/jpeg;base64," + data.image_thumbnail_filepath
+		var base64Image = "data:image/jpeg;base64," + this.state.image_thumbnail_filepath
 
 		return (
 
@@ -42,7 +66,8 @@ class ComponentForShowingProduct extends Component {
 				marginRight:10,
 			}}>
 				<img 
-					src={base64Image}
+					// src={base64Image}
+					src={this.state.image_src}
 					// src={utils.image} 
 					alt="" 
 					style={{

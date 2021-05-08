@@ -67,6 +67,8 @@ class ProductCard extends Component {
 					display:'flex',
 					flexDirection:'row',
 					justifyContent: 'space-between',
+					width:'90%',
+					marginBottom:20,
 				}}>
 
 					<div style={{
@@ -84,6 +86,7 @@ class ProductCard extends Component {
 								paddingTop:10,
 								paddingBottom:10,
 								width:'100%',
+								marginLeft:10,
 							}}
 						>
 							ADD TO CART

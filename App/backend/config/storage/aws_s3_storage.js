@@ -253,6 +253,32 @@ async function save_file_to_aws_s3_for_bulk_files(timestamp, folder_name, file){
 
 }
 
+
+
+function get_image_from_aws_as_stream(complete_file_name, res){
+
+	let params = { Bucket:s3_bucket, Key: complete_file_name }
+	let stream = s3.getObject(params).createReadStream()
+
+	res.writeHead(200, {'Content-Type': 'image/jpg' });
+
+	stream.on('error', function(err) {
+		console.log(err)
+		return
+	})
+
+	stream.on('data', function(data) {
+		res.write(data);
+	})
+
+	stream.on('end', function() {
+		res.end();
+	});
+
+}
+
+
+
 module.exports = {
 	save_file_to_s3,
 	get_multers3_storage,
@@ -261,4 +287,5 @@ module.exports = {
 	get_file_from_aws,
 	save_file_to_aws_s3,
 	save_file_to_aws_s3_for_bulk_files,
+	get_image_from_aws_as_stream,
 }

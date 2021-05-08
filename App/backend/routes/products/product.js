@@ -2,6 +2,8 @@ require('../../models/product');
 require('../../models/user');
 require('../../models/image');
 
+
+
 const base64_encode = require('../../lib/image_to_base64')
 const mongoose = require('mongoose');
 const router = require('express').Router();
@@ -18,6 +20,7 @@ const { isAllowedUploadingProducts } = require('../authMiddleware/isAllowedUploa
 
 const {
 	get_image_to_display,
+	get_image_as_stream,
 	store_video_at_tmp_and_get_its_path,
 	delete_video_at_tmp,
 	get_multer_storage_to_use,
@@ -225,15 +228,37 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 })
 
 
+router.get('/get-image', async function(req, res, next){
+
+	// console.log('FETCHING PRODUCT IMAGE')
+
+	// console.log('req.query')
+	// console.log(req.query)
+
+	let image_object = await Image.findOne({_id:req.query.image_object_id})
+	let base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
+	res.status(200).json({success: true, image: base64_encoded_image});
+
+})
+
+router.get('/get-image-stream', async function(req, res, next){
+
+	let image_object = await Image.findOne({_id:req.query.image_object_id})
+	get_image_as_stream(image_object.image_filepath, image_object.object_files_hosted_at, res)
+
+})
+
+
 
 // USED
 // get products_list
 router.get('/products-list', async function(req, res, next){
 
-	console.log('CALLED')
+	// console.log('CALLED')
 
 	Product
 	.find()
+	.limit(10)
 	// .distinct('title') // .distinct(fieldName, query)
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
@@ -243,18 +268,41 @@ router.get('/products-list', async function(req, res, next){
 		let image_object
 		let base64_encoded_image
 
+		// res.writeHead(200, {
+		// 	'Content-Type': 'text/plain',
+		// 	'Transfer-Encoding': 'chunked'
+		// })
+
 		let all_products = await Promise.all(products.map(async (product, index)=>{
 
 
 			image_object = await Image.findOne({_id:product.image_thumbnail_filepath})
-			base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
+			// base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
 
 		// base64_encoded_image = await get_image_to_display(product_image.image_filepath, product_image.object_files_hosted_at)
 
+
+
+			// res.write(
+			// 	JSON.stringify({
+			// 		type: "stream",
+			// 		chunk: {
+			// 			category: product.category,
+			// 			image_thumbnail_filepath: base64_encoded_image,
+			// 			// image_thumbnail_filepath: base64_encode( product.image_thumbnail_filepath ),
+			// 			title: product.title,
+			// 			product_size: product.product_size,
+			// 			product_color: product.product_color,
+			// 			price: product.price,
+			// 			endpoint: product.endpoint,
+			// 		}
+			// 	})
+			// +'\n')
+
 			products_list.push({
 				category: product.category,
-				image_thumbnail_filepath: base64_encoded_image,
-				// image_thumbnail_filepath: base64_encode( product.image_thumbnail_filepath ),
+				// image_thumbnail_filepath: base64_encoded_image,
+				image_thumbnail_filepath: product.image_thumbnail_filepath, //
 				title: product.title,
 				product_size: product.product_size,
 				product_color: product.product_color,
@@ -265,7 +313,7 @@ router.get('/products-list', async function(req, res, next){
 		}))
 
 		return products_list
-
+		// res.end()
 	})
 	.then((products_list) => {
 

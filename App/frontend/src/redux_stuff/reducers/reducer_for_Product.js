@@ -39,6 +39,13 @@ const reducerForProduct = (state = initialState, action) => {
 
 	switch (action.type) {
 
+
+		case "APPEND_FETCHED_PRODUCT":
+
+			return { ...state, totalProduct: [...state.totalProduct, action.product_object] }
+			break;
+
+
 		case "SET_CURRENT_PRODUCT_CATEGORY":
 
 			return {...state, current_product_category: action.product_category}

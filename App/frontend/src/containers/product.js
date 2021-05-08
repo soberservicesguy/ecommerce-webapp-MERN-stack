@@ -34,9 +34,11 @@ class ProductContainer extends Component {
 		.then((response) => {
 			if (response.data.success){
 
-				console.log('PRODUCT LIST FETCHED')
+				// console.log('PRODUCT LIST FETCHED')
+				console.log('response.data')
 				console.log(response.data)
-				this.props.set_fetched_products(response.data.products_list)
+				// this.props.append_fetched_product(response.data)
+				// this.props.set_fetched_products(response.data.products_list)
 
 			} else {
 				console.log('COULDNT FETCH PRODUCTS')
@@ -75,7 +77,7 @@ class ProductContainer extends Component {
 
 		return (
 
-			<Grid container direction="row" style={{backgroundColor: '#eee'}} >
+			<Grid container direction="row" style={{backgroundColor: '#eee', paddingBottom:20}} >
 
 				{(this.props.products_control) ? (
 
