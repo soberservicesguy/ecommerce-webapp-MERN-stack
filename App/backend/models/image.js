@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+var endpoint_number = 3938932
+
 const ImageSchema = new mongoose.Schema({
 
 	_id: Schema.Types.ObjectId,
@@ -15,9 +17,13 @@ const ImageSchema = new mongoose.Schema({
 	blogpost:{ type: Schema.Types.ObjectId, ref: 'Blogpost' },
 	product:{ type: Schema.Types.ObjectId, ref: 'Product' },
 
+	// endpoint: String,
+	// timestamp:String,
+
 })
 
 ImageSchema.pre('save', function(next) {
+
 
     next();
 

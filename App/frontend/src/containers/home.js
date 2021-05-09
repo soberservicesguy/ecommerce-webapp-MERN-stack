@@ -262,24 +262,33 @@ class HomeContainer extends Component {
 
 							if (index !== [1,2,3,4].length -1){
 								return(
-									<TextBoxWithBackgroundImage
-										backgroundImage={base64_category_image} 
-										text={category_item.product_category_name}
-										newLineText={'Collection'}
-										verticalDisplacement={-(grid_item_height - 90 -20)} // height - self_height_of_component - horizontal_displacement
-										horizontalDisplacement={20}
-									/>
+							  		<Link 
+							  			to={`/products/:category=${category_item.product_category_name}`} 
+							  			style={{color: 'inherit', textDecoration: 'inherit'}}
+									>
+										<TextBoxWithBackgroundImage
+											backgroundImage={base64_category_image} 
+											text={category_item.product_category_name}
+											newLineText={'Collection'}
+											verticalDisplacement={-(grid_item_height - 90 -20)} // height - self_height_of_component - horizontal_displacement
+											horizontalDisplacement={20}
+										/>
+									</Link>
 								)
 							} else {
 								return(
-
-									<TextBoxWithBackgroundImage
-										backgroundImage={base64_category_image} 
-										text={category_item.product_category_name}
-										newLineText={'Collection'}
-										verticalDisplacement={-(grid_end_item_height + 4*2 - 90 -20)} // height - self_height_of_component- horizontal_displacement
-										horizontalDisplacement={20}
-									/>
+							  		<Link 
+							  			to={`/products/:category=${category_item.product_category_name}`} 
+							  			style={{color: 'inherit', textDecoration: 'inherit'}}
+									>
+										<TextBoxWithBackgroundImage
+											backgroundImage={base64_category_image} 
+											text={category_item.product_category_name}
+											newLineText={'Collection'}
+											verticalDisplacement={-(grid_end_item_height + 4*2 - 90 -20)} // height - self_height_of_component- horizontal_displacement
+											horizontalDisplacement={20}
+										/>
+									</Link>
 								)
 							}
 						})}

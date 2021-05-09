@@ -128,6 +128,25 @@ class RootRouterContainer extends Component {
 							// )
 						)}/>
 
+						<Route exact path="/products/:category" render={() => (
+							// (this.props.isSignedIn) ? (
+								<React.Fragment>
+									<div style={{width:'95%', margin:'auto'}}>
+										<MyResponsiveNavigation/>
+									</div>
+				
+									<ConnectedProductContainer/>
+				
+									<div style={{backgroundColor: 'black'}}>
+										<ConnectedFooterContainer/>
+									</div>
+								</React.Fragment>
+							// ) : (
+							// 	<Redirect to="/login"/>
+							// )
+						)}/>
+
+
 
 						<Route exact path="/products" render={() => (
 							// (this.props.isSignedIn) ? (

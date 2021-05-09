@@ -194,9 +194,12 @@ function get_image_from_gcp_as_stream(complete_file_name, res){
 		return
 	})
 	stream.on('data', function(data) {
+		// console.log(`sending data ${data}`)
 		res.write(data);
 	})
 	stream.on('end', function() {
+		res.write('ENDED');
+		console.log('Ended')
 		res.end();
 	});
 

@@ -16,6 +16,7 @@ import {
 	ConnectedCreateProduct,
 } from '../redux_stuff/connected_components';
 
+import { withRouter } from "react-router-dom";
 
 
 class ProductContainer extends Component {
@@ -23,32 +24,61 @@ class ProductContainer extends Component {
 		super(props);
 // STATE	
 		this.state = {
+			get_individual_image:false,
 		}	
 	}
 
 // COMPONENT DID MOUNT
 	componentDidMount() {
 
-// // FETCHING DATA FOR COMPONENT
-		axios.get(utils.baseUrl + '/products/products-list',)
-		.then((response) => {
-			if (response.data.success){
+		let { category } = this.props.match.params
+		if ( typeof category !== 'undefined'){
 
-				// console.log('PRODUCT LIST FETCHED')
-				console.log('response.data')
-				console.log(response.data)
-				// this.props.append_fetched_product(response.data)
-				// this.props.set_fetched_products(response.data.products_list)
+			category = category.replace(":category=", "")
 
-			} else {
-				console.log('COULDNT FETCH PRODUCTS')
-				this.props.set_fetched_products([])
-			}
-		})
-		.catch((error) => {
-			console.log(error);
-		})
+			axios.get(utils.baseUrl + '/products/get-products-of-category', 
+				{
+					params:{
+						category: category,
+					}
+				}
+			)
+			.then((response) => {
+				if (response.data.success){
 
+					this.props.set_fetched_products(response.data.products_list)					
+					console.log('allowing to get individual image')
+			    	this.setState({ get_individual_image: true })
+
+				} else {
+					console.log('COULDNT FETCH PRODUCTS')
+					this.props.set_fetched_products([])
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+
+		} else {
+
+			axios.get(utils.baseUrl + '/products/products-list',)
+			.then((response) => {
+				if (response.data.success){
+
+					this.props.set_fetched_products(response.data.products_list)
+					console.log('allowing to get individual image')
+			    	this.setState({ get_individual_image: true })
+
+				} else {
+					console.log('COULDNT FETCH PRODUCTS')
+					this.props.set_fetched_products([])
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+
+		}
 
 	}
 
@@ -75,6 +105,7 @@ class ProductContainer extends Component {
 	  	}
 
 
+
 		return (
 
 			<Grid container direction="row" style={{backgroundColor: '#eee', paddingBottom:20}} >
@@ -98,6 +129,7 @@ class ProductContainer extends Component {
 
 						<div style={{marginTop:(index > 2) ? 50 : 0,}}>
 							<ConnectedProductCard
+								getIndividualImage = {this.state.get_individual_image}
 								dataPayloadFromParent = { item }
 
 								// showCompleteProductCallback = {  }
@@ -121,4 +153,4 @@ ProductContainer.defaultProps = {
 	// : ,
 };
 
-export default withResponsiveness(ProductContainer);
+export default withRouter(withResponsiveness(ProductContainer));

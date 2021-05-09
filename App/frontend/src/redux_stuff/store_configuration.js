@@ -149,7 +149,7 @@ const persistConfig = {
 	blacklist: [
 			'total_carousels',
 			'current_carousel',
-			'total_products',
+			// 'total_products',
 			'current_product',
 			'current_cart_item',
 

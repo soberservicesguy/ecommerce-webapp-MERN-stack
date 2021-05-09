@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: products
-        image: soberservicesguy/portfolio-images:ecommerce_products_12
+        image: soberservicesguy/portfolio-images:ecommerce_products_14
         resources:
           limits:
             cpu: "200m"

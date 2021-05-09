@@ -32,9 +32,9 @@ class BulkProductUpload extends Component {
 			redirectToRoute: false,
 			image_main: [],
 			excel_sheet:'',
-			all_images_compressed: false,
 
-			upload_status: 'Upload Some Files',
+			all_images_compressed: false,
+			upload_status: 'Upload Some Images',
 		}
 
 	}

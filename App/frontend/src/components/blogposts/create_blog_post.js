@@ -21,6 +21,7 @@ import {
 import { withStyles } from '@material-ui/styles';
 import withResponsiveness from "../../responsiveness_hook";
 
+import resize_image from "../../handy_functions/resize_image"
 
 
 class CreateBlogPost extends Component {
@@ -246,12 +247,19 @@ class CreateBlogPost extends Component {
 								enctype="multipart/form-data"
 								type="file"
 								name="blogpost_image_main" // name of input field or fieldName simply
-								onChange={(event) => {
-									// console logging selected file from menu
-									// console.log( event.target.files[0] ) // gives first file
-									// setState method with event.target.files[0] as argument
-									this.setState(prev => ({...prev, image_thumbnail_filepath: event.target.files[0]}))
+								onChange={async (event) => {
+
+									try {
+										const file = event.target.files[0];
+										const compressed_image = await resize_image(file);
+										this.setState(prev => ({...prev, image_thumbnail_filepath: compressed_image}))
+
+									} catch (err) {
+										console.log(err);
+									}
+
 								}}
+
 							/>
 						</div>
 

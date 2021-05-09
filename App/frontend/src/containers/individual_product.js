@@ -350,25 +350,3 @@ IndividualIndividualProduct.defaultProps = {
 };
 
 export default withRouter(withResponsiveness(IndividualIndividualProduct));
-
-
-
-
-
-			// <div style={styles.imageContainer}>
-
-				
-			// 	<p>
-			// 		{this.props.current_product.initial_quantity}
-			// 	</p>
-				
-				
-			// 	<p>
-			// 		{this.props.current_product.product_color}
-			// 	</p>
-				
-			// 	<p>
-			// 		{this.props.current_product.product_size}
-			// 	</p>
-				
-			// </div>

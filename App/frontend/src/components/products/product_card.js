@@ -58,6 +58,7 @@ class ProductCard extends Component {
 			  			onClick={() => this.props.set_current_product(this.props.dataPayloadFromParent)}
 					>
 				  		<ComponentForShowingProduct
+				  			getIndividualImage = {this.props.getIndividualImage}
 							dataPayloadFromParent = { this.props.dataPayloadFromParent }
 				  		/>
 				  	</Link>
