@@ -21,7 +21,7 @@ import {
 import { withStyles } from '@material-ui/styles';
 import withResponsiveness from "../responsiveness_hook";
 
-
+import resize_image from "../handy_functions/resize_image"
 
 class BulkProductUpload extends Component {
 	constructor(props) {
@@ -32,6 +32,9 @@ class BulkProductUpload extends Component {
 			redirectToRoute: false,
 			image_main: [],
 			excel_sheet:'',
+			all_images_compressed: false,
+
+			upload_status: 'Upload Some Files',
 		}
 
 	}
@@ -142,6 +145,11 @@ class BulkProductUpload extends Component {
 			// e.g a social post, textinput which lets user to enter text, takes persons id as assigned object
 				<div style={styles.outerContainer}>
 
+					<p 	style={{textAlign:'center', fontSize:20, fontWeight:'bold', marginBottom:50, color: (this.state.upload_status === 'Compressing Images, please wait ...') ? 'red' : 'green', }}>
+						Status: {this.state.upload_status}
+					</p>
+
+
 					<div style={{
 						display:'flex',
 						flexDirection:'row',
@@ -167,11 +175,26 @@ class BulkProductUpload extends Component {
 									multiple="multiple" // for selecting multiple files
 									enctype="multipart/form-data"
 									type="file"
-									onChange={(event) => {
-										// console logging selected file from menu
-										// console.log( event.target.files ) // gives all files
-										// setState method with event.target.files[0] as argument
-										this.setState(prev => ({...prev, image_main: event.target.files}))
+									onChange={async (event) => {
+
+										this.setState(prev => ({...prev, upload_status: 'Compressing Images, please wait ...'}))
+
+										let compressed_files = []
+										let compressing_files = await Promise.all([...event.target.files].map(async (file) => {
+
+											try {
+												// const file = event.target.files[0];
+												const compressed_image = await resize_image(file);
+												compressed_files.push( compressed_image )
+
+											} catch (err) {
+												console.log(err);
+											}
+
+										}))
+
+										this.setState(prev => ({...prev, image_main: compressed_files, all_images_compressed: true, upload_status: 'All Images Compressed, Now hit Upload !'}))
+
 									}}
 								/>
 							</div>
@@ -213,39 +236,43 @@ class BulkProductUpload extends Component {
 						height:60,
 						marginBottom:20,
 					}}>
-						<div style={styles.formAndRounButtonContainer}>
+						<div style={{...styles.formAndRounButtonContainer, opacity: (this.state.all_images_compressed) ? 1 : 0.5 }}>
 							<button 
-								style={styles.roundButton}
+								style={{...styles.roundButton, opacity: (this.state.all_images_compressed) ? 1 : 0.5 }}
 								onClick={ () => {
 
-									// let setResponseInFetchedBlogPosts = (arg) => this.props.set_fetched_blogposts(arg)
-									let redirectToNewBlogPosts = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
+									if (this.state.all_images_compressed){
 
-									// in formData send individual variables and not a complete object
-									// formData.append('video_object', video_object) // THIS WILL NOT WORK, SENT VARS INDIVIDUALLY
-									const formData = new FormData()
-									// attaching multiple files with formData
-									Array.from(this.state.image_main).forEach((file) => {
-										formData.append('product_images_upload', file, file.name)
-									})
-									if(this.state.excel_sheet !== ''){
-										formData.append('excel_sheet', this.state.excel_sheet, this.state.excel_sheet.name)
+										// let setResponseInFetchedBlogPosts = (arg) => this.props.set_fetched_blogposts(arg)
+										let redirectToNewBlogPosts = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
+
+										// in formData send individual variables and not a complete object
+										// formData.append('video_object', video_object) // THIS WILL NOT WORK, SENT VARS INDIVIDUALLY
+										const formData = new FormData()
+										// attaching multiple files with formData
+										Array.from(this.state.image_main).forEach((file) => {
+											formData.append('product_images_upload', file, file.name)
+										})
+										if(this.state.excel_sheet !== ''){
+											formData.append('excel_sheet', this.state.excel_sheet, this.state.excel_sheet.name)
+										}
+
+										axios.post(utils.baseUrl + '/uploads/bulk-upload-products', formData)
+										.then(function (response) {
+											// console.log(response.data) // current blogpost screen data
+											
+											// set to current parent object
+											// setResponseInFetchedBlogPosts(response.data.new_blogpost)
+
+											// change route to current_blogpost
+											redirectToNewBlogPosts()
+
+										})
+										.catch(function (error) {
+											console.log(error)
+										});						
+
 									}
-
-									axios.post(utils.baseUrl + '/uploads/bulk-upload-products', formData)
-									.then(function (response) {
-										// console.log(response.data) // current blogpost screen data
-										
-										// set to current parent object
-										// setResponseInFetchedBlogPosts(response.data.new_blogpost)
-
-										// change route to current_blogpost
-										redirectToNewBlogPosts()
-
-									})
-									.catch(function (error) {
-										console.log(error)
-									});						
 
 								}}
 							>
@@ -271,6 +298,7 @@ class BulkProductUpload extends Component {
 						</div>
 
 					</div>
+
 
 				</div>
 			);
