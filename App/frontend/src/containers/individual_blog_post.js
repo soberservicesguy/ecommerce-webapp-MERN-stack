@@ -20,20 +20,43 @@ class IndividualIndividualBlogPost extends Component {
 		super(props);
 // STATE	
 		this.state = {
+			image_src: null,
 		}	
 	}
 
+	getImage(){
+
+		// this.setState({ image_src: null })
+		let image_object_id = this.props.current_blogpost.image_thumbnail_filepath
+
+		axios.get(`${utils.baseUrl}/blogpostings/get-image`, 
+			{
+				params: {
+					image_object_id: image_object_id
+				}
+			}
+		)
+	    .then(async (response) => {
+	    	if (response.data.success){
+		    	this.setState({ image_src: "data:image/jpeg;base64," + response.data.image})
+	    	}
+
+		});
+
+
+	}
+
+
 // COMPONENT DID MOUNT
 	componentDidMount() {
-
-// FETCHING DATA FOR COMPONENT
+		this.getImage()
 	}
 
 // RENDER METHOD
 	render() {
 		const {_xs, _sm, _md, _lg, _xl} = this.props
 
-		var base64Image = "data:image/jpeg;base64," + this.props.current_blogpost.image_thumbnail_filepath
+		// var base64Image = "data:image/jpeg;base64," + this.props.current_blogpost.image_thumbnail_filepath
 
 		const styles = {
 			outerContainer:{
@@ -58,7 +81,7 @@ class IndividualIndividualBlogPost extends Component {
 				marginBottom:0,
 			},
 			initialTagsText:{
-				fontSize:25,
+				fontSize:15,
 				marginTop:0,
 				color:'grey',
 			},
@@ -110,7 +133,8 @@ class IndividualIndividualBlogPost extends Component {
 			<div style={styles.outerContainer}>
 				<div style={styles.imageContainer}>
 					<img 
-						src={base64Image}
+						src={this.state.image_src}
+						// src={base64Image}
 						// src={utils.image} 
 						alt="" 
 						style={styles.image}
@@ -119,21 +143,21 @@ class IndividualIndividualBlogPost extends Component {
 
 
 				<p style={styles.titleText}>
-					Title{this.props.current_blogpost.title}
+					{this.props.current_blogpost.title}
 				</p>
 
 				<p style={styles.initialTagsText}>
-					initial_tags{this.props.current_blogpost.initial_tags}
+					{this.props.current_blogpost.initial_tags}
 				</p>
 				
 
 				<p style={styles.firstParaText}>
-					1st para{this.props.current_blogpost.first_para}
+					{this.props.current_blogpost.first_para}
 				</p>
 				
 				
 				<p style={styles.secondParaText}>
-					2nd para{this.props.current_blogpost.second_para}
+					{this.props.current_blogpost.second_para}
 				</p>
 				
 {/*				<p style={styles.qoutedParaText}>
@@ -141,11 +165,11 @@ class IndividualIndividualBlogPost extends Component {
 				</p>*/}
 				
 				<p style={styles.thirdParaText}>
-					3rd para{this.props.current_blogpost.third_para}
+					{this.props.current_blogpost.third_para}
 				</p>
 				
 				<p style={styles.fourthParaText}>
-					4th para{this.props.current_blogpost.fourth_para}
+					{this.props.current_blogpost.fourth_para}
 				</p>
 				
 				<p style={styles.allTagsText}>

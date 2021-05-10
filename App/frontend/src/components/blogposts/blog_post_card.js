@@ -49,6 +49,7 @@ class BlogPostCard extends Component {
 			  			onClick = { () => this.props.set_current_blogpost(this.props.dataPayloadFromParent) }
 					>
 				  		<ComponentForShowingBlogPost
+				  			getIndividualImage = {this.props.getIndividualImage}
 							dataPayloadFromParent = { this.props.dataPayloadFromParent }
 				  		/>
 				  	</Link>

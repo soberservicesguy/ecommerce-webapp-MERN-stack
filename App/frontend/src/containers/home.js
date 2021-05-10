@@ -46,15 +46,17 @@ class HomeContainer extends Component {
 		super(props);
 // STATE	
 		this.state = {
+			get_product_individual_image: false,
+			get_blogpost_individual_image: false,
 		}	
 	}
 
 	componentDidMount() {
 
-		this.get_carousel()
 		this.get_blogposts()
 		this.get_products()
 		this.get_product_categories()
+		this.get_carousel()
 
 	}
 
@@ -68,6 +70,8 @@ class HomeContainer extends Component {
 				// console.log('BLOGPOSTS LIST FETCHED')
 				// console.log(response.data)
 				this.props.set_fetched_blogposts(response.data.blogposts_list)
+				console.log('allowing to get individual image')
+		    	this.setState({ get_blogpost_individual_image: true })
 
 			} else {
 
@@ -90,6 +94,9 @@ class HomeContainer extends Component {
 				// console.log('PRODUCT LIST FETCHED')
 				// console.log(response.data)
 				this.props.set_fetched_products(response.data.products_list)
+				console.log('allowing to get individual image')
+		    	this.setState({ get_product_individual_image: true })
+
 
 			} else {
 				console.log('COULDNT FETCH PRODUCTS')
@@ -392,6 +399,7 @@ class HomeContainer extends Component {
 							return(
 								<Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
 									<ConnectedProductCard
+										getIndividualImage = {this.state.get_product_individual_image}
 										dataPayloadFromParent = {item}
 									/>
 								</Grid>
@@ -420,7 +428,7 @@ class HomeContainer extends Component {
 			  					<div>
 		  					  		<Link 
 		  					  			// to={`/products/:id=${item.endpoint}`}
-		  					  			to={{pathname:`/products`, state:{endpoint: item.endpoint}}}  
+		  					  			to={`/products/:category=${item.product_category_name}`}  
 		  					  			style={{color: 'inherit', textDecoration: 'inherit'}}
 		  							>
 					  					<ComponentForShowingCategory
@@ -494,6 +502,7 @@ class HomeContainer extends Component {
 							return(
 								<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
 									<ConnectedBlogPostCard
+										getIndividualImage = {this.state.get_blogpost_individual_image}
 										dataPayloadFromParent = {item}
 									/>
 								</Grid>

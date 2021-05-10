@@ -142,8 +142,8 @@ const save_parent_and_children_in_db = async (parent_children_rows_dict, sheet_t
 
 		blogpost.save(function (err, blogpost) {
 
-			console.log('BEING SAVED')
-			console.log(blogpost)
+			// console.log('BEING SAVED')
+			// console.log(blogpost)
 
 			if (err) return handleError(err);
 
@@ -228,8 +228,8 @@ const parent_children_detailed = (file_name, old_parent_child_relationship_data 
 			 * LOOP OVER: parent_child_relationship_data, PROCESS OVER CHILDREN: open parent sheet
 			 */
 
-			 console.log('LAST')
-			 console.log(old_parent_child_relationship_data)
+			 // console.log('LAST')
+			 // console.log(old_parent_child_relationship_data)
 
 				old_parent_child_relationship_data.map((parent_child_data, index1)=>{
 					// console.log(parent_child_data)
@@ -312,8 +312,8 @@ const parent_children_detailed = (file_name, old_parent_child_relationship_data 
 						 * --------------  NESTED LOOP 3 ENDS ----------------
 						 */
 
-						 console.log('RETURN FROM 4TH')
-						 console.log(parent_completely_detailed)
+						 // console.log('RETURN FROM 4TH')
+						 // console.log(parent_completely_detailed)
 							return parent_completely_detailed
 						})
 						// 'BELOW IS BEING DONE SINCE ITS IN A LOOP, THAT IS TO REMOVE ALL OTHER ENTRIES EXCEPT LAST FROM THE LOOP AND ONLY THEN FEED TO NEXT .then FUNCTION, AND THEN SAME IS DONT IN IT BEFORE FEEDING TO save_parent_and_children_in_db function'
@@ -430,8 +430,8 @@ const generate_parent_completely_detailed = (file_name, parent_child_relationshi
 				  * -------------- NESTED LOOP ENDS ----------------
 				  */
 
-				  	console.log('RETURN FROM 3RD FUNCTION')
-				  	console.log(parent_complete_details)
+				  	// console.log('RETURN FROM 3RD FUNCTION')
+				  	// console.log(parent_complete_details)
 					  return parent_complete_details
 					}) // from .then block
 					// .then( res => console.log(res) )
@@ -513,8 +513,8 @@ const pull_parent_child_data_from_excel = (file_name, sheet_to_class_dict, user_
 				}
 			})
 
-		console.log('RETURN FROM 2ND FUNCTION')
-		console.log(all_collection)
+		// console.log('RETURN FROM 2ND FUNCTION')
+		// console.log(all_collection)
 		return all_collection
 
 	})
@@ -526,8 +526,8 @@ const pull_parent_child_data_from_excel = (file_name, sheet_to_class_dict, user_
 
 const sheet_to_class = (file_name, user_id, folder_name, timestamp, attributes_with_paths, all_images_db_objects) => {
 
-	console.log('FILE NAME IN main function')
-	console.log(file_name)
+	// console.log('FILE NAME IN main function')
+	// console.log(file_name)
 
 	const sheet_to_class_dict = {};
 
@@ -541,8 +541,8 @@ const sheet_to_class = (file_name, user_id, folder_name, timestamp, attributes_w
 				sheet_to_class_dict[ key_row[i] ] = value_row[i]
 			} 
 		
-		console.log('RETURN FROM MAIN FUNCTION')
-		console.log(sheet_to_class_dict)
+		// console.log('RETURN FROM MAIN FUNCTION')
+		// console.log(sheet_to_class_dict)
 		return sheet_to_class_dict
 
 		})

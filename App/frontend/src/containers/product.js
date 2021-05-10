@@ -61,6 +61,7 @@ class ProductContainer extends Component {
 
 		} else {
 
+			console.log('getting all products')
 			axios.get(utils.baseUrl + '/products/products-list',)
 			.then((response) => {
 				if (response.data.success){

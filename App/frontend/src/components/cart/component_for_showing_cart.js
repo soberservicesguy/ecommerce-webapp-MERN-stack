@@ -31,6 +31,8 @@ class ComponentForShowingCart extends Component {
 		super(props);
 // STATE	
 		this.state = {
+			image_src: null,
+
 			price: this.props.dataPayloadFromParent.price,
 			// price: 10,
 
@@ -47,12 +49,35 @@ class ComponentForShowingCart extends Component {
 
 	}
 
+	getImage(){
+
+		// this.setState({ image_src: null })
+		let image_object_id = this.props.dataPayloadFromParent.image_thumbnail_filepath
+
+		axios.get(`${utils.baseUrl}/products/get-image`, 
+			{
+				params: {
+					image_object_id: image_object_id
+				}
+			}
+		)
+	    .then(async (response) => {
+	    	if (response.data.success){
+		    	this.setState({ image_src: "data:image/jpeg;base64," + response.data.image})
+	    	}
+
+		});
+
+
+	}
+
 // COMPONENT DID MOUNT
 	componentDidMount() {
 		// console.log(this.props.dataPayloadFromParent.title)
 		this.get_variations()
 		// console.log('COMPONENT')
 		// console.log(this.props.dataPayloadFromParent)
+		this.getImage()
 	}
 
 	get_variations(){
@@ -164,7 +189,8 @@ class ComponentForShowingCart extends Component {
 
 				<div style={{flex:1, textAlign:'center'}}>
 					<img 
-						src={base64Image}
+						src={this.state.image_src}
+						// src={base64Image}
 						// src={utils.image}
 						alt="" 
 						style={{

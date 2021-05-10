@@ -190,6 +190,7 @@ router.post('/create-product-with-user', passport.authenticate('jwt', { session:
 								let new_product = {
 
 									image_thumbnail_filepath: base64_encoded_image,								
+									// image_thumbnail_filepath: newProduct.image_thumbnail_filepath,								
 									title: newProduct.title,
 									category: newProduct.category,
 									product_size: newProduct.product_size,
@@ -253,7 +254,7 @@ router.get('/products-list', async function(req, res, next){
 
 	Product
 	.find()
-	.limit(10)
+	.limit(8)
 	// .distinct('title') // .distinct(fieldName, query)
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)
 	// .distinct('title', {initial_quantity: 0}) // .distinct(fieldName, query)

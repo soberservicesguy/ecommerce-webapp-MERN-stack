@@ -227,6 +227,21 @@ router.post('/create-blogpost-with-user', passport.authenticate('jwt', { session
 	})
 })
 
+router.get('/get-image', async function(req, res, next){
+
+	let image_object = await Image.findOne({_id:req.query.image_object_id})
+	let base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
+	res.status(200).json({success: true, image: base64_encoded_image});
+
+})
+
+router.get('/get-image-stream', async function(req, res, next){
+
+	let image_object = await Image.findOne({_id:req.query.image_object_id})
+	get_image_as_stream(image_object.image_filepath, image_object.object_files_hosted_at, res)
+
+})
+
 
 // get blogposts_list_with_children
 // USED
@@ -235,23 +250,30 @@ router.get('/blogposts-list', function(req, res, next){
 
 	BlogPost.
 	find().
-	limit(10).
+	limit(9).
 	then(async (blogposts)=>{
 		// console.log(blogposts)
 		var blogposts_list = []
+
 		let all_blogposts = await Promise.all(blogposts.map(async (blogpost, index)=>{
 
 			var newBlogPost = {}
 
 			let image_object = await Image.findOne({_id:blogpost.image_thumbnail_filepath})
 
-			newBlogPost.image_thumbnail_filepath = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
+			newBlogPost.image_thumbnail_filepath = blogpost.image_thumbnail_filepath
+			// newBlogPost.image_thumbnail_filepath = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
 			// newBlogPost.image_thumbnail_filepath = base64_encode( blogpost[ 'image_thumbnail_filepath' ] )
 			newBlogPost.title = blogpost[ 'title' ]
 			newBlogPost.timestamp_of_uploading = blogpost[ 'timestamp_of_uploading' ]
 			newBlogPost.initial_tags = blogpost[ 'initial_tags' ]
 			newBlogPost.endpoint = blogpost[ 'endpoint' ]
 			newBlogPost.first_para = blogpost[ 'first_para' ]
+			
+			newBlogPost.second_para = blogpost[ 'second_para' ]
+ 			newBlogPost.third_para = blogpost[ 'third_para' ]
+			newBlogPost.fourth_para = blogpost[ 'fourth_para' ]
+			newBlogPost.all_tags = blogpost[ 'all_tags' ]
 
 			blogposts_list.push({...newBlogPost})
 			newBlogPost = {}

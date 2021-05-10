@@ -22,8 +22,30 @@ class ComponentForShowingBlogPost extends Component {
 		super(props);
 // STATE	
 		this.state = {
-
+			image_src: null,
 		}
+
+	}
+
+	getImage(){
+
+		// this.setState({ image_src: null })
+		let image_object_id = this.props.dataPayloadFromParent.image_thumbnail_filepath
+
+		axios.get(`${utils.baseUrl}/blogpostings/get-image`, 
+			{
+				params: {
+					image_object_id: image_object_id
+				}
+			}
+		)
+	    .then(async (response) => {
+	    	if (response.data.success){
+		    	this.setState({ image_src: "data:image/jpeg;base64," + response.data.image})
+	    	}
+
+		});
+
 
 	}
 
@@ -31,6 +53,18 @@ class ComponentForShowingBlogPost extends Component {
 	componentDidMount() {
 
 	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+
+
+		if (prevProps.getIndividualImage === false && this.props.getIndividualImage === true){
+			console.log('getting image')
+			this.getImage()
+
+		}
+
+	}
+
 
 	render() {
 
@@ -41,15 +75,18 @@ class ComponentForShowingBlogPost extends Component {
 		const data = this.props.dataPayloadFromParent // data being plugged from parent flatlist
 		var base64Image = "data:image/jpeg;base64," + data.image_thumbnail_filepath
 
+
 		return (
 
 			<div style={{
 				marginLeft:20,
 				marginRight:20,
+				marginBottom:20,
 			}}>
 				<img 
-					src={base64Image}
+					// src={base64Image}
 					// src={utils.image} 
+					src={this.state.image_src}
 					alt="" 
 					style={{
 						width:'100%', 
@@ -63,14 +100,13 @@ class ComponentForShowingBlogPost extends Component {
 					marginTop:20,
 					color:'grey',
 				}}>
-					Product name{ data.title }
+					{ data.title }
 				</p>
 
 				<p style={{
 					color:'grey',
 					marginBottom:40,
 				}}>
-					Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum Loren ipsum 
 					{ data.first_para }
 				</p>
 
@@ -85,8 +121,9 @@ class ComponentForShowingBlogPost extends Component {
 				}}>
 					<div style={{flex:3}}>
 				  		<Link 
-				  			to={`/images/:id=${this.props.dataPayloadFromParent.endpoint}`} 
+				  			to={`/blogposts/:id=${this.props.dataPayloadFromParent.endpoint}`} 
 				  			style={{color: 'inherit', textDecoration: 'inherit'}}
+				  			onClick={() => this.props.set_current_blogpost(data)}
 						>
 							<p style={{
 								fontWeight:'bold',

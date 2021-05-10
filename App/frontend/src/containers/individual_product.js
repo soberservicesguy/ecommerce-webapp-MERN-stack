@@ -31,6 +31,8 @@ class IndividualIndividualProduct extends Component {
 		super(props);
 // STATE	
 		this.state = {
+			image_src: null,
+
 			// price: this.props.dataPayloadFromParent.price,
 			// price: 10,
 
@@ -46,10 +48,32 @@ class IndividualIndividualProduct extends Component {
 		}	
 	}
 
+	getImage(){
+
+		// this.setState({ image_src: null })
+		let image_object_id = this.props.current_product.image_thumbnail_filepath
+
+		axios.get(`${utils.baseUrl}/products/get-image`, 
+			{
+				params: {
+					image_object_id: image_object_id
+				}
+			}
+		)
+	    .then(async (response) => {
+	    	if (response.data.success){
+		    	this.setState({ image_src: "data:image/jpeg;base64," + response.data.image})
+	    	}
+
+		});
+
+
+	}
+
+
 // COMPONENT DID MOUNT
 	componentDidMount() {
-		console.log('state')
-		// console.log(this.props.location.state.something)
+		this.getImage()
 		this.get_variations()
 	}
 
@@ -119,7 +143,7 @@ class IndividualIndividualProduct extends Component {
 
 		}
 
-		var base64Image = "data:image/jpeg;base64," + this.props.current_product.image_thumbnail_filepath
+		// var base64Image = "data:image/jpeg;base64," + this.props.current_product.image_thumbnail_filepath
 
 		const product_color_menu = this.state.product_color_options.map((option, index) => {
 
@@ -149,7 +173,8 @@ class IndividualIndividualProduct extends Component {
 						textAlign:'center'
 					}}>
 						<img
-							src={base64Image} 
+							src={this.state.image_src}
+							// src={base64Image} 
 							// src={utils.image} 
 							alt="" 
 							style={{
@@ -174,7 +199,7 @@ class IndividualIndividualProduct extends Component {
 							borderBottomColor:'#eee',
 							paddingBottom:40,
 						}}>
-							Title{this.props.current_product.title}
+							{this.props.current_product.title}
 						</p>
 
 						<p style={{
@@ -280,7 +305,7 @@ class IndividualIndividualProduct extends Component {
 								flex:1
 							}}>
 								<button
-									onClick = {() => this.props.add_product_to_cart(this.props.dataPayloadFromParent)}
+									onClick = {() => this.props.add_product_to_cart(this.props.current_product)}
 									style={{
 										ouline:'none',
 										background:'none',

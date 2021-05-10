@@ -166,7 +166,7 @@ class RootRouterContainer extends Component {
 							// )
 						)}/>
 
-						<Route exact path="/products/:id" render={() => (
+						<Route exact path="/product/:id" render={() => (
 							// (this.props.isSignedIn) ? (
 								<React.Fragment>
 									<div style={{width:'95%', margin:'auto'}}>
