@@ -203,11 +203,15 @@ router.post('/create-carousel-with-user', passport.authenticate('jwt', { session
 // get blogposts_list_with_children
 // USED
 router.get('/get-carousel', async function(req, res, next){
+
 	
 	Carousel.
 	find().
 	limit(10).
 	then(async (carousels)=>{
+
+		// console.log(`total ${carousels.length} carousels available`)
+
 		var carousels_list = []
 		let all_carousels = await Promise.all(carousels.map(async (carousel, index) => {
 			var newCarousel = {}
@@ -218,6 +222,7 @@ router.get('/get-carousel', async function(req, res, next){
 
 				let base64_encoded_image = await get_image_to_display(image_object.image_filepath, image_object.object_files_hosted_at)
 
+				// newCarousel.image_thumbnail_filepath = carousel.image_thumbnail_filepath
 				newCarousel.image_thumbnail_filepath = base64_encoded_image
 				newCarousel.title = carousel[ 'title' ]
 
@@ -236,13 +241,13 @@ router.get('/get-carousel', async function(req, res, next){
 	})
 	.then((carousels_list) => {
 
-		if (!carousels_list) {
+		if (carousels_list.length > 0) {
 
-			res.status(401).json({ success: false, msg: "could not find Carousels_list" });
+			res.status(200).json({ success: true, carousels_list: carousels_list });
 
 		} else {
 
-			res.status(200).json(carousels_list);
+			res.status(200).json({ success: false, msg: "could not find Carousels_list"});
 
 		}
 

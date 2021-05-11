@@ -137,7 +137,7 @@ class BulkCarouselUpload extends Component {
 			this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))
 
 			// redirecting
-			return <Redirect to = {{ pathname: "/carousels" }} />
+			return <Redirect to = {{ pathname: "/home" }} />
 
 		} else {
 
@@ -247,7 +247,7 @@ class BulkCarouselUpload extends Component {
 									if (this.state.all_images_compressed){
 
 										// let setResponseInFetchedBlogPosts = (arg) => this.props.set_fetched_blogposts(arg)
-										let redirectToNewBlogPosts = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
+										let redirectToHome = () => this.setState(prev => ({...prev, redirectToRoute: (prev.redirectToRoute === false) ? true : false }))	
 
 										// in formData send individual variables and not a complete object
 										// formData.append('video_object', video_object) // THIS WILL NOT WORK, SENT VARS INDIVIDUALLY
@@ -268,7 +268,7 @@ class BulkCarouselUpload extends Component {
 											// setResponseInFetchedBlogPosts(response.data.new_blogpost)
 
 											// change route to current_blogpost
-											redirectToNewBlogPosts()
+											redirectToHome()
 
 										})
 										.catch(function (error) {

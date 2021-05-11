@@ -26,6 +26,7 @@ class LoginContainer extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			showAdminControls:false,
 
 			phone_number: '',
 			password:'',
@@ -443,63 +444,67 @@ class LoginContainer extends Component {
 					</div>
 
 
+					{this.state.showAdminControls && 
+						(
+							<div style={{
+								width:'90%',
+								margin:'auto',
+								display:'flex',
+								flexDirection:'row',
+								justifyContent: 'space-around',
+								alignItems:'center',
+								height:60,
+								marginBottom:20,
+							}}>
+								<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
+									<button 
+										style={{...styles.roundButton, }}
+										onClick={ () => this.delete_all_users() }
+									>
+										Delete All Users
+									</button>
+								</div>
 
-					<div style={{
-						width:'90%',
-						margin:'auto',
-						display:'flex',
-						flexDirection:'row',
-						justifyContent: 'space-around',
-						alignItems:'center',
-						height:60,
-						marginBottom:20,
-					}}>
-						<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
-							<button 
-								style={{...styles.roundButton, }}
-								onClick={ () => this.delete_all_users() }
-							>
-								Delete All Users
-							</button>
-						</div>
+								<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
+									<button 
+										style={{...styles.roundButton, }}
+										onClick={ () => this.delete_all_carousels() }
+									>
+										Delete All Carousels
+									</button>
+								</div>
 
-						<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
-							<button 
-								style={{...styles.roundButton, }}
-								onClick={ () => this.delete_all_carousels() }
-							>
-								Delete All Carousels
-							</button>
-						</div>
+								<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
+									<button 
+										style={{...styles.roundButton, }}
+										onClick={ () => this.delete_all_blogpost() }
+									>
+										Delete All Blogposts
+									</button>
+								</div>
 
-						<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
-							<button 
-								style={{...styles.roundButton, }}
-								onClick={ () => this.delete_all_blogpost() }
-							>
-								Delete All Blogposts
-							</button>
-						</div>
+								<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
+									<button 
+										style={{...styles.roundButton, }}
+										onClick={ () => this.delete_all_products() }
+									>
+										Delete All Products
+									</button>
+								</div>
 
-						<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
-							<button 
-								style={{...styles.roundButton, }}
-								onClick={ () => this.delete_all_products() }
-							>
-								Delete All Products
-							</button>
-						</div>
+								<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
+									<button 
+										style={{...styles.roundButton, }}
+										onClick={ () => this.delete_all_images() }
+									>
+										Delete All Images
+									</button>
+								</div>
 
-						<div style={{...styles.formAndRounButtonContainer, marginLeft:50, backgroundColor: 'red', borderColor:'red'}}>
-							<button 
-								style={{...styles.roundButton, }}
-								onClick={ () => this.delete_all_images() }
-							>
-								Delete All Images
-							</button>
-						</div>
+							</div>
 
-					</div>
+						)
+					}
 				
 				</div>
 			);

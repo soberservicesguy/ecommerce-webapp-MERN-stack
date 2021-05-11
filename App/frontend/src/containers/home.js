@@ -137,7 +137,7 @@ class HomeContainer extends Component {
 
 				// console.log('CAROUSEL FETCHED')
 				// console.log(response.data)
-				this.props.set_fetched_carousels(response.data)
+				this.props.set_fetched_carousels(response.data.carousels_list)
 
 			} else {
 				console.log('COULDNT FETCH CAROUSEL')	
@@ -223,7 +223,7 @@ class HomeContainer extends Component {
 			<div>
 
 			{/* top carousel */}
-				<div style={{width:'90%', margin:'auto'}}>
+				<div style={{width:'90%', margin:'auto', }}>
 					<Carousel
 						showArrows={true}
 						autoPlay={true}
@@ -232,23 +232,31 @@ class HomeContainer extends Component {
 						// onClickItem={onClickItem} 
 						// onClickThumb={onClickThumb}
 					>
-						{this.props.total_carousels.map((item, index) => (
-							<div
-								key={item.id}
-								style={{height:'90vh'}} 
-							>
-							  <img 
-							  	src={item.image_thumbnail_filepath}
-							  	// src={utils.image}
-							  	style={{width:'100%', height:'90vh', resizeMode:'stretch'}} 
-							  />
-							</div>
-						))}
+						{this.props.total_carousels.map((item, index) => {
+
+							let base64_carousel_image =  "data:image/jpeg;base64," + item.image_thumbnail_filepath
+
+							return(
+								<div
+									key={item.id}
+									// style={{height:'90vh',}} 
+								>
+									<img 
+										src={base64_carousel_image}
+										// src={utils.image}
+										style={{width:'100%', height:600, resizeMode:'stretch'}} 
+									/>
+									<p style={{color:'black', position:'relative', bottom:50, fontSize:20, fontWeight:'bold'}}>
+										{item.title}
+									</p>
+								</div>
+							)
+						})}
 					</Carousel>
 				</div>
 
 			{/* categories */}
-				<div style={{marginTop:100,}}>
+				<div style={{marginTop:80,}}>
 					<TwoSidedCustomMasonryContainer
 						containerWidth = {'90%'}
 						containerColor = {'none'}

@@ -212,11 +212,11 @@ router.post('/bulk-upload-carousels', passport.authenticate('jwt', { session: fa
 
 					if (use_gcp_storage || use_aws_s3_storage){
 
-						image_filepath_value = `bulk_blogposts/${currentDate}_${currentTime}/${image_file.originalname}`
+						image_filepath_value = `bulk_carousels/${currentDate}_${currentTime}/${image_file.originalname}`
 
 					} else {
 
-						image_filepath_value = get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_blogposts', image_file.originalname)
+						image_filepath_value = get_file_path_to_use_for_bulk_files(`${currentDate}_${currentTime}`,'bulk_carousels', image_file.originalname)
 
 					}
 

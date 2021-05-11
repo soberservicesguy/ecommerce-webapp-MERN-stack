@@ -15,7 +15,7 @@ class ComponentForShowingCarousel extends Component {
 		super(props);
 // STATE	
 		this.state = {
-
+			
 		}
 
 	}
