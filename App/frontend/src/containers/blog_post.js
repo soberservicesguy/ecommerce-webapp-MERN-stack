@@ -23,6 +23,7 @@ class BlogPostContainer extends Component {
 		super(props);
 // STATE	
 		this.state = {
+			get_individual_image:false,
 		}	
 	}
 
@@ -35,9 +36,9 @@ class BlogPostContainer extends Component {
 
 			if (response.data.success){
 
-				console.log('BLOGPOSTS LIST FETCHED')
-				console.log(response.data)
 				this.props.set_fetched_blogposts(response.data.blogposts_list)
+				console.log('allowing to get individual image')
+		    	this.setState({ get_individual_image: true })
 
 			} else {
 
@@ -96,8 +97,8 @@ class BlogPostContainer extends Component {
 
 					<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
 						<ConnectedBlogPostCard
-							dataPayloadFromParent = { item }
-						
+							getIndividualImage = {this.state.get_individual_image}
+							dataPayloadFromParent = { item }						
 						/>
 					</Grid>
 

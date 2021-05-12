@@ -53,36 +53,6 @@ const {
 let timestamp
 
 
-// Set The Storage Engine
-// const product_image_storage = multer.diskStorage({
-// 	destination: path.join(__dirname , '../../assets/images/uploads/product_images'),
-// 	filename: function(req, file, cb){
-// 		// file name pattern fieldname-currentDate-fileformat
-// 		// filename_used_to_store_image_in_assets_without_format = file.fieldname + '-' + Date.now()
-// 		// filename_used_to_store_image_in_assets = filename_used_to_store_image_in_assets_without_format + path.extname(file.originalname)
-
-// 		filename_used_to_store_image_in_assets = file.originalname
-// 		cb(null, file.originalname);
-
-// 	}
-// });
-
-
-// Check File Type
-// function checkFileTypeForProductImage(file, cb){
-// 	// Allowed ext
-// 	let filetypes = /jpeg|jpg|png|gif/;
-// 	// Check ext
-// 	let extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-// 	// Check mime
-// 	let mimetype = filetypes.test(file.mimetype);
-
-// 	if(mimetype && extname){
-// 		return cb(null,true);
-// 	} else {
-// 		cb('Error: jpeg, jpg, png, gif Images Only!');
-// 	}
-// }
 
 // Init Upload
 function upload_product_image(timestamp){
