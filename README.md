@@ -2,8 +2,7 @@
 
 **Live App:**
 
-https://ecommerce-app-dot-portfolio-apps-311617.uc.r.appspot.com
-
+https://ecommerce-mern-stack-web.herokuapp.com
 
 **Project Detials:**
 
