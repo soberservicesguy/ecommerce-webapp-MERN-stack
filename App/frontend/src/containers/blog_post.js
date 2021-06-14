@@ -93,16 +93,15 @@ class BlogPostContainer extends Component {
 
 				)}
 
-				{total_blogposts.map((item, index)=>(
-
-					<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+				{total_blogposts.map((item, index)=>{
+					return(<Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
 						<ConnectedBlogPostCard
 							getIndividualImage = {this.state.get_individual_image}
 							dataPayloadFromParent = { item }						
 						/>
-					</Grid>
+					</Grid>)
 
-				))}
+				})}
 
 			</Grid>
 

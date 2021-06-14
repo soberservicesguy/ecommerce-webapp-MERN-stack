@@ -4,7 +4,7 @@ const path = require( 'path' );
 const fs = require('fs')
 const FS = require('fs').promises
 
-let s3_bucket = 'portfolio-social-app'
+let s3_bucket = 'portfolio-apps-mern'
 
 s3_params = {
 	accessKeyId: '',
