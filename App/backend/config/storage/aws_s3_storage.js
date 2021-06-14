@@ -4,12 +4,15 @@ const path = require( 'path' );
 const fs = require('fs')
 const FS = require('fs').promises
 
-let s3_bucket = 'portfolio-apps-mern'
+require('dotenv').config({ path: "../../.env" })
+
+
+let s3_bucket = process.env.aws_s3_bucket
 
 s3_params = {
-	accessKeyId: '',
-	secretAccessKey: '',
-	Bucket: s3_bucket, // bucket name
+	accessKeyId: process.env.aws_s3_accessKeyId,
+	secretAccessKey: process.env.aws_s3_secretAccessKey,
+	Bucket: process.env.aws_s3_bucket, // bucket name
 }
 
 const s3 = new aws.S3(s3_params)
