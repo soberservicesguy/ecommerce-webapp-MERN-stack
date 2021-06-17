@@ -23,9 +23,9 @@ async function generate_dot_env_file_for_cloud_storage_for_aws_S3(){
 
 	let final_lines_content = [
 		...file_lines_without_matched_reges,
-		`\aws_s3_accessKeyId='${aws_s3_accessKeyId}'`,		
-		`\aws_s3_secretAccessKey='${aws_s3_secretAccessKey}'`,		
-		`\aws_s3_bucket='${aws_s3_bucket}'`,		
+		`\naws_s3_accessKeyId='${aws_s3_accessKeyId}'`,		
+		`\naws_s3_secretAccessKey='${aws_s3_secretAccessKey}'`,		
+		`\naws_s3_bucket='${aws_s3_bucket}'`,		
 	]
 
 	final_lines_content = final_lines_content.join("\n")	

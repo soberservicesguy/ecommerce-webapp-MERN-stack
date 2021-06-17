@@ -11,6 +11,26 @@ const mongoose = require('mongoose');
 require('../models/carousel');
 require('../models/user');
 
+require('dotenv').config({ path: "../.env" })
+let use_aws_s3 = ( process.env.AWS_S3_STORAGE_ENABLED === 'true' ) ? true : false
+let use_gcp_storage = ( process.env.GOOGLE_CLOUD_STORAGE_ENABLED === 'true' ) ? true : false
+
+let platform_to_save
+if (use_gcp_storage){
+
+	platform_to_save = 'gcp_storage'
+
+} else if (use_aws_s3){
+
+	platform_to_save = 'aws_s3'
+
+} else {
+
+	platform_to_save = 'disk_storage'
+}
+
+
+
 const Carousel = mongoose.model('Carousel');
 const User = mongoose.model('User');
 const file_name = excel_file || '/home/arsalan/Work_stuff/Full_stack_apps/REACT_APPS/Final_portfolio/ecommerce_app/backend/excel_to_databases/all_carousels.xlsx'
@@ -104,6 +124,7 @@ const save_parent_and_children_in_db = async (parent_children_rows_dict, sheet_t
 			_id: new mongoose.Types.ObjectId(),
 			...parent_db_object_dict,
 			...dict_to_use,
+			object_files_hosted_at: platform_to_save,
 		})
 
 		carousel.save(function (err, carousel) {
