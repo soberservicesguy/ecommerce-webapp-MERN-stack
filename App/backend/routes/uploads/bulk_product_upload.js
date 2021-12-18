@@ -257,8 +257,7 @@ router.post('/bulk-upload-products', passport.authenticate('jwt', { session: fal
 					if (user){
 
 						user_id = user._id
-						sheet_to_class( excel_filepath, user_id, 'bulk_products',  `${currentDate}_${currentTime}`, ['image_thumbnail_filepath'], all_images_db_objects)
-						res.status(200).json({ success: true, msg: 'new products created'});	
+						sheet_to_class( excel_filepath, user_id, 'bulk_products',  `${currentDate}_${currentTime}`, ['image_thumbnail_filepath'], all_images_db_objects, res)
 
 					} else {
 						res.status(200).json({ success: false, msg: "new products NOT created, try again" });

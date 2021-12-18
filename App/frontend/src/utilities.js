@@ -1,6 +1,7 @@
 
 const utils = {
 	baseUrl: 'https://ecommerce-mern-stack-web.herokuapp.com',
+	// baseUrl: 'https://ecommerce-mern-stack-web.herokuapp.com',
 	// baseUrl: 'https://ecommerce-app-dot-portfolio-apps-311617.uc.r.appspot.com',
 	// baseUrl: 'https://ecommerce-app-dot-portfolio-apps-311617.uc.r.appspot.com',
     // baseUrl:'http://localhost:80', // for docker

@@ -20,7 +20,7 @@ const ProductSchema = new mongoose.Schema({
 
 	price:String,
 
-	endpoint:String,
+	endpoint:{type:String, default:null},
 	timestamp_of_uploading:String,
 
 // other model links
@@ -29,12 +29,16 @@ const ProductSchema = new mongoose.Schema({
 
 ProductSchema.pre('save', function(next) {
 
-	endpoint_number += 1
+	if (this.endpoint === null){
 
-	this.endpoint = String( endpoint_number )
-	this.timestamp_of_uploading = String( Date.now() )
+		endpoint_number += 1
 
-	this.initial_quantity = 1
+		this.endpoint = String( endpoint_number )
+		this.timestamp_of_uploading = String( Date.now() )
+
+		this.initial_quantity = 1
+
+	}
 	
     next();
 

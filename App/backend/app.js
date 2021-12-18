@@ -91,21 +91,6 @@ app.get('/*', function(req, res){
 
 
 
-// --------------------------PAYPAL starts here-------------------------------
-
-const paypal = require('paypal-rest-sdk');
-
-paypal.configure({
-	'mode': 'sandbox', //sandbox or live
-	'client_id': '',
-	'client_secret': ''
-});
-
-// --------------------------PAYPAL ends here-------------------------------
-
-
-
-
 
 // --------------------------STRIPE starts here-------------------------------
 

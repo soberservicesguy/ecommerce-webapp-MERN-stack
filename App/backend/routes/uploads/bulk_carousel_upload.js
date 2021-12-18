@@ -254,8 +254,7 @@ router.post('/bulk-upload-carousels', passport.authenticate('jwt', { session: fa
 					if (user){
 
 						user_id = user._id
-						sheet_to_class( excel_filepath, user_id, 'bulk_carousels',  `${currentDate}_${currentTime}`, ['image_thumbnail_filepath'], all_images_db_objects)
-						res.status(200).json({ success: true, msg: 'new carousels created'});	
+						sheet_to_class( excel_filepath, user_id, 'bulk_carousels',  `${currentDate}_${currentTime}`, ['image_thumbnail_filepath'], all_images_db_objects, res)
 
 					} else {
 						res.status(200).json({ success: false, msg: "new carousels NOT created, try again" });

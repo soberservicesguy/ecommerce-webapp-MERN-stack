@@ -17,31 +17,29 @@ async function get_all_product_objects_and_order_amount_for_paypal(products_list
 		delete ordered_product.price
 		delete ordered_product.initial_quantity
 
-		await Product.findOne(ordered_product)
-		.then((product_found) => {
+		let product_found = await Product.findOne(ordered_product)
 
-			// console.log('FOUND PRODUCT')
-			// console.log(product_found)
+		// console.log('FOUND PRODUCT')
+		// console.log(product_found)
 
-			product_objects.push(product_found)
+		product_objects.push(product_found)
 
-			final_order_content.push({
-				// paypal fields
-				name: product_found.title,
-				sku: product_found.endpoint,
-				price: product_found.price,
-				quantity: quantity,
-				currency: currency,
-			// NO additional fields, PAYPAL GIVES ERRORS
-				// product_size: ordered_product.product_size,
-				// product_color: ordered_product.product_color,
-			})
-			// console.log('1')
-			// console.log('PRODUCT RESULTS')
-			// console.log(Number(product_found.price) * Number(quantity))
-			order_amount += Number(product_found.price) * Number(quantity)
-
+		final_order_content.push({
+			// paypal fields
+			name: product_found.title,
+			sku: product_found.endpoint,
+			price: product_found.price,
+			quantity: quantity,
+			currency: currency,
+		// NO additional fields, PAYPAL GIVES ERRORS
+			// product_size: ordered_product.product_size,
+			// product_color: ordered_product.product_color,
 		})
+		// console.log('1')
+		// console.log('PRODUCT RESULTS')
+		// console.log(Number(product_found.price) * Number(quantity))
+		order_amount += Number(product_found.price) * Number(quantity)
+
 
 	}))
 

@@ -21,7 +21,7 @@ const BlogPostSchema = new mongoose.Schema({
 	fourth_para:String,
 	all_tags:String,
 	// author_details:String,
-	endpoint:String,
+	endpoint:{type:String, default:null},
 	timestamp_of_uploading:String,
 
 // other model links
@@ -31,11 +31,15 @@ const BlogPostSchema = new mongoose.Schema({
 
 BlogPostSchema.pre('save', function(next) {
 
-	endpoint_number += 1
+	if (this.endpoint === null){
 
-	this.endpoint = String( endpoint_number )
-	this.timestamp_of_uploading = String( Date.now() )
-	
+		endpoint_number += 1
+
+		this.endpoint = String( endpoint_number )
+		this.timestamp_of_uploading = String( Date.now() )
+		
+	}
+ 
     next();
 
 });
