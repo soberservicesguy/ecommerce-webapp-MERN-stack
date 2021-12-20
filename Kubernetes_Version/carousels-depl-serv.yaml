@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: carousels
-        image: soberservicesguy/portfolio-images:ecommerce_carousels_20
+        image: ecommerce_carousels:latest
         resources:
           limits:
             cpu: "200m"
