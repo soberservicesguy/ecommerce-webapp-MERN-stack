@@ -290,7 +290,7 @@ router.get('/blogposts-list', function(req, res, next){
 		} else {
 
 			// console.log(blogposts_list)
-			res.status(401).json({ success: false, msg: "could not find BlogPosts_list" });
+			res.status(200).json({ success: false, msg: "could not find BlogPosts_list" });
 
 		}
 

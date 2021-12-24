@@ -12,7 +12,7 @@ const passport = require('passport');
 
 // const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const Stripe = require('stripe');
-const stripe = Stripe('sk_test_51I98eiADpqLOsbfMbkWlNoifhK1MloLBAcqTBlGMqbOBTuTiaI5njBY6QEGDQtOemxTDpTAsOKPDzWX8tKVoLbKD00jqWgtlIf');
+const stripe = Stripe(process.env.stripe_private_key);
 
 const { get_all_product_objects_and_order_amount_for_stripe } = require('../handy_functions/get_all_product_objects_and_order_amount_for_stripe')
 
@@ -26,7 +26,7 @@ let getProductDetails = () => {
 
 // SENDING PUBLISHABLE KEY
 router.get("/public-key", (req, res) => {
-	res.send({ publicKey: process.env.STRIPE_PUBLISHABLE_KEY });
+	res.send({ publicKey: process.env.stripe_public_key });
 });
 
 router.get("/product-details", (req, res) => {

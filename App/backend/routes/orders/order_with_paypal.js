@@ -23,7 +23,7 @@ const currency = "USD"
 
 
 router.post('/create-order-with-paypal', passport.authenticate('jwt', { session: false }), async function(req, res, next){
-
+	console.log({paypal_client_id: process.env.paypal_client_id, paypal_client_secret: process.env.paypal_client_secret})
 	let products_in_order = req.body.products
 	let {order_amount, product_objects, final_order_content} = await get_all_product_objects_and_order_amount_for_paypal(req.body.products)
 
