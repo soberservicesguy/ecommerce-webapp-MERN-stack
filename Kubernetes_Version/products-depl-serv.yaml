@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orders
+  name: products
   labels:
-    app: orders
+    app: products
 spec:
   replicas: 2
   # strategy:
@@ -13,21 +13,21 @@ spec:
   #     maxUnavailable: 0
   selector:
     matchLabels:
-      app: orders
+      app: products
   template:
     metadata:
       labels:
-        app: orders
+        app: products
     spec:
       containers:
-      - name: orders
-        image: soberservicesguy/portfolio-images:ecommerce_orders_21
+      - name: products
+        image: ecommerce_products:latest
         resources:
           limits:
             cpu: "200m"
             memory: "300Mi"
         ports:
-        - containerPort: 5005
+        - containerPort: 5003
         env:
         - name: MONGODB_USER
           valueFrom:
@@ -50,13 +50,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: order-service
+  name: product-service
 spec:
   type: NodePort
   # type: ClusterIP
   selector:
-    app: orders
+    app: products
   ports:
     - protocol: TCP
-      targetPort: 5005
-      port: 5005
+      targetPort: 5003
+      port: 5003

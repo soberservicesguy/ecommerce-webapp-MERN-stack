@@ -61,7 +61,7 @@ class BulkProductCategoryUpload extends Component {
 			formAndRounButtonContainer:{
 				marginTop:20,
 				// flex:1,
-				flexBasis:'35%',
+				flexBasis:'25%',
 				// width: '20%',
 				// width: 100,
 				height: 40,

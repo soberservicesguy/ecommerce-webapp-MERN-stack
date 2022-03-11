@@ -429,8 +429,8 @@ class FooterContainer extends Component {
 							src={this.props.twitterLogo}
 							style={{
 								objectFit:'fill', 
-								width: 40, 
-								height:40,
+								width: 35, 
+								height:35,
 								paddingRight:this.props.imagePaddingRight,
 								marginBottom:50,
 								marginLeft:15,

@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: user-module
-        image: soberservicesguy/portfolio-images:ecommerce_user_module_3
+        image: ecommerce_users_module:latest
         resources:
           limits:
             cpu: "200m"

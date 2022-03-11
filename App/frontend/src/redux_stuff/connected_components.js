@@ -17,16 +17,11 @@ import {
 	CartContainer,
 	IndividualCartItem,	
 	LoginContainer,
-
 	HomeContainer,
 	FooterContainer,
 	// StripeCheckout,
-
+	MyResponsiveNavigation,
 } from "../containers";
-
-
-
-
 
 import {
 	CreateCarousel,
@@ -63,10 +58,11 @@ import {
 	BulkProductCategoryUpload,
 } from "../components/"
 
-// export const ConnectedStripeCheckout = connect(
-// 	mapStateToProps,
-// 	mapDispatchToProps
-// )(StripeCheckout);
+
+export const ConnectedResponsiveNavigation = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(MyResponsiveNavigation);
 
 export const ConnectedBulkProductCategoryUpload = connect(
 	mapStateToProps,

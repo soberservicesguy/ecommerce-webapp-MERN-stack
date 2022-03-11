@@ -3,6 +3,11 @@ require('../../models/user');
 require('../../models/product');
 
 const paypal = require('paypal-rest-sdk');
+paypal.configure({
+	'mode': 'sandbox', //sandbox or live
+	'client_id': process.env.paypal_client_id,
+	'client_secret': process.env.paypal_client_secret
+});
 
 const base64_encode = require('../../lib/image_to_base64')
 const mongoose = require('mongoose');

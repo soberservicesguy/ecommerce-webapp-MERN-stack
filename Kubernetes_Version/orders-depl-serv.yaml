@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: carousels
+  name: orders
   labels:
-    app: carousels
+    app: orders
 spec:
   replicas: 2
   # strategy:
@@ -13,21 +13,21 @@ spec:
   #     maxUnavailable: 0
   selector:
     matchLabels:
-      app: carousels
+      app: orders
   template:
     metadata:
       labels:
-        app: carousels
+        app: orders
     spec:
       containers:
-      - name: carousels
-        image: soberservicesguy/portfolio-images:ecommerce_carousels_20
+      - name: orders
+        image: ecommerce_orders:latest
         resources:
           limits:
             cpu: "200m"
             memory: "300Mi"
         ports:
-        - containerPort: 5006
+        - containerPort: 5005
         env:
         - name: MONGODB_USER
           valueFrom:
@@ -50,13 +50,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: carousel-service
+  name: order-service
 spec:
   type: NodePort
   # type: ClusterIP
   selector:
-    app: carousels
+    app: orders
   ports:
     - protocol: TCP
-      targetPort: 5006
-      port: 5006
+      targetPort: 5005
+      port: 5005

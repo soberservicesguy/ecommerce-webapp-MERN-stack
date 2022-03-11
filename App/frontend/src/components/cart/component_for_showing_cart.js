@@ -301,14 +301,14 @@ class ComponentForShowingCart extends Component {
 					toggle_product_color_modal
 				</button>*/}
 
-				<div style={{flex:1, }}>
+				<div style={{/*flex:1,*/ flexBasis: 100}}>
 					<QuantityAdjuster
 						adjust_quantity_callback = {(new_quantity) => this.props.modify_initial_quantity_of_some_item_in_cart(data.id, new_quantity)}
 					/>
 				</div>
 
 
-				<div style={{flex:1, fontSize:20, fontWeight:'bold', paddingTop:10, textAlign:'center', paddingRight:40,}}>
+				<div style={{/*flex:1,*/ flexBasis: 100, fontSize:20, fontWeight:'bold', paddingTop:10, textAlign:'center', paddingRight:40,}}>
 					<p>
 						${Number(this.state.price) * Number((data.initial_quantity) ? data.initial_quantity : 1) }
 					</p>
