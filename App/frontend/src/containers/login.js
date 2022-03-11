@@ -26,7 +26,7 @@ class LoginContainer extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showAdminControls:false,
+			showAdminControls:true,
 
 			phone_number: '',
 			password:'',
@@ -360,7 +360,7 @@ class LoginContainer extends Component {
 				<div style={styles.outerContainer}>
 
 
-					<div style={{...styles.formAndRounButtonContainer, width:'30%', margin:'auto', backgroundColor: '#3B5998'}}>
+					<div style={{...styles.formAndRounButtonContainer, width:'28%', margin:'auto', backgroundColor: '#3B5998'}}>
 						<button 
 							style={styles.roundButton}
 							onClick={ () => {}}
@@ -415,7 +415,7 @@ class LoginContainer extends Component {
 
 
 					<div style={{
-						width:'90%',
+						width:'50%',
 						margin:'auto',
 						display:'flex',
 						flexDirection:'row',

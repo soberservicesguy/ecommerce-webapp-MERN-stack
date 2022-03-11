@@ -40,9 +40,9 @@ class MyResponsiveNavigation extends Component {
 	  		{option_name:'Products', endpoint:'products'},
 	  		{option_name:'Blogposts', endpoint:'blogposts'},
 	  		{option_name:'Cart', endpoint:'cart'},
-	  		{option_name:'Login', endpoint:'login'},
-	  		{option_name:'Signup', endpoint:'signup'},
+	  		// {option_name:'Signup', endpoint:'signup'},
 	  		{option_name:'Order', endpoint:'order'},
+	  		{option_name:'Log Out', endpoint:'login'},
 	  	]
 
 	  	const {pathname} = this.props.location;
@@ -86,42 +86,65 @@ class MyResponsiveNavigation extends Component {
 			  		</Grid>
 
 
-						{navigation_options.map((item, index)=>(
-			
+						{navigation_options.map((item, index) => {
+							if (item.option_name === 'Log Out'){
+								return (
+									<Grid item xs={12} sm={12} md={1} lg={1} xl={1}>
+										<button style={{
+											marginLeft:(_xs || _sm || _md) ? -20 : 70, 
+											color: 'red', 
+											textDecoration: 'inherit',
+											background: 'none',
+											backgroundColor: 'none',
+											border: 'none',
+											fontSize: 17,
+											fontWeight: 'bold',
+											paddingBottom: 15,
+											margin: 'auto',
+											width: '100%',
+											paddingLeft: 20, 
+										}} onClick={() => this.props.set_is_signed_in(false)}>
+											Log out
+										</button>
+								
+									</Grid>
+								)
+							} else {
+								return (
+									<Grid item xs={12} sm={12} md={1} lg={1} xl={1}>
 
-							<Grid item xs={12} sm={12} md={1} lg={1} xl={1}>
-
-						  		<Link 
-						  			to={`/${item.endpoint}`} 
-						  			style={{
-						  				color: 'inherit', 
-						  				textDecoration: 'inherit',
-						  			}}
-								>
-									<p style={{
-										textAlign:'center',
-										marginBottom: 0,
-										paddingBottom: 0,
-										fontSize:18,
-										fontWeight:'bold',
-										// color:'grey',
-									// color of active link
-										color:( `/${item.endpoint}` === pathname) ? 'black' : 'grey',
-									// border below active link
-										// borderBottomWidth:( item.endpoint === this.state.current_route) ? 3 : 0,
-										// borderBottomColor:'black',
-										// borderBottomStyle:'solid',
-										// marginLeft:20,
-										// marginRight:20,
-						  				marginBottom:15,
-									}}>
-										{item.option_name}
-									</p>
-								</Link>
-						
-							</Grid>
-
-						))}
+								  		<Link 
+								  			to={`/${item.endpoint}`} 
+								  			style={{
+								  				color: 'inherit', 
+								  				textDecoration: 'inherit',
+								  			}}
+										>
+											<p style={{
+												textAlign:'center',
+												marginBottom: 0,
+												paddingBottom: 0,
+												fontSize:18,
+												fontWeight:'bold',
+												// color:'grey',
+											// color of active link
+												color:( `/${item.endpoint}` === pathname) ? 'black' : 'grey',
+											// border below active link
+												// borderBottomWidth:( item.endpoint === this.state.current_route) ? 3 : 0,
+												// borderBottomColor:'black',
+												// borderBottomStyle:'solid',
+												// marginLeft:20,
+												// marginRight:20,
+								  				marginBottom:15,
+											}}>
+												{item.option_name}
+											</p>
+										</Link>
+								
+									</Grid>
+								)
+							}
+						})}
 
 
 				</Grid>
